@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Math Master — Notes &amp; Practice</title>
 
   <!-- Mobile Web App & Standalone Shortcut Meta Tags -->
@@ -12,22 +12,21 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Math Master" />
 
-  <!-- Crisp Static Inline SVG Favicon (Purple-Indigo Gradient + White Sigma) -->
+  <!-- Crisp Static Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%234f46e5'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='url(%23g)'/%3E%3Cpath d='M364 156V116H148l108 140-108 140h216v-40' fill='none' stroke='%23ffffff' stroke-width='44' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
-  <!-- Dynamic 512x512 PNG App Icon & Web App Manifest Generator for Chrome Add to Home Screen -->
+  <!-- Dynamic 512x512 PNG App Icon & Web App Manifest Generator -->
   <script>
     (function setupAppIconAndManifest() {
       try {
-        const size = 512;
-        const canvas = document.createElement('canvas');
+        var size = 512;
+        var canvas = document.createElement('canvas');
         canvas.width = size;
         canvas.height = size;
-        const ctx = canvas.getContext('2d');
+        var ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Draw rounded square background with purple-indigo gradient (#4f46e5 -> #7c3aed)
-        const r = 112;
+        var r = 112;
         ctx.beginPath();
         ctx.moveTo(r, 0);
         ctx.lineTo(size - r, 0);
@@ -40,20 +39,18 @@
         ctx.quadraticCurveTo(0, 0, r, 0);
         ctx.closePath();
 
-        const grad = ctx.createLinearGradient(0, 0, size, size);
+        var grad = ctx.createLinearGradient(0, 0, size, size);
         grad.addColorStop(0, '#4f46e5');
         grad.addColorStop(1, '#7c3aed');
         ctx.fillStyle = grad;
         ctx.fill();
 
-        // Subtle inner top glow for crisp icon depth
-        const glow = ctx.createRadialGradient(size * 0.25, size * 0.18, 10, size * 0.25, size * 0.18, size * 0.75);
-        glow.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
-        glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        var glow = ctx.createRadialGradient(size * 0.25, size * 0.18, 10, size * 0.25, size * 0.18, size * 0.75);
+        glow.addColorStop(0, 'rgba(255,255,255,0.18)');
+        glow.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = glow;
         ctx.fill();
 
-        // Draw crisp bold white Sigma (Σ) symbol
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 44;
         ctx.lineCap = 'round';
@@ -68,51 +65,37 @@
         ctx.lineTo(364, 356);
         ctx.stroke();
 
-        const pngDataUrl = canvas.toDataURL('image/png');
-        const head = document.head;
+        var pngDataUrl = canvas.toDataURL('image/png');
+        var head = document.head;
 
-        // Inject Apple Touch Icon (512x512 PNG)
-        const appleIcon = document.createElement('link');
+        var appleIcon = document.createElement('link');
         appleIcon.rel = 'apple-touch-icon';
         appleIcon.sizes = '512x512';
         appleIcon.href = pngDataUrl;
         head.appendChild(appleIcon);
 
-        // Inject PNG Favicon (512x512 PNG)
-        const pngIcon = document.createElement('link');
+        var pngIcon = document.createElement('link');
         pngIcon.rel = 'icon';
         pngIcon.type = 'image/png';
         pngIcon.sizes = '512x512';
         pngIcon.href = pngDataUrl;
         head.appendChild(pngIcon);
 
-        // Inject Dynamic Standalone Web App Manifest via Blob URL
-        const manifestObj = {
+        var manifestObj = {
           name: 'Math Master',
           short_name: 'Math Master',
           start_url: window.location.href,
           display: 'standalone',
           background_color: '#f8fafc',
           theme_color: '#4f46e5',
-          icons: [
-            {
-              src: pngDataUrl,
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'any maskable'
-            }
-          ]
+          icons: [{ src: pngDataUrl, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }]
         };
-
-        const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-        const manifestUrl = URL.createObjectURL(blob);
-        const manifestLink = document.createElement('link');
+        var blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        var manifestLink = document.createElement('link');
         manifestLink.rel = 'manifest';
-        manifestLink.href = manifestUrl;
+        manifestLink.href = URL.createObjectURL(blob);
         head.appendChild(manifestLink);
-      } catch (e) {
-        // Fallback silently to inline SVG favicon
-      }
+      } catch (e) {}
     })();
   </script>
 
@@ -121,7 +104,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -129,38 +112,40 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'Noto Sans Devanagari', 'sans-serif'],
-            hindi: ['Noto Sans Devanagari', 'Inter', 'sans-serif'],
+            hindi: ['Noto Sans Devanagari', 'Inter', 'sans-serif']
           }
         }
       }
     };
   </script>
 
-  <!-- KaTeX CSS & JS (Loaded reliably from jsDelivr with instant onload trigger) -->
+  <!-- KaTeX 0.16.11 CSS & JS (jsDelivr, no defer) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="if (window.renderMath) window.renderMath(document.body);"></script>
 
   <style>
     body {
-      background-color: #F8FAFC;
-      color: #0F172A;
+      background-color: #f8fafc;
+      color: #0f172a;
       -webkit-tap-highlight-color: transparent;
     }
-
     .view-panel {
-      animation: fadeSlide 0.2s ease-out;
+      animation: fadeSlide 0.18s ease-out;
     }
     @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     .katex {
       font-size: 1.04em;
       color: inherit;
     }
-
+    .katex-display {
+      margin: 0.45em 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -168,15 +153,6 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-
-    @keyframes pulseUrgent {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45); }
-      50% { box-shadow: 0 0 0 7px rgba(225, 29, 72, 0); }
-    }
-    .timer-urgent {
-      animation: pulseUrgent 1s infinite;
-    }
-
     @keyframes spinSlow {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
@@ -184,8 +160,14 @@
     .spin-icon {
       animation: spinSlow 0.65s linear infinite;
     }
-
-    /* 3D Flashcard Flip Utilities */
+    @keyframes pulseUrgent {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45); }
+      50% { box-shadow: 0 0 0 7px rgba(225, 29, 72, 0); }
+    }
+    .timer-urgent {
+      animation: pulseUrgent 1s infinite;
+    }
+    /* 3D Flashcard Flip */
     .perspective-1000 {
       perspective: 1000px;
     }
@@ -207,7 +189,7 @@
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
     <div class="max-w-5xl mx-auto px-3.5 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-3">
 
-      <!-- Left: Brand Logo Badge + Title -->
+      <!-- Left: Logo + Brand -->
       <button type="button" onclick="switchTab('home')" class="flex items-center gap-2.5 text-left group focus:outline-none shrink-0">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-sm shadow-indigo-200 group-hover:from-indigo-700 group-hover:to-purple-700 transition-all">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -216,7 +198,7 @@
         </div>
         <div>
           <div class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-none">
-            Math <span class="text-indigo-700">Master</span>
+            Math <span class="text-indigo-600">Master</span>
           </div>
           <div class="text-xs font-medium text-slate-500 leading-none mt-1">
             Notes &amp; Practice
@@ -241,19 +223,19 @@
         <button type="button" onclick="switchTab('saved')" data-nav="saved" class="desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
           <span>Saved</span>
-          <span id="navMistakePill" class="hidden text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">0</span>
+          <span id="navSavedBadge" class="hidden text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">0</span>
         </button>
       </nav>
 
-      <!-- Right Controls: Language Toggle (EN | HI | Both) + Circular Refresh -->
+      <!-- Right Controls: Language Toggle + Refresh -->
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <div class="inline-flex items-center bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200/80 text-[11px] sm:text-xs font-bold" role="group" aria-label="Language Toggle">
+        <div class="inline-flex items-center bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200/80 text-[11px] sm:text-xs font-bold" role="group" aria-label="Language">
           <button type="button" onclick="setLanguage('en')" data-lang="en" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">EN</button>
           <button type="button" onclick="setLanguage('hi')" data-lang="hi" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">HI</button>
           <button type="button" onclick="setLanguage('both')" data-lang="both" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">Both</button>
         </div>
 
-        <button type="button" id="refreshBtn" onclick="fetchRemoteContent(true)" title="Refresh content" aria-label="Refresh content" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200/80 flex items-center justify-center transition-all active:scale-95">
+        <button type="button" onclick="fetchRemoteContent(true)" title="Refresh content" aria-label="Refresh content" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200/80 flex items-center justify-center transition-all active:scale-95">
           <svg id="refreshIcon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
             <path d="M3 3v5h5" />
@@ -268,7 +250,7 @@
   <!-- ==================== MAIN CONTENT ==================== -->
   <main class="flex-1 w-full max-w-5xl mx-auto px-3.5 sm:px-6 py-5 sm:py-6">
 
-    <!-- ==================== TAB 1: HOME DASHBOARD ==================== -->
+    <!-- ==================== VIEW 1: HOME ==================== -->
     <section id="view-home" class="view-panel space-y-6">
 
       <!-- Hero Card -->
@@ -286,7 +268,7 @@
               Class Notes &amp; CBT DPP Arena
             </h1>
             <p class="text-sm text-slate-600 max-w-xl leading-relaxed">
-              Revise Sir's chapter-wise <span class="font-semibold text-slate-800">Class 1, 2, 3 Notes</span> and attempt timed <span class="font-semibold text-slate-800">DPP Tests</span> with per-question time analysis.
+              Revise chapter-wise <span class="font-semibold text-slate-800">Class Notes</span>, master <span class="font-semibold text-slate-800">Formulas</span>, and take timed <span class="font-semibold text-slate-800">DPP Tests</span> with deep time analysis.
             </p>
           </div>
 
@@ -305,7 +287,6 @@
 
       <!-- 2x2 Stats Grid -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <!-- Stat 1: Class Notes -->
         <div onclick="switchTab('notes')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm hover:border-indigo-300 cursor-pointer transition-all">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-semibold text-slate-500">Class Notes</span>
@@ -314,10 +295,9 @@
             </div>
           </div>
           <div id="statNotesCount" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</div>
-          <p id="statNotesSets" class="text-[11px] font-semibold text-indigo-600 mt-1">0 class sets available</p>
+          <p id="statNotesSets" class="text-[11px] font-semibold text-indigo-600 mt-1">0 class sets</p>
         </div>
 
-        <!-- Stat 2: DPP Questions -->
         <div onclick="switchTab('dpp')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm hover:border-emerald-300 cursor-pointer transition-all">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-semibold text-slate-500">DPP Questions</span>
@@ -331,7 +311,6 @@
           <p id="statDppSets" class="text-[11px] font-semibold text-emerald-600 mt-1">0 DPP sets ready</p>
         </div>
 
-        <!-- Stat 3: Overall Accuracy -->
         <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-semibold text-slate-500">Overall Accuracy</span>
@@ -343,7 +322,6 @@
           <p id="statTestsTaken" class="text-[11px] font-medium text-slate-500 mt-1">0 tests completed</p>
         </div>
 
-        <!-- Stat 4: Mistake Bank -->
         <div onclick="openSavedOn('mistakes')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm hover:border-rose-300 cursor-pointer transition-all">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-semibold text-slate-500">Mistake Bank</span>
@@ -353,25 +331,24 @@
           </div>
           <div id="statMistakeCount" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</div>
           <p class="text-[11px] font-semibold text-rose-600 mt-1">Tap to revise</p>
+        </div>
+      </div>
+
       <!-- Formula Vault Section -->
       <div class="space-y-3">
         <div class="flex items-center justify-between gap-2">
           <div>
             <h2 class="text-lg font-extrabold text-slate-900">Formula Vault</h2>
-            <p class="text-xs text-slate-500">Tap any topic box to revise formulas with interactive flashcards.</p>
+            <p class="text-xs text-slate-500">Tap any topic to revise flashcards &amp; formulas</p>
           </div>
           <span id="vaultTotalPill" class="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">0 Formulas</span>
         </div>
-        <div id="formulaVaultGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-          <!-- Populated dynamically by topic -->
-        </div>
+        <div id="formulaVaultGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5"></div>
       </div>
     </section>
 
-    <!-- ==================== TAB 2: CLASS NOTES ==================== -->
+    <!-- ==================== VIEW 2: CLASS NOTES ==================== -->
     <section id="view-notes" class="view-panel hidden space-y-5">
-
-      <!-- Controls Card -->
       <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -379,35 +356,32 @@
               <svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
               <span>Class Notes</span>
             </h2>
-            <p class="text-xs text-slate-500 mt-0.5">Select a chapter and class number to revise Sir's step-by-step solutions &amp; tricks</p>
+            <p class="text-xs text-slate-500 mt-0.5">Select a chapter and class set to revise step-by-step solutions &amp; tricks</p>
           </div>
 
-          <!-- Hide Solutions Switch -->
+          <!-- Hide / Show Solutions Toggle -->
           <label class="inline-flex items-center gap-2.5 self-start sm:self-auto px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer select-none hover:border-indigo-300 transition-colors">
             <input type="checkbox" id="hideSolutionsToggle" onchange="toggleHideSolutions(this.checked)" class="sr-only peer" />
             <div class="w-9 h-5 bg-slate-300 peer-checked:bg-indigo-600 rounded-full relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:transition-transform peer-checked:after:translate-x-4"></div>
-            <span class="text-xs font-bold text-slate-700">Hide Solutions</span>
+            <span id="hideSolutionsLabel" class="text-xs font-bold text-slate-700">Hide Solutions</span>
           </label>
         </div>
 
-        <!-- Chapter Selector Pills -->
         <div class="space-y-1.5 pt-2 border-t border-slate-100">
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Chapter</div>
           <div id="notesChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         </div>
 
-        <!-- Class Set Sub-Pills -->
         <div id="notesSetRow" class="space-y-1.5">
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Class Set</div>
           <div id="notesSetPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         </div>
       </div>
 
-      <!-- Solved Notes Container -->
       <div id="notesListContainer" class="space-y-4"></div>
     </section>
 
-    <!-- ==================== TAB 3: DPP PRACTICE ARENA ==================== -->
+    <!-- ==================== VIEW 3: DPP PRACTICE (CBT) ==================== -->
     <section id="view-dpp" class="view-panel hidden space-y-5">
 
       <!-- A. DPP LOBBY -->
@@ -442,10 +416,8 @@
         </div>
       </div>
 
-      <!-- B. DEEP POST-TEST ANALYSIS VIEW -->
+      <!-- B. DEEP POST-TEST ANALYSIS -->
       <div id="dppAnalysisPanel" class="hidden space-y-5">
-
-        <!-- Header Banner -->
         <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="space-y-1">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
@@ -466,7 +438,7 @@
           </div>
         </div>
 
-        <!-- Score Summary Grid -->
+        <!-- Summary Cards -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm">
             <div class="text-xs font-semibold text-slate-500">Total Score</div>
@@ -494,7 +466,7 @@
           </div>
         </div>
 
-        <!-- Speed Insights & Time Distribution Card -->
+        <!-- Speed Insights & Time Distribution -->
         <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-sm space-y-5">
           <div class="flex items-center justify-between">
             <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
@@ -532,7 +504,7 @@
             </div>
           </div>
 
-          <!-- Horizontal Stacked Bar -->
+          <!-- Stacked Time Bar -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs font-bold text-slate-700">
               <span>Where Did Your Time Go?</span>
@@ -560,7 +532,7 @@
           </div>
         </div>
 
-        <!-- Question-by-Question Review Controls & List -->
+        <!-- Filter Tabs & Review List -->
         <div class="space-y-4">
           <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
             <div id="analysisFilterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
@@ -574,7 +546,7 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 4: SAVED (MISTAKE BANK & BOOKMARKS) ==================== -->
+    <!-- ==================== VIEW 4: SAVED ==================== -->
     <section id="view-saved" class="view-panel hidden space-y-5">
       <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -595,7 +567,6 @@
         </div>
       </div>
 
-      <!-- Re-test Mistake Bank Banner -->
       <div id="mistakeActionBanner" class="hidden bg-rose-50 border border-rose-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
@@ -616,7 +587,7 @@
 
   </main>
 
-  <!-- ==================== STICKY BOTTOM NAVIGATION (MOBILE) ==================== -->
+  <!-- ==================== MOBILE BOTTOM NAVIGATION ==================== -->
   <nav id="bottomNav" class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shadow-lg" aria-label="Mobile Navigation">
     <button type="button" onclick="switchTab('home')" data-nav="home" class="mobile-nav-btn flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl transition-all">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
@@ -633,16 +604,15 @@
     <button type="button" onclick="switchTab('saved')" data-nav="saved" class="mobile-nav-btn relative flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl transition-all">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
       <span class="text-[11px] font-bold">Saved</span>
-      <span id="mobileMistakeDot" class="hidden absolute top-1 right-3 w-2 h-2 rounded-full bg-rose-500"></span>
+      <span id="mobileSavedDot" class="hidden absolute top-1 right-3 w-2 h-2 rounded-full bg-rose-500"></span>
     </button>
   </nav>
 
-  <!-- ==================== FULL-SCREEN LIVE CBT TEST OVERLAY ==================== -->
+  <!-- ==================== FULL-SCREEN LIVE CBT OVERLAY ==================== -->
   <div id="cbtOverlay" class="hidden fixed inset-0 z-40 bg-slate-50 flex flex-col">
-    <!-- Top CBT Bar -->
     <div class="bg-white border-b border-slate-200 px-3.5 sm:px-6 py-3 flex items-center justify-between gap-2 shadow-sm shrink-0">
       <div class="min-w-0">
-        <div id="cbtTitle" class="font-extrabold text-sm sm:text-base text-slate-900 truncate">Percentage — DPP 1</div>
+        <div id="cbtTitle" class="font-extrabold text-sm sm:text-base text-slate-900 truncate">DPP Test</div>
         <div class="text-[11px] font-semibold text-slate-500 flex items-center gap-2">
           <span id="cbtMarkingTag" class="text-indigo-600">+2 / -0.5</span>
           <span>•</span>
@@ -651,31 +621,26 @@
       </div>
 
       <div class="flex items-center gap-2 shrink-0">
-        <!-- Live Timer -->
         <div id="cbtTimerBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white font-mono text-xs sm:text-sm font-extrabold">
           <svg class="w-4 h-4 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <span id="cbtTimerText">00:00</span>
         </div>
 
-        <!-- Palette Drawer Toggle -->
         <button type="button" onclick="togglePaletteDrawer(true)" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors">
           <svg class="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
           <span class="hidden sm:inline">Palette</span>
         </button>
 
-        <!-- Submit Button -->
         <button type="button" onclick="openSubmitModal()" class="px-3 sm:px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all active:scale-95">
           Submit
         </button>
       </div>
     </div>
 
-    <!-- Thin Progress Bar -->
     <div class="w-full h-1 bg-slate-200 shrink-0">
       <div id="cbtProgressBar" class="h-full bg-indigo-600 transition-all duration-300" style="width: 0%"></div>
     </div>
 
-    <!-- Scrollable Question Body -->
     <div class="flex-1 overflow-y-auto px-3.5 sm:px-6 py-5">
       <div class="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-7 shadow-sm space-y-5">
         <div class="flex items-center justify-between gap-2 pb-3 border-b border-slate-100">
@@ -688,7 +653,6 @@
             </span>
           </div>
 
-          <!-- Language Quick Switch inside CBT -->
           <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[11px] font-bold">
             <button type="button" onclick="setLanguage('en')" data-lang="en" class="lang-btn px-2 py-0.5 rounded-md transition-all">EN</button>
             <button type="button" onclick="setLanguage('hi')" data-lang="hi" class="lang-btn px-2 py-0.5 rounded-md transition-all">HI</button>
@@ -696,15 +660,11 @@
           </div>
         </div>
 
-        <!-- Question Text -->
         <div id="cbtQuestionBox" class="space-y-2.5 min-h-[56px]"></div>
-
-        <!-- 4 Selectable Radio-Style Option Cards (Strictly NO right/wrong hints) -->
         <div id="cbtOptionsBox" class="grid grid-cols-1 gap-2.5"></div>
       </div>
     </div>
 
-    <!-- Bottom CBT Action Bar -->
     <div class="bg-white border-t border-slate-200 px-3.5 sm:px-6 py-3 shrink-0">
       <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-2">
@@ -720,7 +680,7 @@
         <div class="flex items-center gap-2 ml-auto">
           <button type="button" id="cbtPrevBtn" onclick="cbtPrev()" class="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            <span>Previous</span>
+            <span>Prev</span>
           </button>
           <button type="button" id="cbtNextBtn" onclick="cbtSaveAndNext()" class="px-4 sm:px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center gap-1 transition-all active:scale-95">
             <span id="cbtNextLabel">Save &amp; Next</span>
@@ -730,8 +690,8 @@
       </div>
     </div>
 
-    <!-- Slide-Over Question Palette Drawer -->
-    <div id="paletteDrawerBackdrop" onclick="togglePaletteDrawer(false)" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex justify-end">
+    <!-- Question Palette Drawer -->
+    <div id="paletteDrawerBackdrop" onclick="togglePaletteDrawer(false)" class="hidden fixed inset-0 z-50 bg-slate-900/40 flex justify-end">
       <div onclick="event.stopPropagation()" class="w-full max-w-xs bg-white h-full shadow-2xl flex flex-col">
         <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
           <div>
@@ -745,7 +705,6 @@
 
         <div class="p-5 flex-1 overflow-y-auto space-y-5">
           <div id="cbtPaletteGrid" class="grid grid-cols-5 gap-2.5"></div>
-
           <div class="grid grid-cols-2 gap-2.5 pt-4 border-t border-slate-100 text-xs font-semibold text-slate-600">
             <div class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-md bg-emerald-500"></span>Answered</div>
             <div class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-md bg-purple-600"></span>Marked Review</div>
@@ -764,7 +723,7 @@
   </div>
 
   <!-- ==================== MODAL 1: DPP TEST SETUP ==================== -->
-  <div id="setupModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+  <div id="setupModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg overflow-hidden">
       <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
@@ -782,7 +741,6 @@
           <span class="text-indigo-600 font-bold">Solutions hidden during test</span>
         </div>
 
-        <!-- Timer Mode -->
         <div class="space-y-2.5">
           <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">1. Timer Mode</div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -803,7 +761,6 @@
             </button>
           </div>
 
-          <!-- Sectional Presets -->
           <div id="sectionalPresetsBox" class="rounded-xl bg-slate-50 border border-slate-200 p-3.5 space-y-3">
             <div class="text-xs font-bold text-slate-700">Duration Presets:</div>
             <div class="flex flex-wrap gap-2">
@@ -820,7 +777,6 @@
           </div>
         </div>
 
-        <!-- Marking Scheme -->
         <div class="space-y-2.5">
           <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">2. Marking Scheme</div>
           <div class="grid grid-cols-2 gap-2.5">
@@ -847,7 +803,7 @@
   </div>
 
   <!-- ==================== MODAL 2: SUBMIT CONFIRMATION ==================== -->
-  <div id="submitModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+  <div id="submitModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md p-5 sm:p-6 space-y-4">
       <div class="flex items-center gap-3">
         <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
@@ -855,7 +811,7 @@
         </div>
         <div>
           <h3 class="text-lg font-extrabold text-slate-900">Submit Test?</h3>
-          <p class="text-xs text-slate-500">View your score, time intelligence, and full solutions.</p>
+          <p class="text-xs text-slate-500">View your score, time insights, and full solutions.</p>
         </div>
       </div>
 
@@ -881,16 +837,15 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 3: FORMULA STUDY MODAL ==================== -->
-  <div id="formulaModal" onclick="closeFormulaModal()" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3.5 sm:p-4">
+  <!-- ==================== MODAL 3: FORMULA STUDY SHEET ==================== -->
+  <div id="formulaModal" onclick="closeFormulaModal()" class="hidden fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-3.5 sm:p-4">
     <div onclick="event.stopPropagation()" class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-xl max-h-[88vh] flex flex-col overflow-hidden">
-      <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 shrink-0">
         <div class="flex items-center gap-3 min-w-0">
           <div id="fmTopicIcon" class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"></div>
           <div class="min-w-0">
             <h3 id="fmTopicTitle" class="text-base sm:text-lg font-extrabold text-slate-900 truncate">Formula Topic</h3>
-            <p id="fmTopicStats" class="text-xs font-semibold text-slate-500">0/0 mastered</p>
+            <p id="fmTopicStats" class="text-xs font-semibold text-slate-500">0 formulas</p>
           </div>
         </div>
         <button type="button" onclick="closeFormulaModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center shrink-0" aria-label="Close">
@@ -898,56 +853,48 @@
         </button>
       </div>
 
-      <!-- Mode Switcher -->
       <div class="px-5 py-3 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between gap-2 shrink-0">
         <div class="inline-flex bg-slate-200/70 p-1 rounded-xl">
-          <button type="button" onclick="setFormulaModalMode('flashcards')" data-fmmode="flashcards" class="fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all">
-            Flashcards
-          </button>
-          <button type="button" onclick="setFormulaModalMode('list')" data-fmmode="list" class="fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all">
-            All Formulas
-          </button>
+          <button type="button" onclick="setFormulaModalMode('flashcards')" data-fmmode="flashcards" class="fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all">Flashcards</button>
+          <button type="button" onclick="setFormulaModalMode('list')" data-fmmode="list" class="fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all">All Formulas</button>
         </div>
         <span id="fmDeckCounter" class="text-xs font-extrabold text-indigo-600">1 / 1</span>
       </div>
 
-      <!-- Modal Body -->
       <div class="p-5 overflow-y-auto flex-1">
-        <!-- Flashcards View -->
+        <!-- Flashcards Mode -->
         <div id="fmFlashcardsView" class="space-y-4">
           <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
             <div id="fmProgressBar" class="h-full bg-indigo-600 rounded-full transition-all duration-300" style="width: 0%"></div>
           </div>
 
-          <!-- 3D Flip Card -->
           <div id="fmCardStage" class="perspective-1000">
-            <div id="fmFlipInner" onclick="flipFormulaCard()" class="relative w-full min-h-[250px] sm:min-h-[270px] transition-transform duration-500 transform-style-3d cursor-pointer select-none">
-              <!-- Front Face -->
+            <div id="fmFlipInner" onclick="flipFormulaCard()" class="relative w-full min-h-[260px] sm:min-h-[280px] transition-transform duration-500 transform-style-3d cursor-pointer select-none">
+              <!-- Front -->
               <div class="absolute inset-0 backface-hidden rounded-2xl border-2 border-indigo-100 bg-gradient-to-br from-white to-indigo-50/40 p-6 flex flex-col justify-between shadow-sm">
                 <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">Question / Prompt</span>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">Prompt</span>
                   <span id="fmMasteredTag" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">Mastered</span>
                 </div>
                 <div id="fmFrontContent" class="my-auto py-4 text-center space-y-2"></div>
                 <div class="text-center text-xs font-bold text-indigo-500 flex items-center justify-center gap-1.5">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                  <span>Tap card to reveal formula</span>
+                  <span>Tap card to flip</span>
                 </div>
               </div>
 
-              <!-- Back Face -->
+              <!-- Back -->
               <div class="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-white to-emerald-50/40 p-6 flex flex-col justify-between shadow-sm overflow-y-auto">
                 <div class="flex items-center justify-between">
                   <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700">Formula &amp; Trick</span>
                   <span class="text-[11px] font-semibold text-slate-400">Tap to flip back</span>
                 </div>
-                <div id="fmBackContent" class="my-auto py-3 space-y-3 text-center"></div>
+                <div id="fmBackContent" class="my-auto py-3 space-y-3 text-left"></div>
                 <div class="text-center text-[11px] font-semibold text-slate-400">Rate your recall below</div>
               </div>
             </div>
           </div>
 
-          <!-- Flashcard Action Controls -->
           <div id="fmCardControls" class="grid grid-cols-2 gap-3 pt-1">
             <button type="button" onclick="handleFormulaReviseAgain()" class="py-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-95">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -959,7 +906,6 @@
             </button>
           </div>
 
-          <!-- Deck Completed State -->
           <div id="fmDeckDone" class="hidden rounded-2xl bg-emerald-50 border border-emerald-200 p-6 text-center space-y-3">
             <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
               <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -972,7 +918,7 @@
           </div>
         </div>
 
-        <!-- All Formulas List View -->
+        <!-- All Formulas List Mode -->
         <div id="fmListView" class="hidden space-y-3"></div>
       </div>
     </div>
@@ -989,14 +935,15 @@
     const CLASS_NOTES_URLS = ['./data/class_notes.json', './class_notes.json'];
     const DPP_URLS = ['./data/dpp.json', './dpp.json'];
     const FORMULAS_URLS = ['./data/formulas.json', './formulas.json'];
-    const STORAGE_KEY = 'math_master_state_v3';
+    const COMBINED_URLS = ['./data/math_data.json', './math_data.json'];
+    const STORAGE_KEY = 'math_master_state_v4';
 
     const SVG = {
       bookmark: (filled) => `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>`,
-// ... existing code ... -->
+      checkCircle: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
       bolt: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
       trash: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
-      book: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+      clock: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
       shape2d: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="11" height="11" rx="2"/><circle cx="16.5" cy="16.5" r="4.5"/></svg>`,
       shape3d: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
       algebra: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 6"/><path d="M4 6l8 12"/><path d="M16 7a2 2 0 0 1 4 0c0 1.5-2 2.5-4 4h4"/></svg>`,
@@ -1007,11 +954,76 @@
     };
 
     /* =========================================================================
-       2. BUILT-IN FALLBACK STARTER DATASETS (REPLACED SILENTLY BY REMOTE FILES)
+       2. BUILT-IN FALLBACK STARTER DATA (USED ONLY IF EXTERNAL FILES ABSENT)
     ========================================================================= */
-// ... existing code ... -->
-        solution: 'Fourth proportional $= \\frac{b \\times c}{a} = \\frac{9 \\times 12}{4} = 9 \\times 3 = 27$.',
-        trick: '$4 \\times 3 = 12$, so $9 \\times 3 = 27$.'
+    const STARTER_NOTES = [
+      {
+        id: 'pct-c1-concept',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 1',
+        exam: 'Basic Concept',
+        q_en: 'Important Percentage-to-Fraction Conversion Table',
+        q_hi: 'महत्वपूर्ण प्रतिशत से भिन्न (Percentage-Fraction) सारणी',
+        options: [],
+        answer: 0,
+        solution: '<b>Standard Fractions:</b><br>• $\\frac{1}{2} = 50\\%$ | $\\frac{1}{3} = 33\\frac{1}{3}\\%$ | $\\frac{1}{4} = 25\\%$ | $\\frac{1}{5} = 20\\%$<br>• $\\frac{1}{6} = 16\\frac{2}{3}\\%$ | $\\frac{1}{7} = 14\\frac{2}{7}\\%$ | $\\frac{1}{8} = 12\\frac{1}{2}\\%$ | $\\frac{1}{9} = 11\\frac{1}{9}\\%$',
+        trick: 'Revise this table daily for 2 minutes to speed up Percentage, Profit & Loss, and CI calculations.'
+      },
+      {
+        id: 'pct-c1-q1',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 1',
+        exam: 'SSC CHSL 2024',
+        q_en: 'If out of 75 toys 18 are for boys and the rest are for girls, then what is the percentage of toys for girls?',
+        q_hi: 'यदि 75 खिलौनों में से 18 खिलौने लड़कों के लिए हैं और शेष लड़कियों के लिए हैं, तो लड़कियों के खिलौनों का प्रतिशत क्या है?',
+        options: ['76%', '57%', '67%', '18%'],
+        answer: 0,
+        solution: 'Girls toys $= 75 - 18 = 57$.<br>Percentage $= \\frac{57}{75} \\times 100 = \\frac{19}{25} \\times 100 = 76\\%$.',
+        trick: 'Boys % $= \\frac{18}{75} \\times 100 = 24\\% \\Rightarrow$ Girls % $= 100\\% - 24\\% = 76\\%$.'
+      }
+    ];
+
+    const STARTER_DPP = [
+      {
+        id: 'pct-dpp1-q1',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 1',
+        exam: 'SSC CHSL 2024',
+        q_en: "Ram's income is $2.5\\%$ more than Shyam's income. By what percent is Shyam's income less than Ram's income?",
+        q_hi: 'राम की आय श्याम की आय से $2.5\\%$ अधिक है। श्याम की आय राम की आय से कितने प्रतिशत कम है?',
+        options: ['1.43%', '4.43%', '2.43%', '3.43%'],
+        answer: 2,
+        solution: '$2.5\\% = \\frac{1}{40}$. Shyam $= 40$, Ram $= 41$.<br>Less % $= \\frac{1}{41} \\times 100 \\approx 2.43\\%$.',
+        trick: 'AB Rule: $+\\frac{1}{40} \\rightarrow -\\frac{1}{41} \\approx 2.43\\%$.'
+      },
+      {
+        id: 'pct-dpp1-q2',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 1',
+        exam: 'CDS-II, 2024',
+        q_en: 'What is the square root of $64\\%$?',
+        q_hi: '$64\\%$ का वर्गमूल क्या है?',
+        options: ['0.08%', '0.8%', '8%', '80%'],
+        answer: 3,
+        solution: '$\\sqrt{64\\%} = \\sqrt{\\frac{64}{100}} = \\frac{8}{10} = 0.8 = 80\\%$.',
+        trick: 'Never mark $8\\%$! $\\frac{8}{10} \\times 100\\% = 80\\%$.'
+      },
+      {
+        id: 'pct-dpp1-q3',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 1',
+        exam: 'SSC CGL',
+        q_en: 'Numbers A and B are $30\\%$ and $50\\%$, respectively, more than C. The ratio of A to B is:',
+        q_hi: 'संख्या A और B संख्या C से क्रमशः $30\\%$ और $50\\%$ अधिक हैं। A का B से अनुपात है:',
+        options: ['13 : 15', '15 : 13', '5 : 4', '4 : 5'],
+        answer: 0,
+        solution: 'Let $C = 100$. Then $A = 130$ and $B = 150$.<br>$A : B = 130 : 150 = 13 : 15$.',
+        trick: 'Direct ratio $= (100+30) : (100+50) = 13 : 15$.'
       }
     ];
 
@@ -1019,92 +1031,69 @@
       {
         id: 'fm-2d-1',
         topic: 'Mensuration 2D',
-        title_en: 'Area & Circumference of a Circle',
-        title_hi: 'वृत्त (Circle) का क्षेत्रफल और परिधि',
-        formula: '$$\\text{Area} = \\pi r^2 \\quad | \\quad \\text{Circumference} = 2\\pi r$$',
-        note: 'When $r = 7$, Area $= 154$ and Circumference $= 44$.'
+        title: 'Circle (वृत्त)',
+        front: 'Circle (Radius = $r$): Area & Circumference?',
+        back: '• Area $= \\pi r^2$<br>• Circumference $= 2\\pi r$',
+        trick: 'When $r = 7$, Circumference $= 44$ and Area $= 154$.'
       },
       {
         id: 'fm-2d-2',
         topic: 'Mensuration 2D',
-        title_en: 'Equilateral Triangle (Area & Height)',
-        title_hi: 'समबाहु त्रिभुज (Equilateral Triangle) का क्षेत्रफल और ऊँचाई',
-        formula: '$$\\text{Area} = \\frac{\\sqrt{3}}{4}a^2 \\quad | \\quad h = \\frac{\\sqrt{3}}{2}a$$',
-        note: 'Inradius $r = \\frac{a}{2\\sqrt{3}}$, Circumradius $R = \\frac{a}{\\sqrt{3}}$.'
-      },
-      {
-        id: 'fm-2d-3',
-        topic: 'Mensuration 2D',
-        title_en: 'Area of a Trapezium',
-        title_hi: 'समलंब चतुर्भुज (Trapezium) का क्षेत्रफल',
-        formula: '$$\\text{Area} = \\frac{1}{2} \\times (a + b) \\times h$$',
-        note: '$a$ and $b$ are parallel sides, $h$ is perpendicular height.'
+        title: 'Equilateral Triangle (समबाहु त्रिभुज)',
+        front: 'Equilateral Triangle (Side = $a$): Area & Height?',
+        back: '• Area $= \\frac{\\sqrt{3}}{4}a^2$<br>• Height $(h) = \\frac{\\sqrt{3}}{2}a$',
+        trick: 'Inradius $r = \\frac{a}{2\\sqrt{3}}$, Circumradius $R = \\frac{a}{\\sqrt{3}}$.'
       },
       {
         id: 'fm-3d-1',
         topic: 'Mensuration 3D',
-        title_en: 'Right Circular Cylinder (Volume & CSA)',
-        title_hi: 'बेलन (Cylinder) का आयतन और वक्र पृष्ठीय क्षेत्रफल',
-        formula: '$$V = \\pi r^2 h \\quad | \\quad \\text{CSA} = 2\\pi r h \\quad | \\quad \\text{TSA} = 2\\pi r(r + h)$$',
-        note: 'Ratio of Cylinder to Cone volume (same $r, h$) is $3 : 1$.'
+        title: 'Cylinder (बेलन)',
+        front: 'Cylinder (Radius $r$, Height $h$): Volume, CSA & TSA?',
+        back: '• Volume $= \\pi r^2 h$<br>• CSA $= 2\\pi r h$<br>• TSA $= 2\\pi r(r + h)$',
+        trick: 'Volume ratio of Cylinder : Cone (same $r, h$) $= 3 : 1$.'
       },
       {
         id: 'fm-3d-2',
         topic: 'Mensuration 3D',
-        title_en: 'Right Circular Cone (Volume & Slant Height)',
-        title_hi: 'शंकु (Cone) का आयतन और तिर्यक ऊँचाई',
-        formula: '$$V = \\frac{1}{3}\\pi r^2 h \\quad | \\quad l = \\sqrt{r^2 + h^2} \\quad | \\quad \\text{CSA} = \\pi r l$$',
-        note: 'Use Pythagorean triplets like $(3, 4, 5)$ or $(5, 12, 13)$ for $r, h, l$.'
-      },
-      {
-        id: 'fm-3d-3',
-        topic: 'Mensuration 3D',
-        title_en: 'Sphere & Hemisphere (Volume & Surface Area)',
-        title_hi: 'गोला और अर्धगोला (Sphere & Hemisphere)',
-        formula: '$$V_{\\text{sphere}} = \\frac{4}{3}\\pi r^3 \\quad | \\quad \\text{SA} = 4\\pi r^2 \\quad | \\quad \\text{TSA}_{\\text{hemi}} = 3\\pi r^2$$',
-        note: 'Hemisphere CSA $= 2\\pi r^2$, TSA $= 3\\pi r^2$.'
+        title: 'Cone (शंकु)',
+        front: 'Cone (Radius $r$, Height $h$, Slant Height $l$): Volume & CSA?',
+        back: '• Volume $= \\frac{1}{3}\\pi r^2 h$<br>• $l = \\sqrt{r^2 + h^2}$<br>• CSA $= \\pi r l$',
+        trick: 'Use triplets $(3,4,5)$ or $(5,12,13)$ for $r, h, l$.'
       },
       {
         id: 'fm-alg-1',
         topic: 'Algebra',
-        title_en: 'Sum & Difference of Cubes',
-        title_hi: 'घनों का योग और अंतर ($a^3 \\pm b^3$)',
-        formula: '$$a^3 + b^3 = (a+b)(a^2 - ab + b^2)$$<br>$$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$$',
-        note: 'Also remember: $(a+b)^3 = a^3 + b^3 + 3ab(a+b)$.'
-      },
-      {
-        id: 'fm-alg-2',
-        topic: 'Algebra',
-        title_en: 'Reciprocal Power Shortcut ($x + \\frac{1}{x} = k$)',
-        title_hi: 'यदि $x + \\frac{1}{x} = k$ हो, तो वर्ग और घन का मान',
-        formula: '$$x^2 + \\frac{1}{x^2} = k^2 - 2 \\quad | \\quad x^3 + \\frac{1}{x^3} = k^3 - 3k$$',
-        note: 'If $x - \\frac{1}{x} = k$, then $x^2 + \\frac{1}{x^2} = k^2 + 2$ and $x^3 - \\frac{1}{x^3} = k^3 + 3k$.'
+        title: 'Reciprocal Shortcut',
+        front: 'If $x + \\frac{1}{x} = k$, find $x^2 + \\frac{1}{x^2}$ and $x^3 + \\frac{1}{x^3}$?',
+        back: '• $x^2 + \\frac{1}{x^2} = k^2 - 2$<br>• $x^3 + \\frac{1}{x^3} = k^3 - 3k$',
+        trick: 'For $x - \\frac{1}{x} = k$: use $+2$ and $+3k$.'
       },
       {
         id: 'fm-pct-1',
         topic: 'Percentage',
-        title_en: 'Successive Percentage Change Formula',
-        title_hi: 'क्रमागत प्रतिशत परिवर्तन (Successive % Change)',
-        formula: '$$\\text{Net \\% Change} = \\left(x + y + \\frac{xy}{100}\\right)\\%$$',
-        note: 'Use positive sign for increase and negative sign for decrease.'
-      },
-      {
-        id: 'fm-pct-2',
-        topic: 'Percentage',
-        title_en: 'AB Rule (Constant Product / Expenditure)',
-        title_hi: 'AB नियम (खर्च समान रखने पर कमी/वृद्धि)',
-        formula: '$$+\\frac{a}{b} \\longrightarrow -\\frac{a}{b + a} \\quad | \\quad -\\frac{a}{b} \\longrightarrow +\\frac{a}{b - a}$$',
-        note: 'Example: Price $+25\\% (+\\frac{1}{4}) \\Rightarrow$ Consumption $-20\\% (-\\frac{1}{5})$.'
+        title: 'Successive % Change',
+        front: 'Net % change for two successive changes $x\\%$ and $y\\%$?',
+        back: '$$\\text{Net \\% Change} = \\left(x + y + \\frac{xy}{100}\\right)\\%$$',
+        trick: 'Use $+$ for increase and $-$ for decrease.'
       }
     ];
 
     /* =========================================================================
-       3. APPLICATION STATE & LOCAL PERSISTENCE
+       3. STATE & LOCALSTORAGE
     ========================================================================= */
-    let dataset = [];
+    let notesData = [];
+    let dppData = [];
     let formulasData = [];
+
     let currentTab = 'home';
-// ... existing code ... -->
+    let currentLang = 'both';
+    let hideSolutions = false;
+
+    let selectedNotesChapter = '';
+    let selectedNotesSet = '';
+    let selectedDppChapter = '';
+    let savedSubTab = 'mistakes';
+
     let progress = {
       streak: 1,
       lastActiveDate: '',
@@ -1126,19 +1115,131 @@
       index: 0,
       flipped: false
     };
-// ... existing code ... -->
+
+    let setupConfig = {
+      title: '',
+      setKey: '',
+      questions: [],
+      timerMode: 'sectional',
+      minutes: 15,
+      marking: 'ssc'
+    };
+
+    let cbt = {
+      active: false,
+      title: '',
+      setKey: '',
+      questions: [],
+      timerMode: 'sectional',
+      totalSecondsLimit: 900,
+      remainingSeconds: 900,
+      elapsedSeconds: 0,
+      marking: 'ssc',
+      index: 0,
+      answers: {},
+      marked: {},
+      visited: {},
+      timeSpent: {},
+      intervalId: null
+    };
+
+    let lastAnalysis = null;
+    let analysisFilter = 'all';
+    let analysisSortSlowest = false;
+
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          progress = {
+            streak: Number(parsed.streak) || 1,
+            lastActiveDate: parsed.lastActiveDate || '',
             solvedIds: Array.isArray(parsed.solvedIds) ? parsed.solvedIds : [],
             mistakes: Array.isArray(parsed.mistakes) ? parsed.mistakes : [],
             bookmarks: Array.isArray(parsed.bookmarks) ? parsed.bookmarks : [],
             masteredFormulas: Array.isArray(parsed.masteredFormulas) ? parsed.masteredFormulas : [],
             totalAttempts: Number(parsed.totalAttempts) || 0,
-// ... existing code ... -->
+            totalCorrect: Number(parsed.totalCorrect) || 0,
+            testsCompleted: Number(parsed.testsCompleted) || 0,
+            bestScores: parsed.bestScores && typeof parsed.bestScores === 'object' ? parsed.bestScores : {}
+          };
+        }
+        const today = new Date().toISOString().slice(0, 10);
+        if (progress.lastActiveDate && progress.lastActiveDate !== today) {
+          const diffDays = Math.round((new Date(today) - new Date(progress.lastActiveDate)) / 86400000);
+          progress.streak = diffDays === 1 ? progress.streak + 1 : 1;
+        }
+        progress.lastActiveDate = today;
+        saveProgress();
+      } catch (e) {}
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      } catch (e) {}
+    }
+
     /* =========================================================================
-       4. DATA NORMALIZATION & SILENT FOLDER + ROOT LOADER
+       4. BULLETPROOF KATEX MATH RENDERING
     ========================================================================= */
-// ... existing code ... -->
-        trick_en: raw.trick_en || raw.trick || '',
-        trick_hi: raw.trick_hi || ''
+    let katexRetryTimer = null;
+
+    function renderMath(targetEl) {
+      const el = targetEl || document.body;
+      if (!el) return;
+
+      const doRender = () => {
+        if (typeof window.renderMathInElement === 'function') {
+          try {
+            window.renderMathInElement(el, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+              ],
+              throwOnError: false,
+              strict: false
+            });
+          } catch (e) {}
+          return true;
+        }
+        return false;
+      };
+
+      if (doRender()) return;
+
+      if (katexRetryTimer) clearInterval(katexRetryTimer);
+      let elapsed = 0;
+      katexRetryTimer = setInterval(() => {
+        elapsed += 150;
+        if (doRender() || elapsed >= 5000) {
+          clearInterval(katexRetryTimer);
+          katexRetryTimer = null;
+        }
+      }, 150);
+    }
+    window.renderMath = renderMath;
+
+    /* =========================================================================
+       5. DATA NORMALIZATION & SILENT FOLDER + ROOT LOADER
+    ========================================================================= */
+    function normalizeQuestion(raw, idx, forcedCat) {
+      const cat = String(raw.category || forcedCat || 'dpp').toLowerCase().trim();
+      const opts = Array.isArray(raw.options) ? raw.options.map(String) : [];
+      const ans = typeof raw.answer === 'number' ? raw.answer : (typeof raw.correct === 'number' ? raw.correct : 0);
+      return {
+        id: String(raw.id || `${cat}_${idx}`),
+        category: cat === 'class_notes' ? 'class_notes' : 'dpp',
+        chapter: String(raw.chapter || 'General').trim(),
+        set: String(raw.set || (cat === 'class_notes' ? 'Class 1' : 'DPP 1')).trim(),
+        exam: raw.exam ? String(raw.exam).trim() : '',
+        q_en: raw.q_en || raw.question || '',
+        q_hi: raw.q_hi || '',
+        options: opts,
+        answer: ans,
+        solution: raw.solution || raw.sol_en || '',
+        trick: raw.trick || raw.trick_en || ''
       };
     }
 
@@ -1146,67 +1247,183 @@
       return {
         id: String(raw.id || `fm_${idx}`),
         topic: String(raw.topic || raw.chapter || 'General').trim(),
-        title_en: raw.title_en || raw.title || raw.q_en || '',
+        title: raw.title || raw.title_en || raw.q_en || '',
         title_hi: raw.title_hi || raw.q_hi || '',
-        formula: raw.formula || raw.sol_en || raw.solution || '',
-        note: raw.note || raw.trick || raw.trick_en || ''
+        front: raw.front || raw.title_en || raw.title || raw.q_en || '',
+        back: raw.back || raw.formula || raw.solution || '',
+        trick: raw.trick || raw.note || raw.trick_en || ''
       };
     }
 
     async function fetchJsonArray(url) {
-      const res = await fetch(`${url}?t=${Date.now()}`, { cache: 'no-store' });
+      const res = await fetch(`${url}?v=${Date.now()}`, { cache: 'no-store' });
       if (!res.ok) return null;
       const parsed = await res.json();
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
     }
 
     async function fetchFirstAvailable(urls) {
-      for (const url of urls) {
+      for (let i = 0; i < urls.length; i++) {
         try {
-          const data = await fetchJsonArray(url);
+          const data = await fetchJsonArray(urls[i]);
           if (data) return data;
-        } catch (_) {
-          // Try next fallback path
-        }
+        } catch (e) {}
       }
       return null;
     }
 
-    async function fetchRemoteContent(isManual = false) {
+    async function fetchRemoteContent(isManual) {
       const icon = document.getElementById('refreshIcon');
       if (icon && isManual) icon.classList.add('spin-icon');
 
       try {
-        const [notesRes, dppRes, formulasRes] = await Promise.allSettled([
+        const results = await Promise.allSettled([
           fetchFirstAvailable(CLASS_NOTES_URLS),
           fetchFirstAvailable(DPP_URLS),
-          fetchFirstAvailable(FORMULAS_URLS)
+          fetchFirstAvailable(FORMULAS_URLS),
+          fetchFirstAvailable(COMBINED_URLS)
         ]);
 
-        const notesRaw = notesRes.status === 'fulfilled' && notesRes.value ? notesRes.value : [];
-        const dppRaw = dppRes.status === 'fulfilled' && dppRes.value ? dppRes.value : [];
-        const formulasRaw = formulasRes.status === 'fulfilled' && formulasRes.value ? formulasRes.value : [];
+        const notesRaw = results[0].status === 'fulfilled' ? results[0].value : null;
+        const dppRaw = results[1].status === 'fulfilled' ? results[1].value : null;
+        const formulasRaw = results[2].status === 'fulfilled' ? results[2].value : null;
+        const combinedRaw = results[3].status === 'fulfilled' ? results[3].value : null;
 
         let updated = false;
-        if (notesRaw.length > 0 || dppRaw.length > 0) {
-          const normalizedNotes = notesRaw.map((item, i) => normalizeItem(item, i, 'class_notes'));
-          const normalizedDpps = dppRaw.map((item, i) => normalizeItem(item, i, 'dpp'));
-          dataset = [...normalizedNotes, ...normalizedDpps];
+
+        if (notesRaw) {
+          notesData = notesRaw.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
           updated = true;
         }
-        if (formulasRaw.length > 0) {
+        if (dppRaw) {
+          dppData = dppRaw.map((item, i) => normalizeQuestion(item, i, 'dpp'));
+          updated = true;
+        }
+        if (!notesRaw && !dppRaw && combinedRaw) {
+          const splitNotes = combinedRaw.filter(x => String(x.category || '').toLowerCase() === 'class_notes');
+          const splitDpp = combinedRaw.filter(x => String(x.category || '').toLowerCase() !== 'class_notes');
+          if (splitNotes.length) notesData = splitNotes.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
+          if (splitDpp.length) dppData = splitDpp.map((item, i) => normalizeQuestion(item, i, 'dpp'));
+          updated = true;
+        }
+        if (formulasRaw) {
           formulasData = formulasRaw.map((item, i) => normalizeFormula(item, i));
           updated = true;
         }
+
         if (updated) refreshAll();
-      } catch (_) {
-        // Silently keep built-in starter datasets when remote files are unavailable
-      } finally {
+      } catch (e) {} finally {
         if (icon) setTimeout(() => icon.classList.remove('spin-icon'), 450);
         if (isManual) showToast('Content updated', 'success');
       }
     }
-// ... existing code ... -->
+
+    /* =========================================================================
+       6. UTILITIES & FORMATTING
+    ========================================================================= */
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatRichText(str) {
+      if (!str) return '';
+      return String(str).replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+    }
+
+    function formatMMSS(sec) {
+      const s = Math.max(0, Math.floor(sec || 0));
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
+    }
+
+    function formatSecShort(sec) {
+      const s = Math.max(0, Math.round(sec || 0));
+      if (s < 60) return `${s}s`;
+      return `${Math.floor(s / 60)}m ${s % 60}s`;
+    }
+
+    function getAllQuestions() {
+      return [...notesData, ...dppData];
+    }
+
+    function findQuestionById(id) {
+      return getAllQuestions().find(q => q.id === id) || null;
+    }
+
+    function renderQuestionText(item) {
+      let html = '';
+      if ((currentLang === 'both' || currentLang === 'en') && item.q_en) {
+        html += `<div class="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">${formatRichText(item.q_en)}</div>`;
+      }
+      if ((currentLang === 'both' || currentLang === 'hi') && item.q_hi) {
+        const cls = currentLang === 'both' && item.q_en ? 'text-slate-600 font-medium text-sm' : 'text-slate-900 font-bold text-sm sm:text-base';
+        html += `<div class="font-hindi ${cls} leading-relaxed">${formatRichText(item.q_hi)}</div>`;
+      }
+      return html;
+    }
+
+    function showToast(msg, type) {
+      const stack = document.getElementById('toastStack');
+      if (!stack) return;
+      const el = document.createElement('div');
+      const colors = type === 'error'
+        ? 'bg-rose-600 text-white'
+        : 'bg-slate-900 text-white';
+      el.className = `${colors} px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold pointer-events-auto transition-all`;
+      el.textContent = msg;
+      stack.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 220);
+      }, 2200);
+    }
+
+    /* =========================================================================
+       7. NAVIGATION & LANGUAGE
+    ========================================================================= */
+    function switchTab(tab) {
+      currentTab = tab;
+      ['home', 'notes', 'dpp', 'saved'].forEach(t => {
+        const sec = document.getElementById(`view-${t}`);
+        if (sec) sec.classList.toggle('hidden', t !== tab);
+      });
+
+      document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
+        const active = btn.dataset.nav === tab;
+        btn.className = active
+          ? 'desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-bold bg-white text-indigo-600 shadow-xs transition-all'
+          : 'desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all';
+      });
+
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        const active = btn.dataset.nav === tab;
+        btn.className = active
+          ? 'mobile-nav-btn relative flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl bg-indigo-50 text-indigo-600 transition-all'
+          : 'mobile-nav-btn relative flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl text-slate-500 hover:text-slate-800 transition-all';
+      });
+
+      if (tab === 'home') renderHome();
+      if (tab === 'notes') renderNotesView();
+      if (tab === 'dpp') renderDppLobby();
+      if (tab === 'saved') renderSavedView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateLangButtons() {
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        const active = btn.dataset.lang === currentLang;
+        btn.className = active
+          ? 'lang-btn px-2 sm:px-2.5 py-1 rounded-lg bg-white text-indigo-600 shadow-xs transition-all'
+          : 'lang-btn px-2 sm:px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-800 transition-all';
+      });
+    }
+
     function setLanguage(lang) {
       currentLang = lang;
       updateLangButtons();
@@ -1216,56 +1433,67 @@
       if (currentTab === 'dpp' && !document.getElementById('dppAnalysisPanel').classList.contains('hidden')) {
         renderAnalysisReview();
       }
-      if (currentTab === 'saved') renderSavedTab();
+      if (currentTab === 'saved') renderSavedView();
     }
-// ... existing code ... -->
+
+    function updateSavedBadges() {
+      const validIds = new Set(getAllQuestions().map(q => q.id));
+      const mCount = progress.mistakes.filter(id => validIds.has(id)).length;
+      const bCount = progress.bookmarks.filter(id => validIds.has(id)).length;
+      const total = mCount + bCount;
+
+      const navBadge = document.getElementById('navSavedBadge');
+      if (navBadge) {
+        navBadge.textContent = mCount > 0 ? mCount : total;
+        navBadge.classList.toggle('hidden', total === 0);
+      }
+      const dot = document.getElementById('mobileSavedDot');
+      if (dot) dot.classList.toggle('hidden', total === 0);
+
+      const lobbyM = document.getElementById('lobbyMistakeCount');
+      if (lobbyM) lobbyM.textContent = mCount;
+    }
+
+    function refreshAll() {
+      updateLangButtons();
+      updateSavedBadges();
+      renderHome();
+      if (currentTab === 'notes') renderNotesView();
+      if (currentTab === 'dpp') renderDppLobby();
+      if (currentTab === 'saved') renderSavedView();
+    }
+
     /* =========================================================================
-       7. TAB 1: HOME DASHBOARD & FORMULA VAULT
+       8. VIEW 1: HOME & FORMULA VAULT
     ========================================================================= */
     function getTopicMeta(topic) {
       const t = String(topic || '').toLowerCase();
-      if (t.includes('2d')) {
-        return { icon: SVG.shape2d, boxBg: 'bg-sky-50 text-sky-600', bar: 'bg-sky-500', hover: 'hover:border-sky-300' };
-      }
-      if (t.includes('3d')) {
-        return { icon: SVG.shape3d, boxBg: 'bg-violet-50 text-violet-600', bar: 'bg-violet-500', hover: 'hover:border-violet-300' };
-      }
-      if (t.includes('algebra')) {
-        return { icon: SVG.algebra, boxBg: 'bg-amber-50 text-amber-600', bar: 'bg-amber-500', hover: 'hover:border-amber-300' };
-      }
-      if (t.includes('percent')) {
-        return { icon: SVG.percent, boxBg: 'bg-emerald-50 text-emerald-600', bar: 'bg-emerald-500', hover: 'hover:border-emerald-300' };
-      }
-      if (t.includes('trig')) {
-        return { icon: SVG.trig, boxBg: 'bg-rose-50 text-rose-600', bar: 'bg-rose-500', hover: 'hover:border-rose-300' };
-      }
-      if (t.includes('geom')) {
-        return { icon: SVG.geometry, boxBg: 'bg-teal-50 text-teal-600', bar: 'bg-teal-500', hover: 'hover:border-teal-300' };
-      }
+      if (t.includes('2d')) return { icon: SVG.shape2d, boxBg: 'bg-sky-50 text-sky-600', bar: 'bg-sky-500', hover: 'hover:border-sky-300' };
+      if (t.includes('3d')) return { icon: SVG.shape3d, boxBg: 'bg-violet-50 text-violet-600', bar: 'bg-violet-500', hover: 'hover:border-violet-300' };
+      if (t.includes('algebra')) return { icon: SVG.algebra, boxBg: 'bg-amber-50 text-amber-600', bar: 'bg-amber-500', hover: 'hover:border-amber-300' };
+      if (t.includes('percent')) return { icon: SVG.percent, boxBg: 'bg-emerald-50 text-emerald-600', bar: 'bg-emerald-500', hover: 'hover:border-emerald-300' };
+      if (t.includes('trig')) return { icon: SVG.trig, boxBg: 'bg-rose-50 text-rose-600', bar: 'bg-rose-500', hover: 'hover:border-rose-300' };
+      if (t.includes('geom')) return { icon: SVG.geometry, boxBg: 'bg-teal-50 text-teal-600', bar: 'bg-teal-500', hover: 'hover:border-teal-300' };
       return { icon: SVG.sigma, boxBg: 'bg-indigo-50 text-indigo-600', bar: 'bg-indigo-500', hover: 'hover:border-indigo-300' };
     }
 
     function renderHome() {
-      updateMistakeBadges();
-      const notes = getNotes();
-      const dpps = getDpps();
-      const validDppIds = new Set(dpps.map(d => d.id));
-      const validAllIds = new Set(dataset.map(d => d.id));
+      updateSavedBadges();
+      const validDppIds = new Set(dppData.map(d => d.id));
+      const validAllIds = new Set(getAllQuestions().map(q => q.id));
 
-      const noteSetCount = new Set(notes.map(n => `${n.chapter}__${n.set}`)).size;
-      const dppSetCount = new Set(dpps.map(d => `${d.chapter}__${d.set}`)).size;
+      const noteSetCount = new Set(notesData.map(n => `${n.chapter}__${n.set}`)).size;
+      const dppSetCount = new Set(dppData.map(d => `${d.chapter}__${d.set}`)).size;
       const solvedCount = progress.solvedIds.filter(id => validDppIds.has(id)).length;
       const mistakeCount = progress.mistakes.filter(id => validAllIds.has(id)).length;
-      const accuracy = progress.totalAttempts > 0
-        ? Math.round((progress.totalCorrect / progress.totalAttempts) * 100)
-        : 0;
+      const accuracy = progress.totalAttempts > 0 ? Math.round((progress.totalCorrect / progress.totalAttempts) * 100) : 0;
 
       document.getElementById('heroStreakCount').textContent = progress.streak;
-      document.getElementById('statNotesCount').textContent = notes.length;
-      document.getElementById('statNotesSets').textContent = `${noteSetCount} class sets available`;
+      document.getElementById('statNotesCount').textContent = notesData.length;
+      document.getElementById('statNotesSets').textContent = `${noteSetCount} class ${noteSetCount === 1 ? 'set' : 'sets'}`;
       document.getElementById('statDppSolved').textContent = solvedCount;
-      document.getElementById('statDppTotal').textContent = `/${dpps.length}`;
-      document.getElementById('statDppSets').textContent = `${dppSetCount} DPP sets ready`;
+      document.getElementById('statDppTotal').textContent = `/${dppData.length}`;
+      document.getElementById('statDppSets').textContent = `${dppSetCount} DPP ${dppSetCount === 1 ? 'set' : 'sets'} ready`;
       document.getElementById('statAccuracy').textContent = `${accuracy}%`;
       document.getElementById('statTestsTaken').textContent = `${progress.testsCompleted} tests completed`;
       document.getElementById('statMistakeCount').textContent = mistakeCount;
@@ -1276,19 +1504,13 @@
     function renderFormulaVault() {
       const topics = [...new Set(formulasData.map(f => f.topic).filter(Boolean))];
       const totalPill = document.getElementById('vaultTotalPill');
-      if (totalPill) {
-        totalPill.textContent = `${formulasData.length} ${formulasData.length === 1 ? 'Formula' : 'Formulas'}`;
-      }
+      if (totalPill) totalPill.textContent = `${formulasData.length} ${formulasData.length === 1 ? 'Formula' : 'Formulas'}`;
 
       const grid = document.getElementById('formulaVaultGrid');
       if (!grid) return;
 
       if (topics.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">
-            No formulas available yet.
-          </div>
-        `;
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No formulas available yet.</div>`;
         return;
       }
 
@@ -1301,17 +1523,13 @@
         return `
           <button type="button" onclick="openFormulaModal('${escapeHtml(topic)}')" class="text-left bg-white rounded-2xl border border-slate-200/90 ${meta.hover} p-4 sm:p-5 shadow-sm transition-all active:scale-[0.98] flex flex-col justify-between gap-3.5">
             <div class="flex items-start justify-between gap-2">
-              <div class="w-10 h-10 rounded-xl ${meta.boxBg} flex items-center justify-center shrink-0">
-                ${meta.icon}
-              </div>
+              <div class="w-10 h-10 rounded-xl ${meta.boxBg} flex items-center justify-center shrink-0">${meta.icon}</div>
               <span class="text-[11px] font-extrabold text-slate-400">${pct}%</span>
             </div>
-
             <div>
               <h3 class="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">${escapeHtml(topic)}</h3>
               <p class="text-[11px] font-semibold text-slate-500 mt-0.5">${items.length} ${items.length === 1 ? 'formula' : 'formulas'} • ${mastered} mastered</p>
             </div>
-
             <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
               <div class="h-full ${meta.bar} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
             </div>
@@ -1326,7 +1544,7 @@
 
       formulaStudy = {
         open: true,
-        topic,
+        topic: topic,
         mode: 'flashcards',
         queue: [...items],
         index: 0,
@@ -1354,17 +1572,6 @@
     function setFormulaModalMode(mode) {
       formulaStudy.mode = mode;
       renderFormulaModalContent();
-    }
-
-    function renderFormulaTitle(item) {
-      let html = '';
-      if ((currentLang === 'both' || currentLang === 'en') && item.title_en) {
-        html += `<div class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">${escapeHtml(item.title_en)}</div>`;
-      }
-      if ((currentLang === 'both' || currentLang === 'hi') && item.title_hi) {
-        html += `<div class="font-hindi text-sm sm:text-base ${currentLang === 'both' && item.title_en ? 'text-slate-600 font-semibold' : 'text-slate-900 font-extrabold'} leading-snug">${escapeHtml(item.title_hi)}</div>`;
-      }
-      return html || `<div class="text-base font-extrabold text-slate-900">Formula</div>`;
     }
 
     function renderFormulaModalContent() {
@@ -1411,10 +1618,15 @@
         const flipInner = document.getElementById('fmFlipInner');
         flipInner.classList.toggle('rotate-y-180', formulaStudy.flipped);
 
-        document.getElementById('fmFrontContent').innerHTML = renderFormulaTitle(card);
+        document.getElementById('fmFrontContent').innerHTML = `
+          ${card.title && card.title !== card.front ? `<div class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">${formatRichText(card.title)}</div>` : ''}
+          <div class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">${formatRichText(card.front)}</div>
+          ${card.title_hi ? `<div class="font-hindi text-sm font-semibold text-slate-600">${formatRichText(card.title_hi)}</div>` : ''}
+        `;
+
         document.getElementById('fmBackContent').innerHTML = `
-          <div class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">${formatRichText(card.formula)}</div>
-          ${card.note ? `<div class="rounded-xl bg-amber-50 border border-amber-200/90 px-3.5 py-2.5 text-xs sm:text-sm text-amber-950 font-medium text-left">${formatRichText(card.note)}</div>` : ''}
+          <div class="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">${formatRichText(card.back)}</div>
+          ${card.trick ? `<div class="rounded-xl bg-amber-50 border border-amber-200 px-3.5 py-2.5 text-xs text-amber-950 font-medium"><strong>Trick:</strong> ${formatRichText(card.trick)}</div>` : ''}
         `;
 
         renderMath(flashView);
@@ -1430,17 +1642,18 @@
               <div class="flex items-start justify-between gap-2">
                 <div class="space-y-0.5">
                   <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-600">Formula ${idx + 1}</span>
-                  ${renderFormulaTitle(item)}
+                  <div class="text-sm sm:text-base font-extrabold text-slate-900">${formatRichText(item.title || item.front)}</div>
+                  ${item.title_hi ? `<div class="font-hindi text-xs font-semibold text-slate-600">${formatRichText(item.title_hi)}</div>` : ''}
                 </div>
-                <button type="button" onclick="toggleFormulaMastered('${item.id}')" class="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
+                <button type="button" onclick="toggleFormulaMastered('${escapeHtml(item.id)}')" class="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
                   isMastered ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-white border-slate-200 text-slate-500 hover:border-emerald-300 hover:text-emerald-700'
                 }">
                   ${SVG.checkCircle}
                   <span>${isMastered ? 'Mastered' : 'Mark Done'}</span>
                 </button>
               </div>
-              <div class="rounded-xl bg-white border border-slate-200/80 p-3.5 text-sm sm:text-base text-slate-900 overflow-x-auto">${formatRichText(item.formula)}</div>
-              ${item.note ? `<div class="rounded-xl bg-amber-50 border border-amber-200/80 px-3 py-2 text-xs text-amber-950 font-medium">${formatRichText(item.note)}</div>` : ''}
+              <div class="rounded-xl bg-white border border-slate-200/80 p-3.5 text-sm text-slate-900 leading-relaxed overflow-x-auto">${formatRichText(item.back)}</div>
+              ${item.trick ? `<div class="rounded-xl bg-amber-50 border border-amber-200/80 px-3 py-2 text-xs text-amber-950 font-medium"><strong>Trick:</strong> ${formatRichText(item.trick)}</div>` : ''}
             </div>
           `;
         }).join('');
@@ -1469,9 +1682,7 @@
 
     function handleFormulaReviseAgain() {
       const card = formulaStudy.queue[formulaStudy.index];
-      if (card) {
-        formulaStudy.queue.push(card);
-      }
+      if (card) formulaStudy.queue.push(card);
       formulaStudy.index++;
       formulaStudy.flipped = false;
       renderFormulaModalContent();
@@ -1487,26 +1698,870 @@
 
     function toggleFormulaMastered(id) {
       const idx = progress.masteredFormulas.indexOf(id);
-      if (idx === -1) {
-        progress.masteredFormulas.push(id);
-      } else {
-        progress.masteredFormulas.splice(idx, 1);
-      }
+      if (idx === -1) progress.masteredFormulas.push(id);
+      else progress.masteredFormulas.splice(idx, 1);
       saveProgress();
       renderFormulaModalContent();
     }
 
+    /* =========================================================================
+       9. VIEW 2: CLASS NOTES
+    ========================================================================= */
+    function toggleHideSolutions(checked) {
+      hideSolutions = checked;
+      const lbl = document.getElementById('hideSolutionsLabel');
+      if (lbl) lbl.textContent = hideSolutions ? 'Show Solutions' : 'Hide Solutions';
+      renderNotesList();
+    }
+
+    function renderNotesView() {
+      const chapters = [...new Set(notesData.map(n => n.chapter))];
+      if (!selectedNotesChapter || !chapters.includes(selectedNotesChapter)) {
+        selectedNotesChapter = chapters[0] || '';
+      }
+
+      const chBox = document.getElementById('notesChapterPills');
+      chBox.innerHTML = chapters.map(ch => {
+        const active = ch === selectedNotesChapter;
+        return `<button type="button" onclick="selectNotesChapter('${escapeHtml(ch)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+          active ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
+        }">${escapeHtml(ch)}</button>`;
+      }).join('');
+
+      const sets = [...new Set(notesData.filter(n => n.chapter === selectedNotesChapter).map(n => n.set))];
+      if (!selectedNotesSet || !sets.includes(selectedNotesSet)) {
+        selectedNotesSet = sets[0] || '';
+      }
+
+      const setBox = document.getElementById('notesSetPills');
+      setBox.innerHTML = sets.map(s => {
+        const active = s === selectedNotesSet;
+        return `<button type="button" onclick="selectNotesSet('${escapeHtml(s)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+          active ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-400'
+        }">${escapeHtml(s)}</button>`;
+      }).join('');
+
+      renderNotesList();
+    }
+
+    function selectNotesChapter(ch) {
+      selectedNotesChapter = ch;
+      selectedNotesSet = '';
+      renderNotesView();
+    }
+
+    function selectNotesSet(s) {
+      selectedNotesSet = s;
+      renderNotesView();
+    }
+
+    function renderNotesList() {
+      const container = document.getElementById('notesListContainer');
+      const items = notesData.filter(n => n.chapter === selectedNotesChapter && n.set === selectedNotesSet);
+
+      if (items.length === 0) {
+        container.innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No class notes found for this selection.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((item, idx) => {
+        const isConcept = !item.options || item.options.length === 0;
+        const isBookmarked = progress.bookmarks.includes(item.id);
+
+        const optionsHtml = !isConcept ? `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+            ${item.options.map((opt, oIdx) => {
+              const isAns = !hideSolutions && oIdx === item.answer;
+              const letter = String.fromCharCode(65 + oIdx);
+              return `
+                <div class="px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold flex items-center gap-2.5 ${
+                  isAns ? 'bg-emerald-50 border-emerald-400 text-emerald-900' : 'bg-slate-50/70 border-slate-200 text-slate-700'
+                }">
+                  <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${
+                    isAns ? 'bg-emerald-600 text-white' : 'bg-white border border-slate-200 text-slate-600'
+                  }">${letter}</span>
+                  <span>${formatRichText(opt)}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        ` : '';
+
+        const solutionHtml = (!hideSolutions || isConcept) ? `
+          <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-2">
+            <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">${isConcept ? 'Concept & Notes' : 'Step-by-Step Solution'}</div>
+            <div class="text-xs sm:text-sm text-slate-800 leading-relaxed">${formatRichText(item.solution)}</div>
+          </div>
+          ${item.trick ? `
+            <div class="rounded-xl bg-amber-50 border border-amber-200 p-3.5 text-xs sm:text-sm text-amber-950 leading-relaxed">
+              <span class="font-extrabold text-amber-800">Short Trick: </span>${formatRichText(item.trick)}
+            </div>
+          ` : ''}
+        ` : `
+          <div class="rounded-xl bg-slate-50 border border-dashed border-slate-300 p-3 text-center text-xs font-semibold text-slate-500">
+            Solution hidden — turn off "Hide Solutions" to check answer.
+          </div>
+        `;
+
+        return `
+          <article class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm space-y-4">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(item.chapter)}</span>
+                <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-bold">${escapeHtml(item.set)}</span>
+                ${isConcept ? `<span class="px-2.5 py-0.5 rounded-lg bg-purple-50 text-purple-700 text-[11px] font-bold">Concept</span>` : `<span class="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-500 text-[11px] font-bold">Q${idx + 1}</span>`}
+                ${item.exam ? `<span class="px-2.5 py-0.5 rounded-lg bg-sky-50 text-sky-700 text-[11px] font-bold">${escapeHtml(item.exam)}</span>` : ''}
+              </div>
+              <button type="button" onclick="toggleBookmark('${escapeHtml(item.id)}')" class="w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
+                isBookmarked ? 'bg-indigo-50 border-indigo-300 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:text-indigo-600'
+              }" aria-label="Bookmark">
+                ${SVG.bookmark(isBookmarked)}
+              </button>
+            </div>
+
+            <div class="space-y-1.5">${renderQuestionText(item)}</div>
+            ${optionsHtml}
+            ${solutionHtml}
+          </article>
+        `;
+      }).join('');
+
+      renderMath(container);
+    }
+
+    function toggleBookmark(id) {
+      const idx = progress.bookmarks.indexOf(id);
+      if (idx === -1) {
+        progress.bookmarks.push(id);
+        showToast('Saved to Bookmarks', 'success');
+      } else {
+        progress.bookmarks.splice(idx, 1);
+        showToast('Removed from Bookmarks', 'success');
+      }
+      saveProgress();
+      updateSavedBadges();
+      if (currentTab === 'notes') renderNotesList();
+      if (currentTab === 'dpp' && !document.getElementById('dppAnalysisPanel').classList.contains('hidden')) renderAnalysisReview();
+      if (currentTab === 'saved') renderSavedView();
+    }
+
+    /* =========================================================================
+       10. VIEW 3: DPP PRACTICE ARENA & CBT ENGINE
+    ========================================================================= */
+    function showDppLobby() {
+      document.getElementById('dppAnalysisPanel').classList.add('hidden');
+      document.getElementById('dppLobbyPanel').classList.remove('hidden');
+      renderDppLobby();
+    }
+
+    function renderDppLobby() {
+      updateSavedBadges();
+      const chapters = [...new Set(dppData.map(d => d.chapter))];
+      if (!selectedDppChapter || !chapters.includes(selectedDppChapter)) {
+        selectedDppChapter = chapters[0] || '';
+      }
+
+      const chBox = document.getElementById('dppChapterPills');
+      chBox.innerHTML = chapters.map(ch => {
+        const active = ch === selectedDppChapter;
+        return `<button type="button" onclick="selectDppChapter('${escapeHtml(ch)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+          active ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
+        }">${escapeHtml(ch)}</button>`;
+      }).join('');
+
+      const chapterItems = dppData.filter(d => d.chapter === selectedDppChapter);
+      const sets = [...new Set(chapterItems.map(d => d.set))];
+
+      document.getElementById('dppHeading').textContent = selectedDppChapter ? `${selectedDppChapter} — DPP Sets` : 'Available DPP Sets';
+      document.getElementById('dppSetCount').textContent = `${sets.length} ${sets.length === 1 ? 'set' : 'sets'}`;
+
+      const grid = document.getElementById('dppSetsGrid');
+      if (sets.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No DPP sets available yet.</div>`;
+        return;
+      }
+
+      grid.innerHTML = sets.map(setName => {
+        const qs = chapterItems.filter(d => d.set === setName);
+        const setKey = `${selectedDppChapter}__${setName}`;
+        const best = progress.bestScores[setKey];
+
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm flex flex-col justify-between gap-4 hover:border-indigo-300 transition-all">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(selectedDppChapter)}</span>
+                ${best !== undefined ? `<span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold">Best: ${escapeHtml(String(best))}</span>` : ''}
+              </div>
+              <h4 class="text-lg font-extrabold text-slate-900">${escapeHtml(setName)}</h4>
+              <p class="text-xs font-semibold text-slate-500">${qs.length} Questions • CBT Timed Test</p>
+            </div>
+
+            <button type="button" onclick="openSetTestSetup('${escapeHtml(selectedDppChapter)}', '${escapeHtml(setName)}')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition-all active:scale-95">
+              ${SVG.bolt}
+              <span>Start Test</span>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectDppChapter(ch) {
+      selectedDppChapter = ch;
+      renderDppLobby();
+    }
+
+    function openSetTestSetup(chapter, setName) {
+      const qs = dppData.filter(d => d.chapter === chapter && d.set === setName);
+      if (qs.length === 0) return;
+      setupConfig = {
+        title: `${chapter} — ${setName}`,
+        setKey: `${chapter}__${setName}`,
+        questions: qs,
+        timerMode: 'sectional',
+        minutes: 15,
+        marking: 'ssc'
+      };
+      openSetupModal();
+    }
+
+    function openMistakeBankTestSetup() {
+      const qs = progress.mistakes.map(id => findQuestionById(id)).filter(q => q && q.options && q.options.length > 0);
+      if (qs.length === 0) {
+        showToast('Your Mistake Bank is empty!', 'success');
+        return;
+      }
+      setupConfig = {
+        title: 'Mistake Bank Revision',
+        setKey: 'MISTAKE_BANK',
+        questions: qs,
+        timerMode: 'free',
+        minutes: Math.max(5, qs.length),
+        marking: 'ssc'
+      };
+      openSetupModal();
+    }
+
+    function openSetupModal() {
+      document.getElementById('setupModalTitle').textContent = setupConfig.title;
+      document.getElementById('setupQCount').textContent = setupConfig.questions.length;
+      document.getElementById('customMinInput').value = setupConfig.minutes;
+      updateSetupModalUI();
+      document.getElementById('setupModal').classList.remove('hidden');
+    }
+
+    function closeSetupModal() {
+      document.getElementById('setupModal').classList.add('hidden');
+    }
+
+    function selectSetupTimerMode(mode) {
+      setupConfig.timerMode = mode;
+      updateSetupModalUI();
+    }
+
+    function selectPresetMinutes(min) {
+      setupConfig.minutes = min;
+      document.getElementById('customMinInput').value = min;
+      updateSetupModalUI();
+    }
+
+    function onCustomMinutes(val) {
+      const n = Math.max(1, Math.min(180, parseInt(val, 10) || 1));
+      setupConfig.minutes = n;
+      updateSetupModalUI();
+    }
+
+    function selectSetupMarking(m) {
+      setupConfig.marking = m;
+      updateSetupModalUI();
+    }
+
+    function updateSetupModalUI() {
+      const isFree = setupConfig.timerMode === 'free';
+      document.getElementById('btnModeFree').className = isFree
+        ? 'text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/40 transition-all'
+        : 'text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all';
+      document.getElementById('btnModeSectional').className = !isFree
+        ? 'text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/40 transition-all'
+        : 'text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all';
+
+      document.getElementById('sectionalPresetsBox').classList.toggle('hidden', isFree);
+
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        const active = Number(btn.dataset.preset) === setupConfig.minutes;
+        btn.className = active
+          ? 'preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border bg-indigo-600 text-white border-indigo-600 transition-all'
+          : 'preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border bg-white text-slate-700 border-slate-200 hover:border-indigo-300 transition-all';
+      });
+
+      const isSsc = setupConfig.marking === 'ssc';
+      document.getElementById('btnMarkSsc').className = isSsc
+        ? 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/40 text-left transition-all'
+        : 'p-3 rounded-xl border-2 border-slate-200 bg-white text-left transition-all';
+      document.getElementById('btnMarkSimple').className = !isSsc
+        ? 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/40 text-left transition-all'
+        : 'p-3 rounded-xl border-2 border-slate-200 bg-white text-left transition-all';
+    }
+
+    function beginCbtTest() {
+      closeSetupModal();
+      const totalSec = setupConfig.minutes * 60;
+      cbt = {
+        active: true,
+        title: setupConfig.title,
+        setKey: setupConfig.setKey,
+        questions: [...setupConfig.questions],
+        timerMode: setupConfig.timerMode,
+        totalSecondsLimit: totalSec,
+        remainingSeconds: totalSec,
+        elapsedSeconds: 0,
+        marking: setupConfig.marking,
+        index: 0,
+        answers: {},
+        marked: {},
+        visited: { 0: true },
+        timeSpent: {},
+        intervalId: null
+      };
+
+      cbt.questions.forEach((_, i) => { cbt.timeSpent[i] = 0; });
+
+      document.getElementById('cbtTitle').textContent = cbt.title;
+      document.getElementById('cbtMarkingTag').textContent = cbt.marking === 'ssc' ? '+2 / -0.5' : '+1 / 0';
+      document.getElementById('cbtModeTag').textContent = cbt.timerMode === 'free' ? 'Free Mode' : `Sectional (${setupConfig.minutes}m)`;
+      document.getElementById('cbtQTotal').textContent = cbt.questions.length;
+
+      document.getElementById('cbtOverlay').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      updateCbtTimerDisplay();
+      renderCbtQuestion();
+      startCbtTimer();
+    }
+
+    function startCbtTimer() {
+      if (cbt.intervalId) clearInterval(cbt.intervalId);
+      cbt.intervalId = setInterval(() => {
+        if (!cbt.active) return;
+        cbt.elapsedSeconds++;
+        cbt.timeSpent[cbt.index] = (cbt.timeSpent[cbt.index] || 0) + 1;
+
+        if (cbt.timerMode === 'sectional') {
+          cbt.remainingSeconds--;
+          updateCbtTimerDisplay();
+          if (cbt.remainingSeconds <= 0) {
+            submitCbtTest(true);
+          }
+        } else {
+          updateCbtTimerDisplay();
+        }
+      }, 1000);
+    }
+
+    function updateCbtTimerDisplay() {
+      const badge = document.getElementById('cbtTimerBadge');
+      const txt = document.getElementById('cbtTimerText');
+      if (cbt.timerMode === 'sectional') {
+        txt.textContent = formatMMSS(cbt.remainingSeconds);
+        const urgent = cbt.remainingSeconds <= 60;
+        badge.className = urgent
+          ? 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white font-mono text-xs sm:text-sm font-extrabold timer-urgent'
+          : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white font-mono text-xs sm:text-sm font-extrabold';
+      } else {
+        txt.textContent = formatMMSS(cbt.elapsedSeconds);
+        badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white font-mono text-xs sm:text-sm font-extrabold';
+      }
+    }
+
+    function renderCbtQuestion() {
+      const q = cbt.questions[cbt.index];
+      if (!q) return;
+
+      cbt.visited[cbt.index] = true;
+      document.getElementById('cbtQNum').textContent = cbt.index + 1;
+      document.getElementById('cbtProgressBar').style.width = `${((cbt.index + 1) / cbt.questions.length) * 100}%`;
+
+      const isMarked = Boolean(cbt.marked[cbt.index]);
+      document.getElementById('cbtMarkedPill').classList.toggle('hidden', !isMarked);
+      document.getElementById('cbtMarkBtnLabel').textContent = isMarked ? 'Unmark Review' : 'Mark for Review';
+
+      document.getElementById('cbtPrevBtn').disabled = cbt.index === 0;
+      document.getElementById('cbtNextLabel').textContent = cbt.index === cbt.questions.length - 1 ? 'Save' : 'Save & Next';
+
+      document.getElementById('cbtQuestionBox').innerHTML = renderQuestionText(q);
+
+      const selected = cbt.answers[cbt.index];
+      const optsBox = document.getElementById('cbtOptionsBox');
+      optsBox.innerHTML = q.options.map((opt, idx) => {
+        const isSel = selected === idx;
+        const letter = String.fromCharCode(65 + idx);
+        return `
+          <button type="button" onclick="selectCbtOption(${idx})" class="w-full text-left px-4 py-3.5 rounded-xl border-2 flex items-center gap-3 transition-all ${
+            isSel ? 'border-indigo-600 bg-indigo-50/70 text-indigo-950' : 'border-slate-200 bg-white hover:border-indigo-300 text-slate-800'
+          }">
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${
+              isSel ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'
+            }">${letter}</span>
+            <span class="text-sm font-semibold">${formatRichText(opt)}</span>
+          </button>
+        `;
+      }).join('');
+
+      renderMath(document.getElementById('cbtOverlay'));
+    }
+
+    function selectCbtOption(optIdx) {
+      cbt.answers[cbt.index] = optIdx;
+      renderCbtQuestion();
+    }
+
+    function clearCbtAnswer() {
+      delete cbt.answers[cbt.index];
+      renderCbtQuestion();
+    }
+
+    function toggleCbtMark() {
+      if (cbt.marked[cbt.index]) delete cbt.marked[cbt.index];
+      else cbt.marked[cbt.index] = true;
+      renderCbtQuestion();
+    }
+
+    function cbtPrev() {
+      if (cbt.index > 0) {
+        cbt.index--;
+        renderCbtQuestion();
+      }
+    }
+
+    function cbtSaveAndNext() {
+      if (cbt.index < cbt.questions.length - 1) {
+        cbt.index++;
+        renderCbtQuestion();
+      } else {
+        openSubmitModal();
+      }
+    }
+
+    function jumpToCbtQuestion(idx) {
+      cbt.index = idx;
+      togglePaletteDrawer(false);
+      renderCbtQuestion();
+    }
+
+    function togglePaletteDrawer(show) {
+      const el = document.getElementById('paletteDrawerBackdrop');
+      if (show) {
+        renderCbtPalette();
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+
+    function renderCbtPalette() {
+      const answeredCount = Object.keys(cbt.answers).length;
+      document.getElementById('paletteSummaryText').textContent = `${answeredCount} / ${cbt.questions.length} Answered`;
+
+      const grid = document.getElementById('cbtPaletteGrid');
+      grid.innerHTML = cbt.questions.map((_, i) => {
+        const isAns = cbt.answers[i] !== undefined;
+        const isMarked = Boolean(cbt.marked[i]);
+        const isVis = Boolean(cbt.visited[i]);
+        let cls = 'bg-slate-200 text-slate-700';
+        if (isMarked) cls = 'bg-purple-600 text-white';
+        else if (isAns) cls = 'bg-emerald-500 text-white';
+        else if (isVis) cls = 'bg-rose-500 text-white';
+
+        const ring = i === cbt.index ? 'ring-2 ring-offset-2 ring-indigo-600' : '';
+        return `<button type="button" onclick="jumpToCbtQuestion(${i})" class="h-10 rounded-xl font-extrabold text-xs ${cls} ${ring} transition-all">${i + 1}</button>`;
+      }).join('');
+    }
+
+    function openSubmitModal() {
+      const ans = Object.keys(cbt.answers).length;
+      const marked = Object.keys(cbt.marked).length;
+      const unans = cbt.questions.length - ans;
+      document.getElementById('confAnswered').textContent = ans;
+      document.getElementById('confMarked').textContent = marked;
+      document.getElementById('confUnanswered').textContent = unans;
+      document.getElementById('submitModal').classList.remove('hidden');
+    }
+
+    function closeSubmitModal() {
+      document.getElementById('submitModal').classList.add('hidden');
+    }
+
+    function submitCbtTest(isAuto) {
+      closeSubmitModal();
+      togglePaletteDrawer(false);
+      if (cbt.intervalId) clearInterval(cbt.intervalId);
+      cbt.active = false;
+      document.getElementById('cbtOverlay').classList.add('hidden');
+      document.body.style.overflow = '';
+
+      const pos = cbt.marking === 'ssc' ? 2 : 1;
+      const neg = cbt.marking === 'ssc' ? 0.5 : 0;
+
+      let correct = 0, wrong = 0, skipped = 0;
+      let timeCorrect = 0, timeWrong = 0, timeSkipped = 0;
+
+      const items = cbt.questions.map((q, idx) => {
+        const userAns = cbt.answers[idx];
+        const t = cbt.timeSpent[idx] || 0;
+        let status = 'skipped';
+        if (userAns === undefined) {
+          skipped++;
+          timeSkipped += t;
+        } else if (userAns === q.answer) {
+          status = 'correct';
+          correct++;
+          timeCorrect += t;
+          if (!progress.solvedIds.includes(q.id)) progress.solvedIds.push(q.id);
+          const mIdx = progress.mistakes.indexOf(q.id);
+          if (mIdx !== -1) progress.mistakes.splice(mIdx, 1);
+        } else {
+          status = 'wrong';
+          wrong++;
+          timeWrong += t;
+          if (!progress.mistakes.includes(q.id)) progress.mistakes.push(q.id);
+        }
+        return { q, idx, userAns, status, time: t };
+      });
+
+      const score = Number((correct * pos - wrong * neg).toFixed(2));
+      const maxScore = cbt.questions.length * pos;
+      const attempted = correct + wrong;
+      const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+
+      progress.totalAttempts += attempted;
+      progress.totalCorrect += correct;
+      progress.testsCompleted += 1;
+
+      if (cbt.setKey && cbt.setKey !== 'MISTAKE_BANK') {
+        const prevBest = progress.bestScores[cbt.setKey];
+        if (prevBest === undefined || score > prevBest) {
+          progress.bestScores[cbt.setKey] = `${score}/${maxScore}`;
+        }
+      }
+      saveProgress();
+
+      const sortedByTime = [...items].sort((a, b) => a.time - b.time);
+      const fastest = sortedByTime[0];
+      const slowest = sortedByTime[sortedByTime.length - 1];
+
+      lastAnalysis = {
+        title: cbt.title,
+        markingLabel: cbt.marking === 'ssc' ? '+2 / -0.5' : '+1 / 0',
+        score,
+        maxScore,
+        correct,
+        wrong,
+        skipped,
+        attempted,
+        accuracy,
+        totalTime: cbt.elapsedSeconds,
+        timeCorrect,
+        timeWrong,
+        timeSkipped,
+        fastest,
+        slowest,
+        items
+      };
+
+      analysisFilter = 'all';
+      analysisSortSlowest = false;
+
+      if (isAuto) showToast('Time up! Test auto-submitted.', 'error');
+      switchTab('dpp');
+      renderAnalysisView();
+    }
+
+    function retakeLastTest() {
+      openSetupModal();
+    }
+
+    function renderAnalysisView() {
+      if (!lastAnalysis) return;
+      document.getElementById('dppLobbyPanel').classList.add('hidden');
+      document.getElementById('dppAnalysisPanel').classList.remove('hidden');
+
+      const a = lastAnalysis;
+      document.getElementById('analysisTitle').textContent = a.title;
+      document.getElementById('analysisSubtitle').textContent = `Marking: ${a.markingLabel} • ${a.items.length} Questions`;
+
+      document.getElementById('anScore').textContent = a.score;
+      document.getElementById('anMaxScore').textContent = `out of ${a.maxScore}`;
+      document.getElementById('anAccuracy').textContent = `${a.accuracy}%`;
+      document.getElementById('anAttempted').textContent = `${a.attempted} attempted`;
+      document.getElementById('anCorrect').textContent = a.correct;
+      document.getElementById('anWrong').textContent = a.wrong;
+      document.getElementById('anSkipped').textContent = a.skipped;
+      document.getElementById('anTotalTime').textContent = formatMMSS(a.totalTime);
+      document.getElementById('anAvgTime').textContent = `Avg ${formatSecShort(a.totalTime / Math.max(1, a.items.length))} / Q`;
+
+      document.getElementById('anFastest').textContent = a.fastest ? `Q${a.fastest.idx + 1} • ${formatSecShort(a.fastest.time)}` : '—';
+      document.getElementById('anSlowest').textContent = a.slowest ? `Q${a.slowest.idx + 1} • ${formatSecShort(a.slowest.time)}` : '—';
+
+      const trackedTotal = Math.max(1, a.timeCorrect + a.timeWrong + a.timeSkipped);
+      const pC = Math.round((a.timeCorrect / trackedTotal) * 100);
+      const pW = Math.round((a.timeWrong / trackedTotal) * 100);
+      const pS = Math.max(0, 100 - pC - pW);
+
+      document.getElementById('anTrackedTime').textContent = `${formatSecShort(a.timeCorrect + a.timeWrong + a.timeSkipped)} total`;
+      document.getElementById('barCorrect').style.width = `${pC}%`;
+      document.getElementById('barWrong').style.width = `${pW}%`;
+      document.getElementById('barSkipped').style.width = `${pS}%`;
+      document.getElementById('lblTimeCorrect').textContent = `${formatSecShort(a.timeCorrect)} (${pC}%)`;
+      document.getElementById('lblTimeWrong').textContent = `${formatSecShort(a.timeWrong)} (${pW}%)`;
+      document.getElementById('lblTimeSkipped').textContent = `${formatSecShort(a.timeSkipped)} (${pS}%)`;
+
+      renderAnalysisReview();
+    }
+
+    function setAnalysisFilter(f) {
+      analysisFilter = f;
+      renderAnalysisReview();
+    }
+
+    function toggleAnalysisSort() {
+      analysisSortSlowest = !analysisSortSlowest;
+      renderAnalysisReview();
+    }
+
+    function jumpToReview(which) {
+      if (!lastAnalysis) return;
+      analysisFilter = 'all';
+      renderAnalysisReview();
+      const target = which === 'fastest' ? lastAnalysis.fastest : lastAnalysis.slowest;
+      if (!target) return;
+      const el = document.getElementById(`rev-q-${target.idx}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function renderAnalysisReview() {
+      if (!lastAnalysis) return;
+      const a = lastAnalysis;
+
+      const filters = [
+        { key: 'all', label: `All (${a.items.length})` },
+        { key: 'correct', label: `Correct (${a.correct})` },
+        { key: 'wrong', label: `Wrong (${a.wrong})` },
+        { key: 'skipped', label: `Skipped (${a.skipped})` }
+      ];
+
+      document.getElementById('analysisFilterPills').innerHTML = filters.map(f => {
+        const active = analysisFilter === f.key;
+        return `<button type="button" onclick="setAnalysisFilter('${f.key}')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+          active ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
+        }">${f.label}</button>`;
+      }).join('');
+
+      const sortBtn = document.getElementById('sortSlowestBtn');
+      sortBtn.className = analysisSortSlowest
+        ? 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold bg-rose-50 border-rose-300 text-rose-700 transition-all'
+        : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold bg-white border-slate-200 text-slate-600 hover:border-slate-300 transition-all';
+
+      let list = a.items.filter(item => analysisFilter === 'all' || item.status === analysisFilter);
+      if (analysisSortSlowest) list = [...list].sort((x, y) => y.time - x.time);
+
+      const container = document.getElementById('analysisReviewList');
+      if (list.length === 0) {
+        container.innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No questions in this filter.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(item => {
+        const q = item.q;
+        const isBookmarked = progress.bookmarks.includes(q.id);
+        const speedTag = item.time < 25
+          ? { text: 'Fast', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
+          : (item.time <= 60 ? { text: 'Moderate', cls: 'bg-amber-50 text-amber-700 border-amber-200' } : { text: 'Slow', cls: 'bg-rose-50 text-rose-700 border-rose-200' });
+
+        const statusBadge = item.status === 'correct'
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+          : (item.status === 'wrong' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-slate-100 text-slate-600 border-slate-200');
+
+        return `
+          <article id="rev-q-${item.idx}" class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg bg-slate-900 text-white text-[11px] font-extrabold">Q${item.idx + 1}</span>
+                <span class="px-2.5 py-0.5 rounded-lg border text-[11px] font-bold capitalize ${statusBadge}">${item.status}</span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-mono font-bold">
+                  ${SVG.clock} ${formatSecShort(item.time)}
+                </span>
+                <span class="px-2 py-0.5 rounded-lg border text-[11px] font-bold ${speedTag.cls}">${speedTag.text}</span>
+              </div>
+              <button type="button" onclick="toggleBookmark('${escapeHtml(q.id)}')" class="w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
+                isBookmarked ? 'bg-indigo-50 border-indigo-300 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:text-indigo-600'
+              }" aria-label="Bookmark">
+                ${SVG.bookmark(isBookmarked)}
+              </button>
+            </div>
+
+            <div class="space-y-1.5">${renderQuestionText(q)}</div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              ${q.options.map((opt, oIdx) => {
+                const isCorrect = oIdx === q.answer;
+                const isUserWrong = oIdx === item.userAns && !isCorrect;
+                const letter = String.fromCharCode(65 + oIdx);
+                let boxCls = 'bg-slate-50/70 border-slate-200 text-slate-700';
+                let badgeCls = 'bg-white border border-slate-200 text-slate-600';
+                if (isCorrect) {
+                  boxCls = 'bg-emerald-50 border-emerald-400 text-emerald-900';
+                  badgeCls = 'bg-emerald-600 text-white';
+                } else if (isUserWrong) {
+                  boxCls = 'bg-rose-50 border-rose-400 text-rose-900';
+                  badgeCls = 'bg-rose-600 text-white';
+                }
+                return `
+                  <div class="px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold flex items-center gap-2.5 ${boxCls}">
+                    <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${badgeCls}">${letter}</span>
+                    <span>${formatRichText(opt)}</span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            ${q.solution ? `
+              <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-1.5">
+                <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">Solution</div>
+                <div class="text-xs sm:text-sm text-slate-800 leading-relaxed">${formatRichText(q.solution)}</div>
+              </div>
+            ` : ''}
+
+            ${q.trick ? `
+              <div class="rounded-xl bg-amber-50 border border-amber-200 p-3.5 text-xs sm:text-sm text-amber-950 leading-relaxed">
+                <span class="font-extrabold text-amber-800">Short Trick: </span>${formatRichText(q.trick)}
+              </div>
+            ` : ''}
+          </article>
+        `;
+      }).join('');
+
+      renderMath(container);
+    }
+
+    /* =========================================================================
+       11. VIEW 4: SAVED (MISTAKE BANK & BOOKMARKS)
+    ========================================================================= */
     function openSavedOn(sub) {
       savedSubTab = sub;
       switchTab('saved');
     }
-// ... existing code ... -->
+
+    function setSavedSubTab(sub) {
+      savedSubTab = sub;
+      renderSavedView();
+    }
+
+    function removeFromMistakes(id) {
+      const idx = progress.mistakes.indexOf(id);
+      if (idx !== -1) progress.mistakes.splice(idx, 1);
+      saveProgress();
+      updateSavedBadges();
+      renderSavedView();
+      showToast('Removed from Mistake Bank', 'success');
+    }
+
+    function renderSavedView() {
+      const validIds = new Set(getAllQuestions().map(q => q.id));
+      const mIds = progress.mistakes.filter(id => validIds.has(id));
+      const bIds = progress.bookmarks.filter(id => validIds.has(id));
+
+      document.getElementById('savedMistakeCount').textContent = mIds.length;
+      document.getElementById('savedBookmarkCount').textContent = bIds.length;
+
+      document.querySelectorAll('.saved-sub-btn').forEach(btn => {
+        const active = btn.dataset.savedtab === savedSubTab;
+        btn.className = active
+          ? 'saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-600 shadow-xs transition-all'
+          : 'saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all';
+      });
+
+      document.getElementById('mistakeActionBanner').classList.toggle('hidden', savedSubTab !== 'mistakes' || mIds.length === 0);
+
+      const listIds = savedSubTab === 'mistakes' ? mIds : bIds;
+      const container = document.getElementById('savedListContainer');
+
+      if (listIds.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
+            <div class="text-base font-extrabold text-slate-900">${savedSubTab === 'mistakes' ? 'No Mistakes Saved' : 'No Bookmarks Yet'}</div>
+            <p class="text-xs text-slate-500">${savedSubTab === 'mistakes' ? 'Wrong answers from DPP tests appear here automatically.' : 'Tap the bookmark icon on any Class Note or DPP question to save it.'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = listIds.map(id => {
+        const q = findQuestionById(id);
+        if (!q) return '';
+        const isConcept = !q.options || q.options.length === 0;
+        const removeFn = savedSubTab === 'mistakes' ? `removeFromMistakes('${escapeHtml(q.id)}')` : `toggleBookmark('${escapeHtml(q.id)}')`;
+
+        return `
+          <article class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm space-y-3.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(q.chapter)}</span>
+                <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-bold">${escapeHtml(q.set)}</span>
+                ${q.exam ? `<span class="px-2.5 py-0.5 rounded-lg bg-sky-50 text-sky-700 text-[11px] font-bold">${escapeHtml(q.exam)}</span>` : ''}
+              </div>
+              <button type="button" onclick="${removeFn}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold transition-colors">
+                ${SVG.trash}
+                <span>Remove</span>
+              </button>
+            </div>
+
+            <div class="space-y-1.5">${renderQuestionText(q)}</div>
+
+            ${!isConcept ? `
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${q.options.map((opt, oIdx) => {
+                  const isAns = oIdx === q.answer;
+                  const letter = String.fromCharCode(65 + oIdx);
+                  return `
+                    <div class="px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold flex items-center gap-2 ${
+                      isAns ? 'bg-emerald-50 border-emerald-400 text-emerald-900' : 'bg-slate-50/70 border-slate-200 text-slate-700'
+                    }">
+                      <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 ${
+                        isAns ? 'bg-emerald-600 text-white' : 'bg-white border border-slate-200 text-slate-600'
+                      }">${letter}</span>
+                      <span>${formatRichText(opt)}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            ` : ''}
+
+            ${q.solution ? `
+              <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 text-xs sm:text-sm text-slate-800 leading-relaxed">
+                <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 mb-1">Solution</div>
+                ${formatRichText(q.solution)}
+              </div>
+            ` : ''}
+
+            ${q.trick ? `
+              <div class="rounded-xl bg-amber-50 border border-amber-200 p-3.5 text-xs sm:text-sm text-amber-950 leading-relaxed">
+                <span class="font-extrabold text-amber-800">Short Trick: </span>${formatRichText(q.trick)}
+              </div>
+            ` : ''}
+          </article>
+        `;
+      }).join('');
+
+      renderMath(container);
+    }
+
     /* =========================================================================
-       13. INITIALIZATION
+       12. INITIALIZATION
     ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       loadProgress();
-      dataset = STARTER_DATA.map((item, i) => normalizeItem(item, i));
+      notesData = STARTER_NOTES.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
+      dppData = STARTER_DPP.map((item, i) => normalizeQuestion(item, i, 'dpp'));
       formulasData = STARTER_FORMULAS.map((item, i) => normalizeFormula(item, i));
       refreshAll();
       switchTab('home');
