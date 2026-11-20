@@ -1,0 +1,2778 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Master — Class Notes &amp; CBT DPP Practice</title>
+
+  <!-- Google Fonts: Inter & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans Devanagari', 'sans-serif'],
+            hindi: ['Noto Sans Devanagari', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- KaTeX CSS & JS for Math Formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .view-panel {
+      animation: fadeSlide 0.2s ease-out;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .katex {
+      font-size: 1.04em;
+      color: inherit;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    @keyframes pulseUrgent {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.35); }
+      50% { box-shadow: 0 0 0 6px rgba(225, 29, 72, 0); }
+    }
+    .timer-urgent {
+      animation: pulseUrgent 1.1s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased flex flex-col pb-20 md:pb-10">
+
+  <!-- ==================== STICKY TOP HEADER ==================== -->
+  <header id="mainHeader" class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs">
+    <div class="max-w-5xl mx-auto px-3.5 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-3">
+
+      <!-- Brand Logo & Source Status -->
+      <button onclick="requestTabSwitch('home')" class="flex items-center gap-2.5 text-left group focus:outline-none shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm shadow-indigo-200 group-hover:bg-indigo-700 transition-colors">
+          <i data-lucide="sigma" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-none">
+            Math <span class="text-indigo-600">Master</span>
+          </div>
+          <div class="mt-1">
+            <span id="dataSourceBadge" class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200/80">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              Demo Data
+            </span>
+          </div>
+        </div>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200/70">
+        <button onclick="requestTabSwitch('home')" data-nav="home" class="desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Home</span>
+        </button>
+        <button onclick="requestTabSwitch('notes')" data-nav="notes" class="desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Class Notes</span>
+        </button>
+        <button onclick="requestTabSwitch('dpp')" data-nav="dpp" class="desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all">
+          <i data-lucide="zap" class="w-4 h-4"></i>
+          <span>DPP Practice</span>
+        </button>
+        <button onclick="requestTabSwitch('saved')" data-nav="saved" class="desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all">
+          <i data-lucide="bookmark" class="w-4 h-4"></i>
+          <span>Saved</span>
+          <span id="navMistakePill" class="hidden text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">0</span>
+        </button>
+      </nav>
+
+      <!-- Right Controls: Language Toggle (EN | HI | Both) + Refresh GitHub JSON -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Global Language Toggle -->
+        <div class="inline-flex items-center bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200/80 text-[11px] sm:text-xs font-bold" role="group" aria-label="Language Toggle">
+          <button onclick="setLanguage('en')" data-lang="en" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">EN</button>
+          <button onclick="setLanguage('hi')" data-lang="hi" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">HI</button>
+          <button onclick="setLanguage('both')" data-lang="both" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">Both</button>
+        </div>
+
+        <!-- Refresh from GitHub -->
+        <button id="refreshBtn" onclick="fetchMathData(true)" title="Refresh math_data.json from GitHub" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200/80 flex items-center justify-center transition-all active:scale-95">
+          <i id="refreshIcon" data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="flex-1 w-full max-w-5xl mx-auto px-3.5 sm:px-6 py-5 sm:py-6">
+
+    <!-- ==================== 1. HOME (DASHBOARD) VIEW ==================== -->
+    <section id="view-home" class="view-panel space-y-6">
+
+      <!-- Hero Banner -->
+      <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-7 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-48 h-48 bg-indigo-50 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
+        <div class="relative flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div class="space-y-1.5">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold">
+              <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-500 fill-amber-500"></i>
+              <span><span id="heroStreakCount">1</span> Day Streak • SSC / CDS Math Prep</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Class Notes &amp; CBT DPP Arena
+            </h1>
+            <p class="text-sm text-slate-600 max-w-xl">
+              Revise Sir's chapter-wise <span class="font-semibold text-slate-800">Class 1, 2, 3 Notes</span> and attempt timed <span class="font-semibold text-slate-800">DPP Tests</span> with per-question time analysis.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2.5 shrink-0">
+            <button onclick="switchTab('dpp')" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm shadow-indigo-200 flex items-center gap-2 transition-all active:scale-95">
+              <i data-lucide="zap" class="w-4 h-4 fill-white"></i>
+              <span>Start DPP Test</span>
+            </button>
+            <button onclick="switchTab('notes')" class="px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 font-bold text-sm flex items-center gap-2 transition-all active:scale-95">
+              <i data-lucide="book-open" class="w-4 h-4 text-indigo-600"></i>
+              <span>Class Notes</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Compact Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div onclick="switchTab('notes')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs hover:border-indigo-300 cursor-pointer transition-all">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-500">Class Notes</span>
+            <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="statNotesCount" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</div>
+          <p id="statNotesSets" class="text-[11px] font-medium text-indigo-600 mt-1">0 classes synced</p>
+        </div>
+
+        <div onclick="switchTab('dpp')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs hover:border-emerald-300 cursor-pointer transition-all">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-500">DPP Questions</span>
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+            <span id="statDppSolved">0</span><span id="statDppTotal" class="text-sm font-semibold text-slate-400">/0</span>
+          </div>
+          <p id="statDppSets" class="text-[11px] font-medium text-emerald-600 mt-1">0 DPP sets ready</p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-500">Overall Accuracy</span>
+            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <i data-lucide="target" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="statAccuracy" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0%</div>
+          <p id="statTestsTaken" class="text-[11px] font-medium text-slate-500 mt-1">0 tests completed</p>
+        </div>
+
+        <div onclick="openSavedSubTab('mistakes')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs hover:border-rose-300 cursor-pointer transition-all">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-500">Mistake Bank</span>
+            <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+              <i data-lucide="alert-circle" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div id="statMistakeCount" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</div>
+          <p class="text-[11px] font-medium text-rose-600 mt-1">Tap to revise</p>
+        </div>
+      </div>
+
+      <!-- Chapter Overview Grid -->
+      <div class="space-y-3">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Chapters Auto-Detected from JSON</h2>
+          <p class="text-xs text-slate-500">Every new chapter, Class, or DPP you add to <code class="text-indigo-600 font-semibold">math_data.json</code> appears here automatically.</p>
+        </div>
+        <div id="chapterProgressGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. CLASS NOTES VIEW ==================== -->
+    <section id="view-notes" class="view-panel hidden space-y-5">
+
+      <!-- Notes Control & Automatic Chapter / Class Grouping Bar -->
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+              <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
+              Sir's Solved Class Notes
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Select a chapter and class number to study step-by-step solutions &amp; tricks</p>
+          </div>
+
+          <!-- Hide Solutions Self-Practice Toggle -->
+          <label class="inline-flex items-center gap-2.5 self-start sm:self-auto px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer select-none hover:border-indigo-300 transition-colors">
+            <input type="checkbox" id="hideSolutionsToggle" onchange="toggleHideSolutions(this.checked)" class="w-4 h-4 accent-indigo-600 rounded cursor-pointer" />
+            <span class="text-xs font-bold text-slate-700">Hide Solutions</span>
+          </label>
+        </div>
+
+        <!-- Row 1: Dynamically Generated Chapter Pills -->
+        <div class="space-y-1.5 pt-2 border-t border-slate-100">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">1. Select Chapter</div>
+          <div id="notesChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Row 2: Dynamically Separated Class/Set Pills for Selected Chapter -->
+        <div class="space-y-1.5">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">2. Select Class / Lecture</div>
+          <div id="notesSetPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <!-- Dynamically populated (All, Class 1, Class 2, Class 3...) -->
+          </div>
+        </div>
+
+        <!-- Quick Search -->
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="notesSearchInput" oninput="renderClassNotesList()" placeholder="Search question, formula, or trick in this class..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all" />
+        </div>
+      </div>
+
+      <!-- Class Notes Cards List -->
+      <div id="classNotesContainer" class="space-y-4">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- ==================== 3. DPP PRACTICE VIEW ==================== -->
+    <section id="view-dpp" class="view-panel hidden space-y-5">
+
+      <!-- A. DPP LOBBY (Chapter Pills + Automatically Separated DPP Set Cards) -->
+      <div id="dppLobbyScreen" class="space-y-5">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i>
+                DPP Test Arena
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Choose a chapter &amp; DPP set — attempt in Free Mode or Sectional Countdown Timer</p>
+            </div>
+            <button onclick="openMistakeBankSetup()" id="lobbyMistakeQuickBtn" class="inline-flex items-center gap-2 self-start px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              <span>Mistake Bank (<span id="lobbyMistakeCount">0</span>)</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Chapter Pills for DPP -->
+          <div class="space-y-1.5 pt-2 border-t border-slate-100">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Select Chapter</div>
+            <div id="dppChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamically Separated DPP Set Cards + Full Chapter Mix -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 id="dppSelectedChapterHeading" class="text-base font-extrabold text-slate-900">Available DPP Sets</h3>
+            <span id="dppSetCountLabel" class="text-xs font-semibold text-slate-500">0 sets</span>
+          </div>
+          <div id="dppSetsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- B. LIVE CBT DPP TEST SCREEN (NO SOLUTIONS SHOWN DURING TEST) -->
+      <div id="dppLiveTestScreen" class="hidden space-y-4">
+
+        <!-- Sticky CBT Exam Top Bar -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-4 shadow-xs space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2.5">
+            <!-- Test Title & Marking Info -->
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span id="liveTestTitle" class="font-extrabold text-sm sm:text-base text-slate-900 truncate">Percentage — DPP 1</span>
+              </div>
+              <div class="flex items-center gap-2 mt-0.5 text-[11px] font-semibold text-slate-500">
+                <span id="liveMarkingBadge" class="text-indigo-600">+2 / -0.5</span>
+                <span>•</span>
+                <span id="liveTimerModeTag">Sectional Timer</span>
+              </div>
+            </div>
+
+            <!-- Live Main Timer + Submit Button -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+              <!-- Main Timer Display -->
+              <div id="liveMainTimerBox" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white font-mono text-sm font-extrabold tracking-wide transition-colors">
+                <i data-lucide="timer" class="w-4 h-4 text-indigo-300"></i>
+                <span id="liveMainTimerText">00:00</span>
+              </div>
+
+              <!-- Submit Test Button -->
+              <button onclick="openSubmitConfirmModal()" class="px-3.5 sm:px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-95">
+                Submit Test
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Strip -->
+          <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+            <div id="liveProgressBar" class="h-full bg-indigo-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- CBT Main Grid: Question Area (Left/Top) + Question Palette (Right/Bottom) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+
+          <!-- Left: Active Question Card -->
+          <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-5">
+            <!-- Question Meta Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-xs font-extrabold">
+                  Q <span id="liveQNum">1</span> / <span id="liveQTotal">5</span>
+                </span>
+                <span id="liveMarkedStatusPill" class="hidden px-2.5 py-1 rounded-lg bg-purple-100 text-purple-700 text-[11px] font-bold">
+                  Marked for Review
+                </span>
+              </div>
+
+              <!-- Live Per-Question Timer Badge (subtle & toggleable) -->
+              <button onclick="togglePerQTimerVisibility()" title="Tap to show/hide live question timer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-600 text-xs font-mono font-bold transition-colors">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-600"></i>
+                <span id="livePerQTimerText">00s</span>
+              </button>
+            </div>
+
+            <!-- Bilingual Question Statement -->
+            <div id="liveQuestionContent" class="space-y-2.5 min-h-[60px]">
+              <!-- Populated dynamically -->
+            </div>
+
+            <!-- 4 CBT Option Buttons (NO right/wrong feedback while test is running!) -->
+            <div id="liveOptionsGrid" class="grid grid-cols-1 gap-2.5">
+              <!-- Populated dynamically -->
+            </div>
+
+            <!-- CBT Action Controls -->
+            <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+              <div class="flex items-center gap-2">
+                <button onclick="clearCurrentResponse()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all active:scale-95">
+                  Clear Response
+                </button>
+                <button id="liveMarkReviewBtn" onclick="toggleMarkForReview()" class="px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-semibold text-xs flex items-center gap-1.5 transition-all active:scale-95">
+                  <i data-lucide="flag" class="w-3.5 h-3.5"></i>
+                  <span id="liveMarkBtnText">Mark for Review</span>
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2 ml-auto">
+                <button id="livePrevBtn" onclick="goToPrevQuestion()" class="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm flex items-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                  <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                  <span>Prev</span>
+                </button>
+                <button id="liveNextBtn" onclick="saveAndNextQuestion()" class="px-4 sm:px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm shadow-indigo-200 flex items-center gap-1.5 transition-all active:scale-95">
+                  <span id="liveNextBtnLabel">Save &amp; Next</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Question Palette Card -->
+          <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
+                <i data-lucide="grid-3x3" class="w-4 h-4 text-indigo-600"></i>
+                Question Palette
+              </h3>
+              <span id="paletteAnsweredSummary" class="text-xs font-bold text-emerald-600">0 Answered</span>
+            </div>
+
+            <!-- Numbered Palette Grid -->
+            <div id="livePaletteGrid" class="grid grid-cols-5 sm:grid-cols-8 lg:grid-cols-5 gap-2">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Color Legend -->
+            <div class="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100 text-[11px] font-semibold text-slate-600">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-md bg-emerald-500 inline-block shrink-0"></span>
+                <span>Answered</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-md bg-purple-600 inline-block shrink-0"></span>
+                <span>Marked Review</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-md bg-rose-500 inline-block shrink-0"></span>
+                <span>Not Answered</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-md bg-slate-200 inline-block shrink-0"></span>
+                <span>Not Visited</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. DEEP POST-TEST ANALYSIS SCREEN -->
+      <div id="dppAnalysisScreen" class="hidden space-y-5">
+
+        <!-- Analysis Header Banner -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+              <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i>
+              <span>Deep Post-Test Analysis</span>
+            </div>
+            <h2 id="analysisTestTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900">Percentage — DPP 1</h2>
+            <p id="analysisMetaSubtitle" class="text-xs text-slate-500">Mode &amp; Marking details</p>
+          </div>
+
+          <div class="flex flex-wrap gap-2.5 shrink-0">
+            <button onclick="retakeLastDpp()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm shadow-indigo-200 flex items-center gap-1.5 transition-all active:scale-95">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <span>Retake This DPP</span>
+            </button>
+            <button onclick="backToDppSets()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all active:scale-95">
+              Back to DPP Sets
+            </button>
+          </div>
+        </div>
+
+        <!-- Performance Summary Cards (5 metrics) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
+            <div class="text-xs font-semibold text-slate-500">Total Score</div>
+            <div id="anScoreVal" class="text-2xl font-extrabold text-indigo-600 mt-1">0</div>
+            <div id="anMaxScoreSub" class="text-[11px] font-medium text-slate-400">out of 0</div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
+            <div class="text-xs font-semibold text-slate-500">Accuracy</div>
+            <div id="anAccuracyVal" class="text-2xl font-extrabold text-emerald-600 mt-1">0%</div>
+            <div id="anAttemptedSub" class="text-[11px] font-medium text-slate-400">0 attempted</div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
+            <div class="text-xs font-semibold text-slate-500">Breakdown</div>
+            <div class="flex items-center gap-2 mt-1.5 text-sm font-extrabold">
+              <span class="text-emerald-600" title="Correct"><span id="anCorrectVal">0</span>✓</span>
+              <span class="text-rose-600" title="Wrong"><span id="anWrongVal">0</span>✗</span>
+              <span class="text-slate-400" title="Skipped"><span id="anSkippedVal">0</span>–</span>
+            </div>
+            <div class="text-[11px] font-medium text-slate-400 mt-0.5">Correct / Wrong / Skip</div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
+            <div class="text-xs font-semibold text-slate-500">Total Time</div>
+            <div id="anTotalTimeVal" class="text-2xl font-extrabold text-slate-900 mt-1 font-mono">00:00</div>
+            <div class="text-[11px] font-medium text-slate-400">Time taken</div>
+          </div>
+
+          <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
+            <div class="text-xs font-semibold text-slate-500">Avg Time / Q</div>
+            <div id="anAvgTimeVal" class="text-2xl font-extrabold text-amber-600 mt-1 font-mono">0s</div>
+            <div class="text-[11px] font-medium text-slate-400">Speed benchmark</div>
+          </div>
+        </div>
+
+        <!-- TIME INTELLIGENCE CARD -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+              <i data-lucide="gauge" class="w-5 h-5 text-indigo-600"></i>
+              Time Intelligence
+            </h3>
+            <span class="text-xs font-semibold text-slate-400">Exact Per-Question Tracking</span>
+          </div>
+
+          <!-- Fastest & Slowest Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div onclick="jumpToReviewQuestion('fastest')" class="rounded-xl bg-emerald-50/70 border border-emerald-200 p-4 flex items-center justify-between cursor-pointer hover:bg-emerald-50 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                  <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-emerald-800 uppercase tracking-wide">Fastest Question</div>
+                  <div id="anFastestInfo" class="text-sm font-extrabold text-slate-900 mt-0.5">Q1 • 12s</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-emerald-700">Jump →</span>
+            </div>
+
+            <div onclick="jumpToReviewQuestion('slowest')" class="rounded-xl bg-rose-50/70 border border-rose-200 p-4 flex items-center justify-between cursor-pointer hover:bg-rose-50 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                  <i data-lucide="hourglass" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-rose-800 uppercase tracking-wide">Slowest Question</div>
+                  <div id="anSlowestInfo" class="text-sm font-extrabold text-slate-900 mt-0.5">Q3 • 74s</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-rose-700">Jump →</span>
+            </div>
+          </div>
+
+          <!-- Time Distribution Stacked Bar (Correct vs Wrong vs Skipped) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+              <span>Where Did Your Time Go?</span>
+              <span id="anDistTotalLabel" class="font-mono text-slate-500">0s total</span>
+            </div>
+            <div class="w-full h-4 rounded-full bg-slate-100 overflow-hidden flex">
+              <div id="anBarCorrect" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
+              <div id="anBarWrong" class="h-full bg-rose-500 transition-all duration-500" style="width: 0%"></div>
+              <div id="anBarSkipped" class="h-full bg-amber-400 transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold pt-1">
+              <div class="flex items-center gap-1.5 text-emerald-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span>Correct: <strong id="anTimeCorrectLabel" class="font-mono">0s (0%)</strong></span>
+              </div>
+              <div class="flex items-center gap-1.5 text-rose-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span>Wrong: <strong id="anTimeWrongLabel" class="font-mono">0s (0%)</strong></span>
+              </div>
+              <div class="flex items-center gap-1.5 text-amber-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span>Skipped: <strong id="anTimeSkippedLabel" class="font-mono">0s (0%)</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUESTION-BY-QUESTION DEEP REVIEW -->
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <!-- Filter Pills -->
+            <div id="analysisFilterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              <!-- Populated dynamically: All, Correct, Wrong, Skipped -->
+            </div>
+
+            <!-- Sort by Slowest Toggle -->
+            <button id="sortSlowestBtn" onclick="toggleSortBySlowest()" class="inline-flex items-center gap-2 self-start sm:self-auto px-3.5 py-2 rounded-xl border text-xs font-bold transition-all">
+              <i data-lucide="arrow-down-wide-narrow" class="w-4 h-4"></i>
+              <span>Sort by Slowest</span>
+            </button>
+          </div>
+
+          <div id="analysisReviewContainer" class="space-y-4">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. SAVED (BOOKMARKS & MISTAKES) VIEW ==================== -->
+    <section id="view-saved" class="view-panel hidden space-y-5">
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+            <i data-lucide="bookmark" class="w-5 h-5 text-indigo-600"></i>
+            Saved &amp; Mistake Vault
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Quickly revise bookmarked questions and weak DPP problems</p>
+        </div>
+
+        <div class="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200/80 self-start">
+          <button onclick="setSavedSubTab('bookmarks')" data-subtab="bookmarks" class="saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-bold transition-all">
+            Bookmarks (<span id="savedBookmarkCount">0</span>)
+          </button>
+          <button onclick="setSavedSubTab('mistakes')" data-subtab="mistakes" class="saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-bold transition-all">
+            Mistake Bank (<span id="savedMistakeCount">0</span>)
+          </button>
+        </div>
+      </div>
+
+      <!-- Practice Mistakes Banner -->
+      <div id="savedMistakeActionBanner" class="hidden bg-rose-50 border border-rose-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-rose-950">Re-test Your Mistake Bank!</h3>
+            <p class="text-xs text-rose-700">Attempt all weak questions in CBT mode. Correct answers are cleared automatically.</p>
+          </div>
+        </div>
+        <button onclick="openMistakeBankSetup()" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shrink-0 flex items-center justify-center gap-2 transition-all active:scale-95">
+          <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+          <span>Start Mistake CBT</span>
+        </button>
+      </div>
+
+      <div id="savedItemsContainer" class="space-y-4">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MOBILE FIXED BOTTOM NAVIGATION ==================== -->
+  <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shadow-lg">
+    <button onclick="requestTabSwitch('home')" data-nav="home" class="mobile-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold">Home</span>
+    </button>
+    <button onclick="requestTabSwitch('notes')" data-nav="notes" class="mobile-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all">
+      <i data-lucide="book-open" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold">Notes</span>
+    </button>
+    <button onclick="requestTabSwitch('dpp')" data-nav="dpp" class="mobile-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all">
+      <i data-lucide="zap" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold">DPP</span>
+    </button>
+    <button onclick="requestTabSwitch('saved')" data-nav="saved" class="mobile-nav-btn relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all">
+      <i data-lucide="bookmark" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold">Saved</span>
+      <span id="mobileMistakeDot" class="hidden absolute top-1 right-2.5 w-2 h-2 rounded-full bg-rose-500"></span>
+    </button>
+  </nav>
+
+  <!-- ==================== MODAL 1: DPP TEST SETUP MODAL ==================== -->
+  <div id="testSetupModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl w-full max-w-lg overflow-hidden animate-[fadeSlide_0.18s_ease-out]">
+      <!-- Modal Header -->
+      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600">DPP Test Setup</span>
+          <h3 id="setupModalTitle" class="text-lg font-extrabold text-slate-900 leading-tight mt-0.5">Percentage — DPP 1</h3>
+        </div>
+        <button onclick="closeTestSetupModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 space-y-5 max-h-[75vh] overflow-y-auto">
+        <!-- Info Strip -->
+        <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-semibold text-slate-600">
+          <span>Total Questions: <strong id="setupQCount" class="text-slate-900">0</strong></span>
+          <span class="text-indigo-600 font-bold">Solutions hidden during test</span>
+        </div>
+
+        <!-- 1. Timer Mode Selection -->
+        <div class="space-y-2.5">
+          <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 block">1. Choose Timer Mode</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Free Mode -->
+            <button type="button" onclick="selectSetupTimerMode('free')" id="setupModeFreeBtn" class="text-left p-3.5 rounded-xl border-2 transition-all">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-extrabold text-sm text-slate-900">Free Mode</span>
+                <i data-lucide="infinity" class="w-4 h-4 text-indigo-600"></i>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-snug">Count-up stopwatch. No limit, still tracks exact seconds per question.</p>
+            </button>
+
+            <!-- Sectional Timer Mode -->
+            <button type="button" onclick="selectSetupTimerMode('sectional')" id="setupModeSectionalBtn" class="text-left p-3.5 rounded-xl border-2 transition-all">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-extrabold text-sm text-slate-900">Sectional Timer</span>
+                <i data-lucide="timer" class="w-4 h-4 text-rose-600"></i>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-snug">Countdown exam timer. Auto-submits when time hits 00:00.</p>
+            </button>
+          </div>
+
+          <!-- Sectional Presets & Custom Minutes (Visible only in Sectional Mode) -->
+          <div id="sectionalTimerConfig" class="hidden rounded-xl bg-slate-50 border border-slate-200 p-3.5 space-y-3">
+            <div class="text-xs font-bold text-slate-700">Select Exam Duration:</div>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" onclick="selectSectionalPreset(15)" data-preset="15" class="preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">15 Min (25 Qs Pattern)</button>
+              <button type="button" onclick="selectSectionalPreset(10)" data-preset="10" class="preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">10 Min</button>
+              <button type="button" onclick="selectSectionalPreset(20)" data-preset="20" class="preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">20 Min</button>
+              <button type="button" onclick="selectSectionalPreset(30)" data-preset="30" class="preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">30 Min</button>
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+              <label for="customMinutesInput" class="text-xs font-semibold text-slate-600">Custom Minutes:</label>
+              <input id="customMinutesInput" type="number" min="1" max="180" value="15" oninput="onCustomMinutesChange(this.value)" class="w-24 bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-bold text-slate-900 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
+              <span class="text-xs font-medium text-slate-500">min</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Marking Scheme Selection -->
+        <div class="space-y-2.5">
+          <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 block">2. Marking Scheme</label>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button type="button" onclick="selectMarkingScheme('ssc')" id="setupMarkSscBtn" class="p-3 rounded-xl border-2 text-left transition-all">
+              <div class="font-extrabold text-sm text-slate-900">SSC Exam</div>
+              <div class="text-xs font-bold text-emerald-600 mt-0.5">+2 <span class="text-slate-400">/</span> <span class="text-rose-600">-0.5</span></div>
+            </button>
+            <button type="button" onclick="selectMarkingScheme('simple')" id="setupMarkSimpleBtn" class="p-3 rounded-xl border-2 text-left transition-all">
+              <div class="font-extrabold text-sm text-slate-900">Simple</div>
+              <div class="text-xs font-bold text-emerald-600 mt-0.5">+1 <span class="text-slate-400">/</span> <span class="text-slate-500">0</span></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-5 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5">
+        <button onclick="closeTestSetupModal()" class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-sm transition-colors">
+          Cancel
+        </button>
+        <button onclick="launchConfiguredDppTest()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm shadow-indigo-200 flex items-center gap-2 transition-all active:scale-95">
+          <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+          <span>Start Test</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: SUBMIT TEST CONFIRMATION ==================== -->
+  <div id="submitConfirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl w-full max-w-md overflow-hidden animate-[fadeSlide_0.18s_ease-out]">
+      <div class="p-5 sm:p-6 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900">Submit DPP Test?</h3>
+            <p class="text-xs text-slate-500">You will see your deep score &amp; time analysis immediately.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 text-center">
+          <div class="rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+            <div id="confAnsweredCount" class="text-xl font-extrabold text-emerald-700">0</div>
+            <div class="text-[11px] font-bold text-emerald-800">Answered</div>
+          </div>
+          <div class="rounded-xl bg-purple-50 border border-purple-200 p-3">
+            <div id="confMarkedCount" class="text-xl font-extrabold text-purple-700">0</div>
+            <div class="text-[11px] font-bold text-purple-800">Marked</div>
+          </div>
+          <div class="rounded-xl bg-rose-50 border border-rose-200 p-3">
+            <div id="confUnansweredCount" class="text-xl font-extrabold text-rose-700">0</div>
+            <div class="text-[11px] font-bold text-rose-800">Unanswered</div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-2">
+          <button onclick="closeSubmitConfirmModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-colors">
+            Resume Test
+          </button>
+          <button onclick="finalizeAndSubmitTest(false)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm shadow-emerald-200 transition-all active:scale-95">
+            Yes, Submit Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: LEAVE LIVE TEST WARNING ==================== -->
+  <div id="leaveTestModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl w-full max-w-sm p-5 sm:p-6 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">Test in Progress</h3>
+          <p class="text-xs text-slate-500">Leaving now will end your current DPP attempt.</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2">
+        <button onclick="closeLeaveTestModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+          Stay in Test
+        </button>
+        <button onclick="confirmLeaveLiveTest()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs">
+          Leave Test
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION STACK ==================== -->
+  <div id="toastStack" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
+
+  <!-- ==================== APPLICATION SCRIPT ==================== -->
+  <script>
+    /* =========================================================================
+       1. GITHUB JSON AUTO-LOADER CONFIGURATION
+       Upload your math_data.json file to your GitHub repo root alongside this
+       HTML file. Every new chapter, Class 1/2/3, or DPP 1/2/3 will auto-group!
+    ========================================================================= */
+    const GITHUB_JSON_URL = './math_data.json';
+    const STORAGE_KEY = 'math_master_cbt_v2';
+
+    /* =========================================================================
+       2. RICH BUILT-IN FALLBACK DATASET (14 Bilingual SSC Math Questions)
+       Demonstrates automatic separation of:
+       - class_notes: Percentage (Class 1, Class 2), Ratio & Proportion (Class 1)
+       - dpp: Percentage (DPP 1, DPP 2), Ratio & Proportion (DPP 1)
+    ========================================================================= */
+    const FALLBACK_SAMPLE_DATA = [
+      // ==================== CLASS NOTES: PERCENTAGE — CLASS 1 ====================
+      {
+        id: 'cn_perc_c1_1',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 1',
+        question_en: 'If $16\\frac{2}{3}\\%$ of a number is added to itself, the result becomes $4900$. Find the original number.',
+        question_hi: 'यदि किसी संख्या में उसका $16\\frac{2}{3}\\%$ जोड़ दिया जाए, तो परिणाम $4900$ हो जाता है। मूल संख्या ज्ञात कीजिए।',
+        options_en: ['$4000$', '$4200$', '$4500$', '$3600$'],
+        options_hi: ['$4000$', '$4200$', '$4500$', '$3600$'],
+        correct: 1,
+        solution_en: 'Step 1: Convert percentage into fraction: $16\\frac{2}{3}\\% = \\frac{1}{6}$.\nStep 2: Let the original number $= 6$ units. After adding $1$ unit, new number $= 6 + 1 = 7$ units.\nStep 3: Given $7\\text{ units} = 4900 \\implies 1\\text{ unit} = 700$.\nStep 4: Original number $= 6 \\times 700 = 4200$.',
+        solution_hi: 'चरण 1: प्रतिशत को भिन्न में बदलें: $16\\frac{2}{3}\\% = \\frac{1}{6}$।\nचरण 2: माना मूल संख्या $= 6$ इकाई। $1$ इकाई जोड़ने पर नई संख्या $= 7$ इकाई।\nचरण 3: $7\\text{ इकाई} = 4900 \\implies 1\\text{ इकाई} = 700$।\nचरण 4: मूल संख्या $= 6 \\times 700 = 4200$।',
+        trick: 'Fraction Method: In $\\frac{1}{6}$, denominator ($6$) is ALWAYS Original Value and numerator ($1$) is the Change!'
+      },
+      {
+        id: 'cn_perc_c1_2',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 1',
+        question_en: 'If $6\\frac{2}{3}\\%$ of a number is subtracted from itself, the result becomes $5670$. Find the original number.',
+        question_hi: 'यदि किसी संख्या में से उसका $6\\frac{2}{3}\\%$ घटा दिया जाए, तो परिणाम $5670$ हो जाता है। मूल संख्या ज्ञात कीजिए।',
+        options_en: ['$6075$', '$5980$', '$6120$', '$6250$'],
+        options_hi: ['$6075$', '$5980$', '$6120$', '$6250$'],
+        correct: 0,
+        solution_en: 'Step 1: $6\\frac{2}{3}\\% = \\frac{1}{15}$.\nStep 2: Original $= 15$ units. Subtracting $1$ unit leaves $15 - 1 = 14$ units.\nStep 3: $14\\text{ units} = 5670 \\implies 1\\text{ unit} = 405$.\nStep 4: Original number $= 15 \\times 405 = 6075$.',
+        solution_hi: 'चरण 1: $6\\frac{2}{3}\\% = \\frac{1}{15}$।\nचरण 2: मूल संख्या $= 15$ इकाई। $1$ घटाने पर $= 14$ इकाई।\nचरण 3: $14\\text{ इकाई} = 5670 \\implies 1\\text{ इकाई} = 405$।\nचरण 4: मूल संख्या $= 15 \\times 405 = 6075$।',
+        trick: 'Direct Ratio: $5670 \\times \\frac{15}{14} = 405 \\times 15 = 6075$ in one step!'
+      },
+      {
+        id: 'cn_perc_c1_3',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 1',
+        question_en: 'If $A$\'s salary is $25\\%$ more than $B$\'s salary, by what percent is $B$\'s salary less than $A$\'s salary?',
+        question_hi: 'यदि $A$ का वेतन $B$ के वेतन से $25\\%$ अधिक है, तो $B$ का वेतन $A$ के वेतन से कितने प्रतिशत कम है?',
+        options_en: ['$25\\%$', '$20\\%$', '$16.67\\%$', '$15\\%$'],
+        options_hi: ['$25\\%$', '$20\\%$', '$16.67\\%$', '$15\\%$'],
+        correct: 1,
+        solution_en: 'Step 1: $25\\% = \\frac{1}{4}$. Let $B = 4$, then $A = 4 + 1 = 5$.\nStep 2: Difference $= 5 - 4 = 1$.\nStep 3: Required percentage less $= \\frac{1}{5} \\times 100 = 20\\%$.',
+        solution_hi: 'चरण 1: $25\\% = \\frac{1}{4}$। माना $B = 4$, तो $A = 5$।\nचरण 2: अंतर $= 1$।\nचरण 3: कमी प्रतिशत $= \\frac{1}{5} \\times 100 = 20\\%$।',
+        trick: 'AB Rule: If $+\\frac{x}{y}$ is more, then less is $-\\frac{x}{y+x}$. Here $+\\frac{1}{4} \\to -\\frac{1}{5} = 20\\%$!'
+      },
+
+      // ==================== CLASS NOTES: PERCENTAGE — CLASS 2 ====================
+      {
+        id: 'cn_perc_c2_1',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 2',
+        question_en: 'The price of sugar is first increased by $20\\%$ and then decreased by $20\\%$. Find the net percentage change in the price.',
+        question_hi: 'चीनी के मूल्य में पहले $20\\%$ की वृद्धि की जाती है और फिर $20\\%$ की कमी की जाती है। मूल्य में शुद्ध प्रतिशत परिवर्तन ज्ञात कीजिए।',
+        options_en: ['No change', '$4\\%$ increase', '$4\\%$ decrease', '$2\\%$ decrease'],
+        options_hi: ['कोई परिवर्तन नहीं', '$4\\%$ वृद्धि', '$4\\%$ कमी', '$2\\%$ कमी'],
+        correct: 2,
+        solution_en: 'Step 1: Let initial price $= 100$.\nStep 2: After $20\\%$ rise: $100 \\to 120$.\nStep 3: After $20\\%$ fall: $120 \\times 0.8 = 96$.\nStep 4: Net change $= 96 - 100 = -4 \\implies 4\\%$ decrease.',
+        solution_hi: 'चरण 1: माना प्रारंभिक मूल्य $= 100$।\nचरण 2: $20\\%$ वृद्धि के बाद $= 120$।\nचरण 3: $20\\%$ कमी के बाद $= 120 \\times \\frac{80}{100} = 96$।\nचरण 4: शुद्ध कमी $= 4\\%$।',
+        trick: 'Same $x\\%$ increase & $x\\%$ decrease ALWAYS causes a loss of $\\frac{x^2}{100}\\% = \\frac{20^2}{100} = 4\\%$ decrease.'
+      },
+      {
+        id: 'cn_perc_c2_2',
+        category: 'class_notes',
+        chapter: 'Percentage',
+        set: 'Class 2',
+        question_en: 'The population of a town increases by $10\\%$ in the first year and $20\\%$ in the second year. If the present population is $10,000$, what will it be after $2$ years?',
+        question_hi: 'एक शहर की जनसंख्या पहले वर्ष में $10\\%$ और दूसरे वर्ष में $20\\%$ बढ़ती है। यदि वर्तमान जनसंख्या $10,000$ है, तो $2$ वर्ष बाद यह कितनी होगी?',
+        options_en: ['$13,000$', '$13,200$', '$12,800$', '$13,500$'],
+        options_hi: ['$13,000$', '$13,200$', '$12,800$', '$13,500$'],
+        correct: 1,
+        solution_en: 'Step 1: Net successive increase $= 10 + 20 + \\frac{10 \\times 20}{100} = 32\\%$.\nStep 2: Population after $2$ years $= 10000 \\times \\frac{132}{100} = 13,200$.',
+        solution_hi: 'चरण 1: कुल क्रमिक वृद्धि $= 10 + 20 + \\frac{10 \\times 20}{100} = 32\\%$।\nचरण 2: $2$ वर्ष बाद जनसंख्या $= 10000 \\times 1.32 = 13,200$।',
+        trick: 'Successive formula: $x + y + \\frac{xy}{100}$. Here $10 + 20 + 2 = 32\\%$ directly!'
+      },
+
+      // ==================== CLASS NOTES: RATIO & PROPORTION — CLASS 1 ====================
+      {
+        id: 'cn_ratio_c1_1',
+        category: 'class_notes',
+        chapter: 'Ratio & Proportion',
+        set: 'Class 1',
+        question_en: 'If $A : B = 2 : 3$ and $B : C = 4 : 5$, find the combined ratio $A : B : C$.',
+        question_hi: 'यदि $A : B = 2 : 3$ और $B : C = 4 : 5$ है, तो संयुक्त अनुपात $A : B : C$ ज्ञात कीजिए।',
+        options_en: ['$8 : 12 : 15$', '$6 : 12 : 15$', '$8 : 10 : 15$', '$2 : 4 : 5$'],
+        options_hi: ['$8 : 12 : 15$', '$6 : 12 : 15$', '$8 : 10 : 15$', '$2 : 4 : 5$'],
+        correct: 0,
+        solution_en: 'Step 1: Common term is $B$ ($3$ and $4$). LCM of $3$ and $4$ is $12$.\nStep 2: Multiply $A:B$ by $4 \\implies 8 : 12$.\nStep 3: Multiply $B:C$ by $3 \\implies 12 : 15$.\nStep 4: Combined ratio $A : B : C = 8 : 12 : 15$.',
+        solution_hi: 'चरण 1: उभयनिष्ठ पद $B$ ($3$ और $4$) है। इनका LCM $= 12$।\nचरण 2: $A:B$ को $4$ से गुणा करने पर $= 8 : 12$।\nचरण 3: $B:C$ को $3$ से गुणा करने पर $= 12 : 15$।\nचरण 4: $A : B : C = 8 : 12 : 15$।',
+        trick: 'Reverse N-Method (उल्टा N): $(2\\times4) : (3\\times4) : (3\\times5) = 8 : 12 : 15$ in 3 seconds!'
+      },
+      {
+        id: 'cn_ratio_c1_2',
+        category: 'class_notes',
+        chapter: 'Ratio & Proportion',
+        set: 'Class 1',
+        question_en: 'Find the mean proportional between $9$ and $16$.',
+        question_hi: '$9$ और $16$ के बीच मध्यानुपाती (mean proportional) ज्ञात कीजिए।',
+        options_en: ['$11$', '$12$', '$12.5$', '$14$'],
+        options_hi: ['$11$', '$12$', '$12.5$', '$14$'],
+        correct: 1,
+        solution_en: 'Step 1: Mean proportional between $a$ and $b$ is $\\sqrt{a \\times b}$.\nStep 2: $\\sqrt{9 \\times 16} = \\sqrt{144} = 12$.',
+        solution_hi: 'चरण 1: $a$ और $b$ का मध्यानुपाती $= \\sqrt{a \\times b}$।\nचरण 2: $\\sqrt{9 \\times 16} = 3 \\times 4 = 12$।',
+        trick: 'Take square roots separately first: $\\sqrt{9} \\times \\sqrt{16} = 3 \\times 4 = 12$ — saves multiplication!'
+      },
+
+      // ==================== DPP: PERCENTAGE — DPP 1 ====================
+      {
+        id: 'dpp_perc_1_1',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 1',
+        question_en: 'If $20\\%$ of $A = 30\\%$ of $B$, then what is $A : B$?',
+        question_hi: 'यदि $A$ का $20\\% = B$ का $30\\%$ है, तो $A : B$ क्या होगा?',
+        options_en: ['$2 : 3$', '$3 : 2$', '$1 : 2$', '$4 : 3$'],
+        options_hi: ['$2 : 3$', '$3 : 2$', '$1 : 2$', '$4 : 3$'],
+        correct: 1,
+        solution_en: 'Step 1: $\\frac{20}{100}A = \\frac{30}{100}B \\implies 2A = 3B$.\nStep 2: $\\frac{A}{B} = \\frac{3}{2} \\implies A : B = 3 : 2$.',
+        solution_hi: 'चरण 1: $20\\% \\times A = 30\\% \\times B \\implies 2A = 3B$।\nचरण 2: $A : B = 3 : 2$।',
+        trick: 'Coefficients just swap places! $20A = 30B \\implies A : B = 30 : 20 = 3 : 2$.'
+      },
+      {
+        id: 'dpp_perc_1_2',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 1',
+        question_en: 'A student multiplied a number by $\\frac{3}{5}$ instead of $\\frac{5}{3}$. What is the percentage error in the calculation?',
+        question_hi: 'एक छात्र ने किसी संख्या को $\\frac{5}{3}$ के बजाय $\\frac{3}{5}$ से गुणा कर दिया। गणना में प्रतिशत त्रुटि क्या है?',
+        options_en: ['$44\\%$', '$54\\%$', '$64\\%$', '$34\\%$'],
+        options_hi: ['$44\\%$', '$54\\%$', '$64\\%$', '$34\\%$'],
+        correct: 2,
+        solution_en: 'Step 1: Let the number be LCM of denominators $(3, 5) = 15$.\nStep 2: Correct value $= 15 \\times \\frac{5}{3} = 25$.\nStep 3: Wrong value $= 15 \\times \\frac{3}{5} = 9$.\nStep 4: Error $\\% = \\frac{25 - 9}{25} \\times 100 = \\frac{16}{25} \\times 100 = 64\\%$.',
+        solution_hi: 'चरण 1: माना संख्या $= \\text{LCM}(3,5) = 15$।\nचरण 2: सही मान $= 15 \\times \\frac{5}{3} = 25$।\nचरण 3: गलत मान $= 15 \\times \\frac{3}{5} = 9$।\nचरण 4: त्रुटि $\\% = \\frac{16}{25} \\times 100 = 64\\%$।',
+        trick: 'Cross multiply! Correct $= 5\\times5 = 25$, Wrong $= 3\\times3 = 9$. Error $= \\frac{16}{25} = 64\\%$!'
+      },
+      {
+        id: 'dpp_perc_1_3',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 1',
+        question_en: 'In an examination, a student needs $40\\%$ marks to pass. Rahul gets $178$ marks and fails by $22$ marks. Find the maximum marks.',
+        question_hi: 'एक परीक्षा में उत्तीर्ण होने के लिए $40\\%$ अंक चाहिए। राहुल को $178$ अंक मिले और वह $22$ अंकों से अनुत्तीर्ण हो गया। अधिकतम अंक ज्ञात कीजिए।',
+        options_en: ['$400$', '$450$', '$500$', '$600$'],
+        options_hi: ['$400$', '$450$', '$500$', '$600$'],
+        correct: 2,
+        solution_en: 'Step 1: Passing marks $= 178 + 22 = 200$.\nStep 2: Given $40\\% = 200 \\implies 1\\% = 5$.\nStep 3: Maximum marks ($100\\%$) $= 5 \\times 100 = 500$.',
+        solution_hi: 'चरण 1: उत्तीर्ण अंक $= 178 + 22 = 200$।\nचरण 2: $40\\% = 200 \\implies 1\\% = 5$।\nचरण 3: अधिकतम अंक $= 100\\% = 500$।',
+        trick: '$40\\% = \\frac{2}{5}$. If $2$ units $= 200$, then $5$ units $= 500$ mentally!'
+      },
+
+      // ==================== DPP: PERCENTAGE — DPP 2 ====================
+      {
+        id: 'dpp_perc_2_1',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 2',
+        question_en: 'If the price of petrol rises by $25\\%$, by how much percent should a person reduce consumption so that expenditure remains unchanged?',
+        question_hi: 'यदि पेट्रोल के मूल्य में $25\\%$ की वृद्धि हो जाती है, तो एक व्यक्ति को खपत में कितने प्रतिशत की कमी करनी चाहिए ताकि खर्च अपरिवर्तित रहे?',
+        options_en: ['$25\\%$', '$20\\%$', '$16.67\\%$', '$15\\%$'],
+        options_hi: ['$25\\%$', '$20\\%$', '$16.67\\%$', '$15\\%$'],
+        correct: 1,
+        solution_en: 'Step 1: $25\\% = \\frac{1}{4}$. Price ratio $= 4 : 5$.\nStep 2: For constant expenditure, Consumption ratio $= 5 : 4$.\nStep 3: Reduction $= \\frac{5 - 4}{5} \\times 100 = 20\\%$.',
+        solution_hi: 'चरण 1: $25\\% = \\frac{1}{4}$। मूल्य अनुपात $= 4 : 5$।\nचरण 2: खपत अनुपात $= 5 : 4$।\nचरण 3: कमी $= \\frac{1}{5} \\times 100 = 20\\%$।',
+        trick: 'Constant Expenditure Rule: Price $+\\frac{1}{4} \\implies$ Consumption $-\\frac{1}{4+1} = -\\frac{1}{5} = 20\\%$.'
+      },
+      {
+        id: 'dpp_perc_2_2',
+        category: 'dpp',
+        chapter: 'Percentage',
+        set: 'DPP 2',
+        question_en: 'In an election between two candidates, the winner got $60\\%$ of total valid votes and won by $1600$ votes. Find the total number of valid votes.',
+        question_hi: 'दो उम्मीदवारों के बीच हुए चुनाव में विजेता को कुल वैध मतों का $60\\%$ मिला और वह $1600$ मतों से जीत गया। कुल वैध मतों की संख्या ज्ञात कीजिए।',
+        options_en: ['$6000$', '$7500$', '$8000$', '$9000$'],
+        options_hi: ['$6000$', '$7500$', '$8000$', '$9000$'],
+        correct: 2,
+        solution_en: 'Step 1: Winner $= 60\\%$, so Loser $= 100\\% - 60\\% = 40\\%$.\nStep 2: Margin of victory $= 60\\% - 40\\% = 20\\%$.\nStep 3: $20\\% = 1600 \\implies 100\\% = 1600 \\times 5 = 8000$.',
+        solution_hi: 'चरण 1: विजेता $= 60\\%$, हारने वाला $= 40\\%$।\nचरण 2: जीत का अंतर $= 20\\%$।\nचरण 3: $20\\% = 1600 \\implies 100\\% = 1600 \\times 5 = 8000$।',
+        trick: '$20\\% = \\frac{1}{5}$, so total votes $= 5 \\times 1600 = 8000$ directly!'
+      },
+
+      // ==================== DPP: RATIO & PROPORTION — DPP 1 ====================
+      {
+        id: 'dpp_ratio_1_1',
+        category: 'dpp',
+        chapter: 'Ratio & Proportion',
+        set: 'DPP 1',
+        question_en: 'A sum of $₹1200$ is divided among $A, B,$ and $C$ in the ratio $2 : 3 : 5$. What is $C$\'s share?',
+        question_hi: '$₹1200$ की राशि को $A, B$ और $C$ के बीच $2 : 3 : 5$ के अनुपात में बाँटा गया है। $C$ का हिस्सा कितना है?',
+        options_en: ['$₹240$', '$₹360$', '$₹500$', '$₹600$'],
+        options_hi: ['$₹240$', '$₹360$', '$₹500$', '$₹600$'],
+        correct: 3,
+        solution_en: 'Step 1: Total units $= 2 + 3 + 5 = 10$.\nStep 2: $10\\text{ units} = ₹1200 \\implies 1\\text{ unit} = ₹120$.\nStep 3: $C$\'s share $= 5 \\times 120 = ₹600$.',
+        solution_hi: 'चरण 1: कुल अनुपात $= 2 + 3 + 5 = 10$ इकाई।\nचरण 2: $10\\text{ इकाई} = ₹1200 \\implies 1\\text{ इकाई} = ₹120$।\nचरण 3: $C$ का हिस्सा $= 5 \\times 120 = ₹600$।',
+        trick: '$C$ gets $5$ out of $10$ parts = exactly half! Half of $₹1200 = ₹600$.'
+      },
+      {
+        id: 'dpp_ratio_1_2',
+        category: 'dpp',
+        chapter: 'Ratio & Proportion',
+        set: 'DPP 1',
+        question_en: 'Two numbers are in the ratio $3 : 5$. If $9$ is subtracted from each, the new ratio becomes $12 : 23$. Find the smaller number.',
+        question_hi: 'दो संख्याएँ $3 : 5$ के अनुपात में हैं। यदि प्रत्येक में से $9$ घटा दिया जाए, तो नया अनुपात $12 : 23$ हो जाता है। छोटी संख्या ज्ञात कीजिए।',
+        options_en: ['$27$', '$33$', '$45$', '$55$'],
+        options_hi: ['$27$', '$33$', '$45$', '$55$'],
+        correct: 1,
+        solution_en: 'Step 1: Let numbers be $3x$ and $5x$.\nStep 2: $\\frac{3x - 9}{5x - 9} = \\frac{12}{23} \\implies 69x - 207 = 60x - 108$.\nStep 3: $9x = 99 \\implies x = 11$.\nStep 4: Smaller number $= 3x = 3 \\times 11 = 33$.',
+        solution_hi: 'चरण 1: माना संख्याएँ $3x$ और $5x$ हैं।\nचरण 2: $\\frac{3x - 9}{5x - 9} = \\frac{12}{23} \\implies 69x - 207 = 60x - 108$।\nचरण 3: $9x = 99 \\implies x = 11$।\nचरण 4: छोटी संख्या $= 3 \\times 11 = 33$।',
+        trick: 'Difference Equating: Diff of $(3,5) = 2$ and $(12,23) = 11$. Multiply $(3:5)$ by $11 \\to 33:55$, and $(12:23)$ by $2 \\to 24:46$. Drop $= 9$ units $= 9 \\implies$ Smaller $= 33$!'
+      }
+    ];
+
+    /* =========================================================================
+       3. STATE MANAGEMENT & PERSISTENCE
+    ========================================================================= */
+    let allItems = [];
+    let isLiveGitHubData = false;
+
+    let userProgress = {
+      streak: 1,
+      lastActiveDate: getTodayStr(),
+      solvedDppIds: [],
+      totalAttempts: 0,
+      totalCorrect: 0,
+      testsCompleted: 0,
+      bookmarkedIds: [],
+      revisedNoteIds: [],
+      mistakeIds: []
+    };
+
+    // Navigation & View Filters
+    let currentTab = 'home';
+    let currentLang = 'both'; // 'en' | 'hi' | 'both'
+    let pendingNavTab = null;
+
+    // Class Notes State
+    let notesSelectedChapter = '';
+    let notesSelectedSet = 'All';
+    let hideSolutions = false;
+
+    // DPP Lobby State
+    let dppSelectedChapter = '';
+
+    // Test Setup Modal State
+    let setupConfig = {
+      title: '',
+      chapter: '',
+      set: '',
+      questions: [],
+      timerMode: 'sectional', // 'free' | 'sectional'
+      sectionalMinutes: 15,
+      markingScheme: 'ssc' // 'ssc' (+2/-0.5) | 'simple' (+1/0)
+    };
+
+    // Active Live CBT Test State
+    let liveTest = {
+      active: false,
+      title: '',
+      chapter: '',
+      set: '',
+      timerMode: 'sectional',
+      sectionalSecondsTotal: 900,
+      markingScheme: 'ssc',
+      questions: [],
+      currentIndex: 0,
+      answers: [],          // null or 0..3 per question
+      marked: [],           // boolean per question
+      visited: [],          // boolean per question
+      questionTimes: [],    // accumulated exact seconds (float) per question
+      activeQStartTime: 0,  // Date.now() when current question became active
+      testStartTime: 0,     // Date.now() when test started
+      totalElapsedSec: 0,
+      timerIntervalId: null,
+      showPerQTimer: true
+    };
+
+    // Last Completed Test Analysis State
+    let lastAnalysis = null;
+    let analysisFilter = 'all'; // 'all' | 'correct' | 'wrong' | 'skipped'
+    let analysisSortSlowest = false;
+
+    // Saved Tab State
+    let savedSubTab = 'bookmarks';
+
+    function getTodayStr() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const p = JSON.parse(raw);
+          userProgress = {
+            streak: p.streak || 1,
+            lastActiveDate: p.lastActiveDate || getTodayStr(),
+            solvedDppIds: Array.isArray(p.solvedDppIds) ? p.solvedDppIds : [],
+            totalAttempts: p.totalAttempts || 0,
+            totalCorrect: p.totalCorrect || 0,
+            testsCompleted: p.testsCompleted || 0,
+            bookmarkedIds: Array.isArray(p.bookmarkedIds) ? p.bookmarkedIds : [],
+            revisedNoteIds: Array.isArray(p.revisedNoteIds) ? p.revisedNoteIds : [],
+            mistakeIds: Array.isArray(p.mistakeIds) ? p.mistakeIds : []
+          };
+          updateStreakCheck();
+        } else {
+          saveProgress();
+        }
+      } catch (e) {
+        console.warn('Progress load error:', e);
+      }
+    }
+
+    function updateStreakCheck() {
+      const today = getTodayStr();
+      if (userProgress.lastActiveDate !== today) {
+        const prev = new Date(userProgress.lastActiveDate);
+        const curr = new Date(today);
+        const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+        userProgress.streak = diff === 1 ? userProgress.streak + 1 : 1;
+        userProgress.lastActiveDate = today;
+        saveProgress();
+      }
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+      } catch (e) {
+        console.warn('Progress save error:', e);
+      }
+    }
+
+    /* =========================================================================
+       4. DATA NORMALIZER & GITHUB JSON AUTO-LOADER
+       Handles the exact schema + gracefully normalizes any optional fields.
+    ========================================================================= */
+    function normalizeItem(raw, idx) {
+      const cat = (raw.category || 'dpp').toLowerCase().trim();
+      const defaultSet = cat === 'class_notes' ? 'Class 1' : 'DPP 1';
+      const optsEn = Array.isArray(raw.options_en) ? raw.options_en : (Array.isArray(raw.options) ? raw.options : ['A', 'B', 'C', 'D']);
+      const optsHi = Array.isArray(raw.options_hi) ? raw.options_hi : optsEn;
+      const correctIdx = typeof raw.correct === 'number' ? raw.correct : (typeof raw.answer === 'number' ? raw.answer : 0);
+
+      return {
+        id: raw.id || `item_${idx}_${Date.now()}`,
+        category: cat,
+        chapter: (raw.chapter || 'General').trim(),
+        set: (raw.set || defaultSet).trim(),
+        question_en: raw.question_en || '',
+        question_hi: raw.question_hi || '',
+        options_en: optsEn,
+        options_hi: optsHi,
+        correct: correctIdx,
+        solution_en: raw.solution_en || raw.solution || '',
+        solution_hi: raw.solution_hi || '',
+        trick: raw.trick || ''
+      };
+    }
+
+    async function fetchMathData(isManual = false) {
+      const icon = document.getElementById('refreshIcon');
+      if (icon && isManual) icon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch(`${GITHUB_JSON_URL}?t=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) throw new Error('Empty JSON');
+
+        allItems = data.map((item, i) => normalizeItem(item, i));
+        isLiveGitHubData = true;
+        updateDataSourceBadge(true);
+        if (isManual) showToast(`Synced ${allItems.length} questions from GitHub!`, 'success');
+      } catch (err) {
+        allItems = FALLBACK_SAMPLE_DATA.map((item, i) => normalizeItem(item, i));
+        isLiveGitHubData = false;
+        updateDataSourceBadge(false);
+        if (isManual) showToast('Using Demo Data (math_data.json not found yet)', 'info');
+      } finally {
+        if (icon) setTimeout(() => icon.classList.remove('animate-spin'), 350);
+        ensureDefaultSelections();
+        refreshAllViews();
+      }
+    }
+
+    function updateDataSourceBadge(isLive) {
+      const badge = document.getElementById('dataSourceBadge');
+      if (!badge) return;
+      if (isLive) {
+        badge.className = 'inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80';
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Live GitHub`;
+      } else {
+        badge.className = 'inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200/80';
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Demo Data`;
+      }
+    }
+
+    function ensureDefaultSelections() {
+      const noteChapters = getChaptersForCategory('class_notes');
+      if (!noteChapters.includes(notesSelectedChapter)) {
+        notesSelectedChapter = noteChapters[0] || '';
+        notesSelectedSet = 'All';
+      }
+      const dppChapters = getChaptersForCategory('dpp');
+      if (!dppChapters.includes(dppSelectedChapter)) {
+        dppSelectedChapter = dppChapters[0] || '';
+      }
+    }
+
+    /* =========================================================================
+       5. HELPERS: NATURAL SET SORTING, FORMATTING, KATEX, TOASTS
+    ========================================================================= */
+    function naturalCompare(a, b) {
+      return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' });
+    }
+
+    function getClassNotes() {
+      return allItems.filter(i => i.category === 'class_notes');
+    }
+
+    function getDppItems() {
+      return allItems.filter(i => i.category === 'dpp');
+    }
+
+    function getChaptersForCategory(cat) {
+      const items = allItems.filter(i => i.category === cat);
+      return [...new Set(items.map(i => i.chapter).filter(Boolean))];
+    }
+
+    function getSetsForChapter(cat, chapter) {
+      const items = allItems.filter(i => i.category === cat && i.chapter === chapter);
+      return [...new Set(items.map(i => i.set).filter(Boolean))].sort(naturalCompare);
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatMultiline(str) {
+      return escapeHtml(str || '').replace(/\n/g, '<br>');
+    }
+
+    function formatClockMMSS(totalSeconds) {
+      const sec = Math.max(0, Math.floor(totalSeconds));
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function formatDurationCompact(seconds) {
+      const s = Math.max(0, Math.round(seconds));
+      if (s < 60) return `${s}s`;
+      const m = Math.floor(s / 60);
+      const rem = s % 60;
+      return rem === 0 ? `${m}m` : `${m}m ${rem}s`;
+    }
+
+    function renderKaTeX(el) {
+      if (!el || typeof window.renderMathInElement !== 'function') return;
+      try {
+        window.renderMathInElement(el, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true }
+          ],
+          throwOnError: false
+        });
+      } catch (e) {
+        console.warn('KaTeX warning:', e);
+      }
+    }
+
+    function refreshIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    function showToast(msg, type = 'success') {
+      const stack = document.getElementById('toastStack');
+      const div = document.createElement('div');
+      const cls = {
+        success: 'bg-white border-emerald-200 text-emerald-800',
+        error: 'bg-white border-rose-200 text-rose-800',
+        info: 'bg-white border-indigo-200 text-indigo-800'
+      };
+      const ico = { success: 'check-circle-2', error: 'alert-circle', info: 'info' };
+      const icoColor = { success: 'text-emerald-500', error: 'text-rose-500', info: 'text-indigo-500' };
+
+      div.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-md text-xs sm:text-sm font-semibold transition-all duration-300 ${cls[type] || cls.info}`;
+      div.innerHTML = `<i data-lucide="${ico[type] || 'info'}" class="w-4 h-4 shrink-0 ${icoColor[type] || 'text-indigo-500'}"></i><span>${escapeHtml(msg)}</span>`;
+      stack.appendChild(div);
+      refreshIcons();
+
+      setTimeout(() => {
+        div.style.opacity = '0';
+        div.style.transform = 'translateX(10px)';
+        setTimeout(() => div.remove(), 300);
+      }, 2800);
+    }
+
+    /* Bilingual Content Builders */
+    function buildQuestionHtml(item) {
+      let html = '';
+      if ((currentLang === 'both' || currentLang === 'en') && item.question_en) {
+        html += `<p class="text-[15px] sm:text-base font-semibold text-slate-900 leading-relaxed">${escapeHtml(item.question_en)}</p>`;
+      }
+      if ((currentLang === 'both' || currentLang === 'hi') && item.question_hi) {
+        html += `<p class="font-hindi text-[15px] sm:text-base ${currentLang === 'both' ? 'text-slate-600 font-medium' : 'text-slate-900 font-semibold'} leading-relaxed">${escapeHtml(item.question_hi)}</p>`;
+      }
+      return html;
+    }
+
+    function buildOptionTextHtml(item, optIdx) {
+      const en = item.options_en?.[optIdx] ?? '';
+      const hi = item.options_hi?.[optIdx] ?? en;
+      if (currentLang === 'en') return `<span>${escapeHtml(String(en))}</span>`;
+      if (currentLang === 'hi') return `<span class="font-hindi">${escapeHtml(String(hi))}</span>`;
+      // Both: avoid duplicating if identical (e.g. "$4200$")
+      if (String(en).trim() === String(hi).trim()) {
+        return `<span>${escapeHtml(String(en))}</span>`;
+      }
+      return `<span>${escapeHtml(String(en))} <span class="text-slate-400 mx-1">/</span> <span class="font-hindi">${escapeHtml(String(hi))}</span></span>`;
+    }
+
+    function buildSolutionHtml(item) {
+      let html = '';
+      if ((currentLang === 'both' || currentLang === 'en') && item.solution_en) {
+        html += `<div class="text-sm text-slate-700 leading-relaxed">${formatMultiline(item.solution_en)}</div>`;
+      }
+      if ((currentLang === 'both' || currentLang === 'hi') && item.solution_hi) {
+        html += `<div class="font-hindi text-sm ${currentLang === 'both' && item.solution_en ? 'text-slate-600 pt-2 mt-2 border-t border-slate-200/70' : 'text-slate-700'} leading-relaxed">${formatMultiline(item.solution_hi)}</div>`;
+      }
+      if (!html) {
+        html = `<div class="text-xs text-slate-400 italic">No detailed solution provided.</div>`;
+      }
+      return html;
+    }
+
+    /* =========================================================================
+       6. NAVIGATION & GLOBAL LANGUAGE SWITCHER
+    ========================================================================= */
+    function requestTabSwitch(tab) {
+      if (liveTest.active && tab !== 'dpp') {
+        pendingNavTab = tab;
+        document.getElementById('leaveTestModal').classList.remove('hidden');
+        refreshIcons();
+        return;
+      }
+      switchTab(tab);
+    }
+
+    function closeLeaveTestModal() {
+      pendingNavTab = null;
+      document.getElementById('leaveTestModal').classList.add('hidden');
+    }
+
+    function confirmLeaveLiveTest() {
+      const target = pendingNavTab || 'home';
+      closeLeaveTestModal();
+      stopLiveTestInternal();
+      switchTab(target);
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      ['home', 'notes', 'dpp', 'saved'].forEach(t => {
+        document.getElementById(`view-${t}`)?.classList.toggle('hidden', t !== tab);
+      });
+
+      document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
+        const active = btn.dataset.nav === tab;
+        btn.className = active
+          ? 'desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-bold bg-white text-indigo-600 shadow-xs transition-all'
+          : 'desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all';
+      });
+
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        const active = btn.dataset.nav === tab;
+        btn.className = active
+          ? 'mobile-nav-btn relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-indigo-600 bg-indigo-50 transition-all'
+          : 'mobile-nav-btn relative flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-slate-500 transition-all';
+      });
+
+      if (tab === 'home') renderDashboard();
+      if (tab === 'notes') renderClassNotesTab();
+      if (tab === 'dpp' && !liveTest.active) {
+        if (lastAnalysis && !document.getElementById('dppAnalysisScreen').classList.contains('hidden')) {
+          renderAnalysisScreen();
+        } else {
+          showDppLobby();
+        }
+      }
+      if (tab === 'saved') renderSavedView();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      updateLanguageButtons();
+
+      // Immediately re-render whichever view is currently visible
+      if (currentTab === 'notes') renderClassNotesList();
+      if (currentTab === 'dpp') {
+        if (liveTest.active) renderLiveQuestion();
+        else if (!document.getElementById('dppAnalysisScreen').classList.contains('hidden') && lastAnalysis) {
+          renderAnalysisReviewList();
+        }
+      }
+      if (currentTab === 'saved') renderSavedView();
+    }
+
+    function updateLanguageButtons() {
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        const active = btn.dataset.lang === currentLang;
+        btn.className = active
+          ? 'lang-btn px-2 sm:px-2.5 py-1 rounded-lg bg-white text-indigo-600 shadow-xs font-extrabold transition-all'
+          : 'lang-btn px-2 sm:px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-800 font-semibold transition-all';
+      });
+    }
+
+    function updateHeaderBadges() {
+      const validIds = new Set(allItems.map(i => i.id));
+      const activeMistakes = userProgress.mistakeIds.filter(id => validIds.has(id));
+
+      const pill = document.getElementById('navMistakePill');
+      const dot = document.getElementById('mobileMistakeDot');
+      if (pill) {
+        pill.textContent = activeMistakes.length;
+        pill.classList.toggle('hidden', activeMistakes.length === 0);
+      }
+      if (dot) {
+        dot.classList.toggle('hidden', activeMistakes.length === 0);
+      }
+    }
+
+    function refreshAllViews() {
+      updateHeaderBadges();
+      updateLanguageButtons();
+      renderDashboard();
+      renderClassNotesTab();
+      if (!liveTest.active) showDppLobby();
+      renderSavedView();
+    }
+
+    /* =========================================================================
+       7. HOME (DASHBOARD)
+    ========================================================================= */
+    function renderDashboard() {
+      updateHeaderBadges();
+      const notes = getClassNotes();
+      const dpps = getDppItems();
+      const validDppIds = new Set(dpps.map(d => d.id));
+      const validAllIds = new Set(allItems.map(i => i.id));
+
+      const uniqueNoteSets = new Set(notes.map(n => `${n.chapter}__${n.set}`)).size;
+      const uniqueDppSets = new Set(dpps.map(d => `${d.chapter}__${d.set}`)).size;
+      const solvedCount = userProgress.solvedDppIds.filter(id => validDppIds.has(id)).length;
+      const mistakeCount = userProgress.mistakeIds.filter(id => validAllIds.has(id)).length;
+      const accuracy = userProgress.totalAttempts > 0
+        ? Math.round((userProgress.totalCorrect / userProgress.totalAttempts) * 100)
+        : 0;
+
+      document.getElementById('heroStreakCount').textContent = userProgress.streak;
+      document.getElementById('statNotesCount').textContent = notes.length;
+      document.getElementById('statNotesSets').textContent = `${uniqueNoteSets} class sets synced`;
+      document.getElementById('statDppSolved').textContent = solvedCount;
+      document.getElementById('statDppTotal').textContent = `/${dpps.length}`;
+      document.getElementById('statDppSets').textContent = `${uniqueDppSets} DPP sets ready`;
+      document.getElementById('statAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('statTestsTaken').textContent = `${userProgress.testsCompleted} tests completed`;
+      document.getElementById('statMistakeCount').textContent = mistakeCount;
+
+      // Chapters Auto-Detected Grid
+      const grid = document.getElementById('chapterProgressGrid');
+      const allChapters = [...new Set(allItems.map(i => i.chapter).filter(Boolean))];
+
+      if (allChapters.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-6 text-center text-sm text-slate-500">No chapters found in JSON yet.</div>`;
+        return;
+      }
+
+      grid.innerHTML = allChapters.map(ch => {
+        const chNoteSets = getSetsForChapter('class_notes', ch);
+        const chDppSets = getSetsForChapter('dpp', ch);
+        const chDppQs = dpps.filter(d => d.chapter === ch);
+        const chSolved = chDppQs.filter(d => userProgress.solvedDppIds.includes(d.id)).length;
+        const pct = chDppQs.length > 0 ? Math.round((chSolved / chDppQs.length) * 100) : 0;
+
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs hover:border-indigo-300 transition-all flex flex-col justify-between gap-3.5">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-900">${escapeHtml(ch)}</h3>
+                <span class="text-xs font-extrabold text-slate-400">${pct}%</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5 mt-2 text-[11px] font-bold">
+                <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700">${chNoteSets.length} Classes</span>
+                <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700">${chDppSets.length} DPPs (${chDppQs.length} Qs)</span>
+              </div>
+            </div>
+
+            <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="jumpToChapterNotes('${escapeHtml(ch)}')" class="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 text-xs font-bold transition-colors">
+                Open Notes
+              </button>
+              <button onclick="jumpToChapterDpp('${escapeHtml(ch)}')" class="flex-1 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white text-xs font-bold transition-colors">
+                DPP Sets
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function jumpToChapterNotes(ch) {
+      notesSelectedChapter = ch;
+      notesSelectedSet = 'All';
+      switchTab('notes');
+    }
+
+    function jumpToChapterDpp(ch) {
+      dppSelectedChapter = ch;
+      switchTab('dpp');
+      showDppLobby();
+    }
+
+    function openSavedSubTab(sub) {
+      savedSubTab = sub;
+      switchTab('saved');
+    }
+
+    /* =========================================================================
+       8. CLASS NOTES TAB (Dynamic Chapter -> Automatic Class 1 / 2 / 3 Separation)
+    ========================================================================= */
+    function renderClassNotesTab() {
+      const chapters = getChaptersForCategory('class_notes');
+      if (!chapters.includes(notesSelectedChapter)) {
+        notesSelectedChapter = chapters[0] || '';
+        notesSelectedSet = 'All';
+      }
+
+      // Row 1: Chapter Pills
+      const chPills = document.getElementById('notesChapterPills');
+      if (chapters.length === 0) {
+        chPills.innerHTML = `<span class="text-xs text-slate-400">No class notes chapters yet.</span>`;
+        document.getElementById('notesSetPills').innerHTML = '';
+        renderClassNotesList();
+        return;
+      }
+
+      chPills.innerHTML = chapters.map(ch => {
+        const count = getClassNotes().filter(n => n.chapter === ch).length;
+        const active = notesSelectedChapter === ch;
+        return `
+          <button onclick="selectNotesChapter('${escapeHtml(ch)}')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
+            active
+              ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+              : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+          }">
+            <span>${escapeHtml(ch)}</span>
+            <span class="px-1.5 py-0.5 rounded-md text-[10px] ${active ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}">${count}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Row 2: Automatically Separated Class/Set Pills for Selected Chapter
+      const sets = getSetsForChapter('class_notes', notesSelectedChapter);
+      if (notesSelectedSet !== 'All' && !sets.includes(notesSelectedSet)) {
+        notesSelectedSet = 'All';
+      }
+
+      const chapterNotes = getClassNotes().filter(n => n.chapter === notesSelectedChapter);
+      const setPills = document.getElementById('notesSetPills');
+      const allBtnHtml = `
+        <button onclick="selectNotesSet('All')" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+          notesSelectedSet === 'All'
+            ? 'bg-slate-900 text-white border-slate-900'
+            : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-400'
+        }">
+          <span>All</span>
+          <span class="px-1.5 py-0.5 rounded-full text-[10px] ${notesSelectedSet === 'All' ? 'bg-slate-700 text-white' : 'bg-white text-slate-500'}">${chapterNotes.length}</span>
+        </button>
+      `;
+
+      const perSetHtml = sets.map(setName => {
+        const count = chapterNotes.filter(n => n.set === setName).length;
+        const active = notesSelectedSet === setName;
+        return `
+          <button onclick="selectNotesSet('${escapeHtml(setName)}')" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+            active
+              ? 'bg-indigo-100 text-indigo-800 border-indigo-400'
+              : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+          }">
+            <span>${escapeHtml(setName)}</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-indigo-600 text-white' : 'bg-white text-slate-500'}">${count}</span>
+          </button>
+        `;
+      }).join('');
+
+      setPills.innerHTML = allBtnHtml + perSetHtml;
+      renderClassNotesList();
+    }
+
+    function selectNotesChapter(ch) {
+      notesSelectedChapter = ch;
+      notesSelectedSet = 'All';
+      renderClassNotesTab();
+    }
+
+    function selectNotesSet(setName) {
+      notesSelectedSet = setName;
+      renderClassNotesTab();
+    }
+
+    function toggleHideSolutions(checked) {
+      hideSolutions = checked;
+      renderClassNotesList();
+    }
+
+    function renderClassNotesList() {
+      const q = (document.getElementById('notesSearchInput')?.value || '').trim().toLowerCase();
+      const list = getClassNotes().filter(item => {
+        if (notesSelectedChapter && item.chapter !== notesSelectedChapter) return false;
+        if (notesSelectedSet !== 'All' && item.set !== notesSelectedSet) return false;
+        if (q) {
+          const hay = `${item.chapter} ${item.set} ${item.question_en} ${item.question_hi} ${item.solution_en} ${item.solution_hi} ${item.trick}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      const container = document.getElementById('classNotesContainer');
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
+            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+              <i data-lucide="book-open" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-bold text-slate-800">No Class Notes Found</h3>
+            <p class="text-xs text-slate-500">Try clearing your search or choosing another Class tab.</p>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      container.innerHTML = list.map((item, idx) => renderNoteCardHtml(item, idx, false)).join('');
+      refreshIcons();
+      renderKaTeX(container);
+    }
+
+    function renderNoteCardHtml(item, idx, forceShowSolutions = false, isMistakeBadge = false) {
+      const isBookmarked = userProgress.bookmarkedIds.includes(item.id);
+      const isRevised = userProgress.revisedNoteIds.includes(item.id);
+      const labels = ['A', 'B', 'C', 'D'];
+      const shouldHide = hideSolutions && !forceShowSolutions;
+      const solId = `note_sol_${item.id}_${idx}`;
+
+      const optionsHtml = [0, 1, 2, 3].map(i => {
+        const isCorrect = i === item.correct;
+        const highlight = !shouldHide && isCorrect;
+        return `
+          <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-sm ${
+            highlight
+              ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-semibold'
+              : 'bg-slate-50/70 border-slate-200/80 text-slate-700'
+          }">
+            <span class="w-6 h-6 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 ${
+              highlight ? 'bg-emerald-600 text-white' : 'bg-white border border-slate-200 text-slate-500'
+            }">${labels[i]}</span>
+            <div class="flex-1">${buildOptionTextHtml(item, i)}</div>
+            ${highlight ? `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>` : ''}
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <article class="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">${escapeHtml(item.chapter)}</span>
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">${escapeHtml(item.set)}</span>
+              <span class="text-[11px] font-bold px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-500">Q${idx + 1}</span>
+              ${isMistakeBadge ? `<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600">Mistake</span>` : ''}
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              ${item.category === 'class_notes' ? `
+                <button onclick="toggleRevisedNote('${item.id}')" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                  isRevised
+                    ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                    : 'bg-white border-slate-200 text-slate-500 hover:border-emerald-300 hover:text-emerald-600'
+                }">
+                  <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                  <span>${isRevised ? 'Revised' : 'Mark Revised'}</span>
+                </button>
+              ` : ''}
+              <button onclick="toggleBookmark('${item.id}')" class="w-8 h-8 rounded-xl border flex items-center justify-center transition-all ${
+                isBookmarked
+                  ? 'bg-indigo-50 border-indigo-300 text-indigo-600'
+                  : 'bg-white border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-600'
+              }" title="Bookmark">
+                <i data-lucide="bookmark" class="w-4 h-4 ${isBookmarked ? 'fill-indigo-600' : ''}"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">${buildQuestionHtml(item)}</div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optionsHtml}</div>
+
+          ${shouldHide ? `
+            <button onclick="revealSingleNoteSolution('${solId}', this)" class="w-full py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+              <span>Tap to Reveal Sir's Solution &amp; Correct Answer (${labels[item.correct]})</span>
+            </button>
+          ` : ''}
+
+          <div id="${solId}" class="${shouldHide ? 'hidden' : ''} space-y-3 pt-1">
+            <div class="rounded-xl bg-slate-50 border border-slate-200/90 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">
+                  <i data-lucide="file-check-2" class="w-4 h-4"></i>
+                  Sir's Step-by-Step Solution
+                </span>
+                <span class="text-xs font-extrabold text-emerald-700 bg-emerald-100/80 px-2.5 py-0.5 rounded-md">Answer: ${labels[item.correct]}</span>
+              </div>
+              ${buildSolutionHtml(item)}
+            </div>
+
+            ${item.trick ? `
+              <div class="rounded-xl bg-amber-50 border border-amber-200/90 p-4 space-y-1">
+                <div class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-800">
+                  <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600"></i>
+                  Short Trick / Key Concept
+                </div>
+                <div class="text-sm text-amber-950 leading-relaxed">${formatMultiline(item.trick)}</div>
+              </div>
+            ` : ''}
+          </div>
+        </article>
+      `;
+    }
+
+    function revealSingleNoteSolution(solId, btn) {
+      const panel = document.getElementById(solId);
+      if (panel) {
+        panel.classList.remove('hidden');
+        renderKaTeX(panel);
+      }
+      if (btn) btn.classList.add('hidden');
+    }
+
+    function toggleBookmark(id) {
+      const idx = userProgress.bookmarkedIds.indexOf(id);
+      if (idx === -1) {
+        userProgress.bookmarkedIds.push(id);
+        showToast('Saved to Bookmarks!', 'success');
+      } else {
+        userProgress.bookmarkedIds.splice(idx, 1);
+        showToast('Removed from Bookmarks.', 'info');
+      }
+      saveProgress();
+      if (currentTab === 'notes') renderClassNotesList();
+      if (currentTab === 'saved') renderSavedView();
+    }
+
+    function toggleRevisedNote(id) {
+      const idx = userProgress.revisedNoteIds.indexOf(id);
+      if (idx === -1) {
+        userProgress.revisedNoteIds.push(id);
+        showToast('Marked as Revised!', 'success');
+      } else {
+        userProgress.revisedNoteIds.splice(idx, 1);
+      }
+      saveProgress();
+      renderClassNotesList();
+      renderDashboard();
+    }
+
+    /* =========================================================================
+       9. DPP PRACTICE LOBBY & TEST SETUP MODAL
+    ========================================================================= */
+    function showDppLobby() {
+      document.getElementById('dppLobbyScreen').classList.remove('hidden');
+      document.getElementById('dppLiveTestScreen').classList.add('hidden');
+      document.getElementById('dppAnalysisScreen').classList.add('hidden');
+      document.getElementById('mobileBottomNav').classList.remove('hidden');
+
+      const validIds = new Set(allItems.map(i => i.id));
+      const activeMistakes = userProgress.mistakeIds.filter(id => validIds.has(id));
+      document.getElementById('lobbyMistakeCount').textContent = activeMistakes.length;
+
+      const chapters = getChaptersForCategory('dpp');
+      if (!chapters.includes(dppSelectedChapter)) {
+        dppSelectedChapter = chapters[0] || '';
+      }
+
+      // Render DPP Chapter Pills
+      const pillsEl = document.getElementById('dppChapterPills');
+      if (chapters.length === 0) {
+        pillsEl.innerHTML = `<span class="text-xs text-slate-400">No DPP chapters found yet.</span>`;
+        document.getElementById('dppSetsGrid').innerHTML = '';
+        return;
+      }
+
+      pillsEl.innerHTML = chapters.map(ch => {
+        const count = getDppItems().filter(d => d.chapter === ch).length;
+        const active = dppSelectedChapter === ch;
+        return `
+          <button onclick="selectDppChapter('${escapeHtml(ch)}')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
+            active
+              ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+              : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+          }">
+            <span>${escapeHtml(ch)}</span>
+            <span class="px-1.5 py-0.5 rounded-md text-[10px] ${active ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}">${count} Qs</span>
+          </button>
+        `;
+      }).join('');
+
+      // Render Automatically Separated DPP Set Cards + Full Chapter Mix
+      const sets = getSetsForChapter('dpp', dppSelectedChapter);
+      const chapterDpps = getDppItems().filter(d => d.chapter === dppSelectedChapter);
+
+      document.getElementById('dppSelectedChapterHeading').textContent = `${dppSelectedChapter} — DPP Sets`;
+      document.getElementById('dppSetCountLabel').textContent = `${sets.length} ${sets.length === 1 ? 'set' : 'sets'} + Full Mix`;
+
+      const setCardsHtml = sets.map(setName => {
+        const qs = chapterDpps.filter(d => d.set === setName);
+        const solved = qs.filter(d => userProgress.solvedDppIds.includes(d.id)).length;
+        return `
+          <div onclick="openTestSetupModal('${escapeHtml(dppSelectedChapter)}', '${escapeHtml(setName)}')" class="bg-white rounded-2xl border border-slate-200/90 hover:border-indigo-400 p-5 shadow-2xs cursor-pointer transition-all group flex flex-col justify-between gap-4">
+            <div>
+              <div class="flex items-center justify-between mb-2.5">
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 group-hover:bg-indigo-600 text-indigo-600 group-hover:text-white flex items-center justify-center transition-colors">
+                  <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                </div>
+                <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">${qs.length} Qs</span>
+              </div>
+              <h4 class="text-base font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors">${escapeHtml(setName)}</h4>
+              <p class="text-xs text-slate-500 mt-1">${escapeHtml(dppSelectedChapter)} • <span class="text-emerald-600 font-semibold">${solved}/${qs.length} attempted</span></p>
+            </div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs font-bold text-indigo-600">
+              <span>Configure &amp; Start CBT</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform"></i>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Full Chapter Mix Card
+      const fullMixHtml = `
+        <div onclick="openTestSetupModal('${escapeHtml(dppSelectedChapter)}', '__FULL_MIX__')" class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-2xl p-5 shadow-sm cursor-pointer transition-all hover:shadow-md group flex flex-col justify-between gap-4 text-white">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+                <i data-lucide="shuffle" class="w-5 h-5 text-white"></i>
+              </div>
+              <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-white/20 text-white">${chapterDpps.length} Qs</span>
+            </div>
+            <h4 class="text-base font-extrabold">Full Chapter Mix</h4>
+            <p class="text-xs text-indigo-100 mt-1">All ${sets.length} DPP sets of ${escapeHtml(dppSelectedChapter)} shuffled together.</p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-white/15 text-xs font-bold">
+            <span>Start Mixed CBT Test</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform"></i>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('dppSetsGrid').innerHTML = setCardsHtml + fullMixHtml;
+      refreshIcons();
+    }
+
+    function selectDppChapter(ch) {
+      dppSelectedChapter = ch;
+      showDppLobby();
+    }
+
+    function openTestSetupModal(chapter, setKey) {
+      let pool = [];
+      let displaySet = setKey;
+
+      if (setKey === '__FULL_MIX__') {
+        pool = getDppItems().filter(d => d.chapter === chapter);
+        displaySet = 'Full Chapter Mix';
+      } else {
+        pool = getDppItems().filter(d => d.chapter === chapter && d.set === setKey);
+      }
+
+      if (pool.length === 0) {
+        showToast('No questions found in this DPP set.', 'info');
+        return;
+      }
+
+      setupConfig.chapter = chapter;
+      setupConfig.set = displaySet;
+      setupConfig.title = `${chapter} — ${displaySet}`;
+      setupConfig.questions = [...pool];
+
+      document.getElementById('setupModalTitle').textContent = setupConfig.title;
+      document.getElementById('setupQCount').textContent = pool.length;
+
+      // Refresh modal selections UI
+      selectSetupTimerMode(setupConfig.timerMode);
+      selectSectionalPreset(setupConfig.sectionalMinutes);
+      selectMarkingScheme(setupConfig.markingScheme);
+
+      document.getElementById('testSetupModal').classList.remove('hidden');
+      refreshIcons();
+    }
+
+    function openMistakeBankSetup() {
+      const mSet = new Set(userProgress.mistakeIds);
+      const pool = allItems.filter(i => mSet.has(i.id));
+      if (pool.length === 0) {
+        showToast('Your Mistake Bank is empty! Great job.', 'info');
+        return;
+      }
+
+      setupConfig.chapter = 'Mistake Bank';
+      setupConfig.set = 'Weak Questions Drill';
+      setupConfig.title = 'Mistake Bank — Revision CBT';
+      setupConfig.questions = [...pool];
+
+      document.getElementById('setupModalTitle').textContent = setupConfig.title;
+      document.getElementById('setupQCount').textContent = pool.length;
+
+      selectSetupTimerMode(setupConfig.timerMode);
+      selectSectionalPreset(setupConfig.sectionalMinutes);
+      selectMarkingScheme(setupConfig.markingScheme);
+
+      document.getElementById('testSetupModal').classList.remove('hidden');
+      refreshIcons();
+    }
+
+    function closeTestSetupModal() {
+      document.getElementById('testSetupModal').classList.add('hidden');
+    }
+
+    function selectSetupTimerMode(mode) {
+      setupConfig.timerMode = mode;
+      const freeBtn = document.getElementById('setupModeFreeBtn');
+      const secBtn = document.getElementById('setupModeSectionalBtn');
+      const configBox = document.getElementById('sectionalTimerConfig');
+
+      freeBtn.className = mode === 'free'
+        ? 'text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all'
+        : 'text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all';
+
+      secBtn.className = mode === 'sectional'
+        ? 'text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all'
+        : 'text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all';
+
+      configBox.classList.toggle('hidden', mode !== 'sectional');
+    }
+
+    function selectSectionalPreset(mins) {
+      setupConfig.sectionalMinutes = Math.max(1, parseInt(mins, 10) || 15);
+      document.getElementById('customMinutesInput').value = setupConfig.sectionalMinutes;
+
+      document.querySelectorAll('.preset-min-btn').forEach(btn => {
+        const val = parseInt(btn.dataset.preset, 10);
+        const active = val === setupConfig.sectionalMinutes;
+        btn.className = active
+          ? 'preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-indigo-600 bg-indigo-600 text-white transition-all'
+          : 'preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-indigo-300 transition-all';
+      });
+    }
+
+    function onCustomMinutesChange(val) {
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed) && parsed >= 1) {
+        setupConfig.sectionalMinutes = Math.min(180, parsed);
+      }
+      document.querySelectorAll('.preset-min-btn').forEach(btn => {
+        const pVal = parseInt(btn.dataset.preset, 10);
+        const active = pVal === setupConfig.sectionalMinutes;
+        btn.className = active
+          ? 'preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-indigo-600 bg-indigo-600 text-white transition-all'
+          : 'preset-min-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-indigo-300 transition-all';
+      });
+    }
+
+    function selectMarkingScheme(scheme) {
+      setupConfig.markingScheme = scheme;
+      const sscBtn = document.getElementById('setupMarkSscBtn');
+      const simpleBtn = document.getElementById('setupMarkSimpleBtn');
+
+      sscBtn.className = scheme === 'ssc'
+        ? 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-left transition-all'
+        : 'p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition-all';
+
+      simpleBtn.className = scheme === 'simple'
+        ? 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-left transition-all'
+        : 'p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition-all';
+    }
+
+    /* =========================================================================
+       10. LIVE CBT DPP TEST ENGINE (HIGH-PRECISION PER-QUESTION TIME TRACKING)
+    ========================================================================= */
+    function launchConfiguredDppTest() {
+      closeTestSetupModal();
+      switchTab('dpp');
+
+      // Shuffle only if Full Chapter Mix or Mistake Bank; keep natural order for specific DPP 1/2/3
+      const qs = [...setupConfig.questions];
+      if (setupConfig.set === 'Full Chapter Mix' || setupConfig.chapter === 'Mistake Bank') {
+        for (let i = qs.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [qs[i], qs[j]] = [qs[j], qs[i]];
+        }
+      }
+
+      clearInterval(liveTest.timerIntervalId);
+      const now = Date.now();
+
+      liveTest = {
+        active: true,
+        title: setupConfig.title,
+        chapter: setupConfig.chapter,
+        set: setupConfig.set,
+        timerMode: setupConfig.timerMode,
+        sectionalSecondsTotal: setupConfig.sectionalMinutes * 60,
+        markingScheme: setupConfig.markingScheme,
+        questions: qs,
+        currentIndex: 0,
+        answers: new Array(qs.length).fill(null),
+        marked: new Array(qs.length).fill(false),
+        visited: qs.map((_, i) => i === 0),
+        questionTimes: new Array(qs.length).fill(0),
+        activeQStartTime: now,
+        testStartTime: now,
+        totalElapsedSec: 0,
+        timerIntervalId: null,
+        showPerQTimer: true
+      };
+
+      // Switch screens & hide mobile bottom nav during active CBT test
+      document.getElementById('dppLobbyScreen').classList.add('hidden');
+      document.getElementById('dppAnalysisScreen').classList.add('hidden');
+      document.getElementById('dppLiveTestScreen').classList.remove('hidden');
+      document.getElementById('mobileBottomNav').classList.add('hidden');
+
+      // Populate top bar static info
+      document.getElementById('liveTestTitle').textContent = liveTest.title;
+      document.getElementById('liveMarkingBadge').textContent = liveTest.markingScheme === 'ssc' ? 'SSC (+2 / -0.5)' : 'Simple (+1 / 0)';
+      document.getElementById('liveTimerModeTag').textContent = liveTest.timerMode === 'free'
+        ? 'Free Stopwatch Mode'
+        : `Sectional (${setupConfig.sectionalMinutes} Min)`;
+      document.getElementById('liveQTotal').textContent = qs.length;
+
+      updateLiveTimersUI();
+      renderLiveQuestion();
+      renderLivePalette();
+
+      // Start 250ms high-responsiveness UI tick backed by Date.now() delta
+      liveTest.timerIntervalId = setInterval(onLiveTimerTick, 250);
+    }
+
+    /**
+     * Commits exact elapsed seconds on the current question into questionTimes[idx]
+     * and resets activeQStartTime so revisiting adds seamlessly.
+     */
+    function commitCurrentQuestionTime() {
+      if (!liveTest.active) return;
+      const now = Date.now();
+      const deltaSec = Math.max(0, (now - liveTest.activeQStartTime) / 1000);
+      liveTest.questionTimes[liveTest.currentIndex] += deltaSec;
+      liveTest.activeQStartTime = now;
+    }
+
+    function getLiveSecondsForCurrentQuestion() {
+      const stored = liveTest.questionTimes[liveTest.currentIndex] || 0;
+      const liveDelta = Math.max(0, (Date.now() - liveTest.activeQStartTime) / 1000);
+      return stored + liveDelta;
+    }
+
+    function onLiveTimerTick() {
+      if (!liveTest.active) return;
+      liveTest.totalElapsedSec = Math.floor((Date.now() - liveTest.testStartTime) / 1000);
+      updateLiveTimersUI();
+
+      // Auto-submit if Sectional Countdown hits 00:00
+      if (liveTest.timerMode === 'sectional') {
+        const remaining = liveTest.sectionalSecondsTotal - liveTest.totalElapsedSec;
+        if (remaining <= 0) {
+          finalizeAndSubmitTest(true);
+        }
+      }
+    }
+
+    function updateLiveTimersUI() {
+      const mainBox = document.getElementById('liveMainTimerBox');
+      const mainText = document.getElementById('liveMainTimerText');
+
+      if (liveTest.timerMode === 'free') {
+        mainText.textContent = formatClockMMSS(liveTest.totalElapsedSec);
+        mainBox.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white font-mono text-sm font-extrabold tracking-wide transition-colors';
+      } else {
+        const remaining = Math.max(0, liveTest.sectionalSecondsTotal - liveTest.totalElapsedSec);
+        mainText.textContent = formatClockMMSS(remaining);
+        if (remaining <= 60) {
+          mainBox.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white font-mono text-sm font-extrabold tracking-wide timer-urgent transition-colors';
+        } else {
+          mainBox.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-mono text-sm font-extrabold tracking-wide transition-colors';
+        }
+      }
+
+      // Per-question live timer badge
+      const perQText = document.getElementById('livePerQTimerText');
+      if (perQText) {
+        if (liveTest.showPerQTimer) {
+          const qSec = Math.floor(getLiveSecondsForCurrentQuestion());
+          perQText.textContent = formatDurationCompact(qSec);
+        } else {
+          perQText.textContent = '•••';
+        }
+      }
+    }
+
+    function togglePerQTimerVisibility() {
+      liveTest.showPerQTimer = !liveTest.showPerQTimer;
+      updateLiveTimersUI();
+    }
+
+    function renderLiveQuestion() {
+      const idx = liveTest.currentIndex;
+      const q = liveTest.questions[idx];
+      const total = liveTest.questions.length;
+      const selected = liveTest.answers[idx];
+      const isMarked = liveTest.marked[idx];
+      const labels = ['A', 'B', 'C', 'D'];
+
+      document.getElementById('liveQNum').textContent = idx + 1;
+      document.getElementById('liveProgressBar').style.width = `${((idx + 1) / total) * 100}%`;
+      document.getElementById('liveMarkedStatusPill').classList.toggle('hidden', !isMarked);
+
+      // Update Mark for Review button text
+      document.getElementById('liveMarkBtnText').textContent = isMarked ? 'Unmark Review' : 'Mark for Review';
+      document.getElementById('liveMarkReviewBtn').className = isMarked
+        ? 'px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95'
+        : 'px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-semibold text-xs flex items-center gap-1.5 transition-all active:scale-95';
+
+      // Question text
+      const qBox = document.getElementById('liveQuestionContent');
+      qBox.innerHTML = buildQuestionHtml(q);
+
+      // 4 Options — neutral indigo selection state ONLY (NO correctness feedback!)
+      const optGrid = document.getElementById('liveOptionsGrid');
+      optGrid.innerHTML = [0, 1, 2, 3].map(optIdx => {
+        const isSel = selected === optIdx;
+        return `
+          <button onclick="selectLiveOption(${optIdx})" class="w-full text-left p-3.5 sm:p-4 rounded-xl border-2 transition-all flex items-center gap-3 active:scale-[0.995] ${
+            isSel
+              ? 'bg-indigo-50/80 border-indigo-600 text-indigo-950 font-semibold shadow-2xs'
+              : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-slate-50/70 text-slate-800'
+          }">
+            <span class="w-7 h-7 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 ${
+              isSel ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'
+            }">${labels[optIdx]}</span>
+            <div class="flex-1 text-sm sm:text-[15px]">${buildOptionTextHtml(q, optIdx)}</div>
+          </button>
+        `;
+      }).join('');
+
+      // Prev / Save & Next buttons
+      document.getElementById('livePrevBtn').disabled = idx === 0;
+      document.getElementById('liveNextBtnLabel').textContent = idx === total - 1 ? 'Save & Review' : 'Save & Next';
+
+      updateLiveTimersUI();
+      refreshIcons();
+      renderKaTeX(document.getElementById('dppLiveTestScreen'));
+    }
+
+    function selectLiveOption(optIdx) {
+      liveTest.answers[liveTest.currentIndex] = optIdx;
+      renderLiveQuestion();
+      renderLivePalette();
+    }
+
+    function clearCurrentResponse() {
+      liveTest.answers[liveTest.currentIndex] = null;
+      renderLiveQuestion();
+      renderLivePalette();
+    }
+
+    function toggleMarkForReview() {
+      liveTest.marked[liveTest.currentIndex] = !liveTest.marked[liveTest.currentIndex];
+      renderLiveQuestion();
+      renderLivePalette();
+    }
+
+    function jumpToLiveQuestion(targetIdx) {
+      if (targetIdx < 0 || targetIdx >= liveTest.questions.length) return;
+      if (targetIdx === liveTest.currentIndex) return;
+      commitCurrentQuestionTime();
+      liveTest.currentIndex = targetIdx;
+      liveTest.visited[targetIdx] = true;
+      renderLiveQuestion();
+      renderLivePalette();
+    }
+
+    function goToPrevQuestion() {
+      if (liveTest.currentIndex > 0) {
+        jumpToLiveQuestion(liveTest.currentIndex - 1);
+      }
+    }
+
+    function saveAndNextQuestion() {
+      if (liveTest.currentIndex < liveTest.questions.length - 1) {
+        jumpToLiveQuestion(liveTest.currentIndex + 1);
+      } else {
+        openSubmitConfirmModal();
+      }
+    }
+
+    function renderLivePalette() {
+      const grid = document.getElementById('livePaletteGrid');
+      const answeredCount = liveTest.answers.filter(a => a !== null).length;
+      document.getElementById('paletteAnsweredSummary').textContent = `${answeredCount}/${liveTest.questions.length} Answered`;
+
+      grid.innerHTML = liveTest.questions.map((_, i) => {
+        const isCurrent = i === liveTest.currentIndex;
+        const isAnswered = liveTest.answers[i] !== null;
+        const isMarked = liveTest.marked[i];
+        const isVisited = liveTest.visited[i];
+
+        let colorCls = 'bg-slate-200 text-slate-600 hover:bg-slate-300'; // Not Visited
+        if (isMarked) {
+          colorCls = 'bg-purple-600 text-white hover:bg-purple-700'; // Marked for Review
+        } else if (isAnswered) {
+          colorCls = 'bg-emerald-500 text-white hover:bg-emerald-600'; // Answered
+        } else if (isVisited) {
+          colorCls = 'bg-rose-500 text-white hover:bg-rose-600'; // Visited & Unanswered
+        }
+
+        const ringCls = isCurrent ? 'ring-2 ring-offset-2 ring-indigo-600 scale-105' : '';
+        const answeredDot = (isMarked && isAnswered)
+          ? `<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white"></span>`
+          : '';
+
+        return `
+          <button onclick="jumpToLiveQuestion(${i})" class="relative h-10 rounded-xl font-extrabold text-xs flex items-center justify-center transition-all ${colorCls} ${ringCls}">
+            ${i + 1}
+            ${answeredDot}
+          </button>
+        `;
+      }).join('');
+    }
+
+    /* Submit Confirmation Modal */
+    function openSubmitConfirmModal() {
+      const answered = liveTest.answers.filter(a => a !== null).length;
+      const marked = liveTest.marked.filter(Boolean).length;
+      const unanswered = liveTest.questions.length - answered;
+
+      document.getElementById('confAnsweredCount').textContent = answered;
+      document.getElementById('confMarkedCount').textContent = marked;
+      document.getElementById('confUnansweredCount').textContent = unanswered;
+      document.getElementById('submitConfirmModal').classList.remove('hidden');
+      refreshIcons();
+    }
+
+    function closeSubmitConfirmModal() {
+      document.getElementById('submitConfirmModal').classList.add('hidden');
+    }
+
+    function stopLiveTestInternal() {
+      clearInterval(liveTest.timerIntervalId);
+      liveTest.active = false;
+      document.getElementById('mobileBottomNav').classList.remove('hidden');
+    }
+
+    /* =========================================================================
+       11. FINALIZE TEST & DEEP POST-TEST ANALYSIS ENGINE
+    ========================================================================= */
+    function finalizeAndSubmitTest(isAutoSubmit = false) {
+      if (!liveTest.active) return;
+      commitCurrentQuestionTime();
+      closeSubmitConfirmModal();
+
+      const finalElapsedSec = Math.max(1, Math.round((Date.now() - liveTest.testStartTime) / 1000));
+      stopLiveTestInternal();
+
+      const posMark = liveTest.markingScheme === 'ssc' ? 2 : 1;
+      const negMark = liveTest.markingScheme === 'ssc' ? 0.5 : 0;
+
+      let correctCount = 0;
+      let wrongCount = 0;
+      let skippedCount = 0;
+      let score = 0;
+
+      let timeOnCorrect = 0;
+      let timeOnWrong = 0;
+      let timeOnSkipped = 0;
+
+      const records = liveTest.questions.map((q, idx) => {
+        const userAns = liveTest.answers[idx];
+        const secSpent = Math.round(liveTest.questionTimes[idx] || 0);
+        let status = 'skipped';
+
+        if (userAns === null) {
+          status = 'skipped';
+          skippedCount++;
+          timeOnSkipped += secSpent;
+        } else if (userAns === q.correct) {
+          status = 'correct';
+          correctCount++;
+          score += posMark;
+          timeOnCorrect += secSpent;
+
+          // Update global user progress
+          userProgress.totalAttempts++;
+          userProgress.totalCorrect++;
+          if (q.category === 'dpp' && !userProgress.solvedDppIds.includes(q.id)) {
+            userProgress.solvedDppIds.push(q.id);
+          }
+          // Remove from Mistake Bank if mastered!
+          const mIdx = userProgress.mistakeIds.indexOf(q.id);
+          if (mIdx !== -1) userProgress.mistakeIds.splice(mIdx, 1);
+        } else {
+          status = 'wrong';
+          wrongCount++;
+          score -= negMark;
+          timeOnWrong += secSpent;
+
+          // Update global user progress & add to Mistake Bank
+          userProgress.totalAttempts++;
+          if (q.category === 'dpp' && !userProgress.solvedDppIds.includes(q.id)) {
+            userProgress.solvedDppIds.push(q.id);
+          }
+          if (!userProgress.mistakeIds.includes(q.id)) {
+            userProgress.mistakeIds.push(q.id);
+          }
+        }
+
+        return {
+          qIndex: idx,
+          question: q,
+          userAnswer: userAns,
+          status,
+          seconds: secSpent
+        };
+      });
+
+      userProgress.testsCompleted += 1;
+      updateStreakCheck();
+      saveProgress();
+      updateHeaderBadges();
+
+      // Determine Fastest & Slowest questions (preferring visited/non-zero if any exist)
+      const fastestRec = [...records].sort((a, b) => a.seconds - b.seconds)[0];
+      const slowestRec = [...records].sort((a, b) => b.seconds - a.seconds)[0];
+
+      const attempted = correctCount + wrongCount;
+      const accuracy = attempted > 0 ? Math.round((correctCount / attempted) * 100) : 0;
+      const maxScore = records.length * posMark;
+      const trackedTotalTime = timeOnCorrect + timeOnWrong + timeOnSkipped;
+      const avgTime = records.length > 0 ? Math.round(finalElapsedSec / records.length) : 0;
+
+      lastAnalysis = {
+        title: liveTest.title,
+        chapter: liveTest.chapter,
+        set: liveTest.set,
+        timerMode: liveTest.timerMode,
+        sectionalMinutes: Math.round(liveTest.sectionalSecondsTotal / 60),
+        markingScheme: liveTest.markingScheme,
+        score,
+        maxScore,
+        accuracy,
+        attempted,
+        correctCount,
+        wrongCount,
+        skippedCount,
+        totalTimeSec: finalElapsedSec,
+        trackedTotalTime,
+        avgTime,
+        timeOnCorrect,
+        timeOnWrong,
+        timeOnSkipped,
+        fastestRec,
+        slowestRec,
+        records
+      };
+
+      analysisFilter = 'all';
+      analysisSortSlowest = false;
+
+      if (isAutoSubmit) {
+        showToast('Time is up! Test auto-submitted.', 'info');
+      } else {
+        showToast('Test submitted! Deep analysis ready.', 'success');
+      }
+
+      renderAnalysisScreen();
+    }
+
+    function renderAnalysisScreen() {
+      if (!lastAnalysis) return;
+      const a = lastAnalysis;
+
+      document.getElementById('dppLobbyScreen').classList.add('hidden');
+      document.getElementById('dppLiveTestScreen').classList.add('hidden');
+      document.getElementById('dppAnalysisScreen').classList.remove('hidden');
+
+      document.getElementById('analysisTestTitle').textContent = a.title;
+      document.getElementById('analysisMetaSubtitle').textContent =
+        `${a.timerMode === 'free' ? 'Free Mode' : `Sectional (${a.sectionalMinutes} Min)`} • ${a.markingScheme === 'ssc' ? 'SSC (+2 / -0.5)' : 'Simple (+1 / 0)'}`;
+
+      // Summary Cards
+      document.getElementById('anScoreVal').textContent = Number.isInteger(a.score) ? a.score : a.score.toFixed(1);
+      document.getElementById('anMaxScoreSub').textContent = `out of ${a.maxScore}`;
+      document.getElementById('anAccuracyVal').textContent = `${a.accuracy}%`;
+      document.getElementById('anAttemptedSub').textContent = `${a.attempted}/${a.records.length} attempted`;
+      document.getElementById('anCorrectVal').textContent = a.correctCount;
+      document.getElementById('anWrongVal').textContent = a.wrongCount;
+      document.getElementById('anSkippedVal').textContent = a.skippedCount;
+      document.getElementById('anTotalTimeVal').textContent = formatClockMMSS(a.totalTimeSec);
+      document.getElementById('anAvgTimeVal').textContent = formatDurationCompact(a.avgTime);
+
+      // Time Intelligence Card
+      if (a.fastestRec) {
+        document.getElementById('anFastestInfo').textContent = `Q${a.fastestRec.qIndex + 1} • ${formatDurationCompact(a.fastestRec.seconds)}`;
+      }
+      if (a.slowestRec) {
+        document.getElementById('anSlowestInfo').textContent = `Q${a.slowestRec.qIndex + 1} • ${formatDurationCompact(a.slowestRec.seconds)}`;
+      }
+
+      const denom = Math.max(1, a.trackedTotalTime);
+      const pctC = Math.round((a.timeOnCorrect / denom) * 100);
+      const pctW = Math.round((a.timeOnWrong / denom) * 100);
+      const pctS = Math.max(0, 100 - pctC - pctW);
+
+      document.getElementById('anDistTotalLabel').textContent = `${formatDurationCompact(a.trackedTotalTime)} tracked`;
+      document.getElementById('anBarCorrect').style.width = `${(a.timeOnCorrect / denom) * 100}%`;
+      document.getElementById('anBarWrong').style.width = `${(a.timeOnWrong / denom) * 100}%`;
+      document.getElementById('anBarSkipped').style.width = `${(a.timeOnSkipped / denom) * 100}%`;
+
+      document.getElementById('anTimeCorrectLabel').textContent = `${formatDurationCompact(a.timeOnCorrect)} (${pctC}%)`;
+      document.getElementById('anTimeWrongLabel').textContent = `${formatDurationCompact(a.timeOnWrong)} (${pctW}%)`;
+      document.getElementById('anTimeSkippedLabel').textContent = `${formatDurationCompact(a.timeOnSkipped)} (${pctS}%)`;
+
+      renderAnalysisControlsAndList();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setAnalysisFilter(filter) {
+      analysisFilter = filter;
+      renderAnalysisControlsAndList();
+    }
+
+    function toggleSortBySlowest() {
+      analysisSortSlowest = !analysisSortSlowest;
+      renderAnalysisControlsAndList();
+    }
+
+    function jumpToReviewQuestion(which) {
+      if (!lastAnalysis) return;
+      const targetRec = which === 'fastest' ? lastAnalysis.fastestRec : lastAnalysis.slowestRec;
+      if (!targetRec) return;
+
+      // Ensure visible by setting filter to All
+      if (analysisFilter !== 'all') {
+        analysisFilter = 'all';
+        renderAnalysisControlsAndList();
+      }
+      const el = document.getElementById(`review_q_${targetRec.qIndex}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('ring-2', 'ring-indigo-500');
+        setTimeout(() => el.classList.remove('ring-2', 'ring-indigo-500'), 1800);
+      }
+    }
+
+    function renderAnalysisControlsAndList() {
+      const a = lastAnalysis;
+      const filters = [
+        { key: 'all', label: 'All', count: a.records.length },
+        { key: 'correct', label: 'Correct', count: a.correctCount },
+        { key: 'wrong', label: 'Wrong', count: a.wrongCount },
+        { key: 'skipped', label: 'Skipped', count: a.skippedCount }
+      ];
+
+      document.getElementById('analysisFilterPills').innerHTML = filters.map(f => {
+        const active = analysisFilter === f.key;
+        return `
+          <button onclick="setAnalysisFilter('${f.key}')" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+            active
+              ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+              : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-indigo-300'
+          }">
+            <span>${f.label}</span>
+            <span class="px-1.5 py-0.5 rounded-md text-[10px] ${active ? 'bg-indigo-500 text-white' : 'bg-white text-slate-500'}">${f.count}</span>
+          </button>
+        `;
+      }).join('');
+
+      const sortBtn = document.getElementById('sortSlowestBtn');
+      sortBtn.className = analysisSortSlowest
+        ? 'inline-flex items-center gap-2 self-start sm:self-auto px-3.5 py-2 rounded-xl border border-rose-500 bg-rose-50 text-rose-700 text-xs font-extrabold transition-all'
+        : 'inline-flex items-center gap-2 self-start sm:self-auto px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all';
+
+      renderAnalysisReviewList();
+    }
+
+    function renderAnalysisReviewList() {
+      if (!lastAnalysis) return;
+      let list = [...lastAnalysis.records];
+      if (analysisFilter !== 'all') {
+        list = list.filter(r => r.status === analysisFilter);
+      }
+      if (analysisSortSlowest) {
+        list.sort((a, b) => b.seconds - a.seconds);
+      }
+
+      const container = document.getElementById('analysisReviewContainer');
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm font-semibold text-slate-500">
+            No questions match this filter.
+          </div>
+        `;
+        return;
+      }
+
+      const labels = ['A', 'B', 'C', 'D'];
+
+      container.innerHTML = list.map(rec => {
+        const q = rec.question;
+
+        // Status badge
+        const statusBadge = {
+          correct: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>Correct</span>`,
+          wrong: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 border border-rose-200 text-xs font-extrabold"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i>Wrong</span>`,
+          skipped: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 text-xs font-extrabold"><i data-lucide="minus-circle" class="w-3.5 h-3.5"></i>Skipped</span>`
+        }[rec.status];
+
+        // Speed Tag (Fast <= 30s, Moderate 31-60s, Slow > 60s)
+        let speedBadge = '';
+        if (rec.seconds <= 30) {
+          speedBadge = `<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">Fast</span>`;
+        } else if (rec.seconds <= 60) {
+          speedBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-extrabold">Moderate</span>`;
+        } else {
+          speedBadge = `<span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[10px] font-extrabold">Slow</span>`;
+        }
+
+        // Options highlighting User Selected vs Correct Answer
+        const optionsHtml = [0, 1, 2, 3].map(i => {
+          const isCorrect = i === q.correct;
+          const isUserSel = i === rec.userAnswer;
+          let boxCls = 'bg-slate-50/70 border-slate-200 text-slate-700';
+          let badgeCls = 'bg-white border border-slate-200 text-slate-500';
+          let tagHtml = '';
+
+          if (isCorrect) {
+            boxCls = 'bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold';
+            badgeCls = 'bg-emerald-600 text-white';
+            tagHtml = isUserSel
+              ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-600 text-white shrink-0">Your Answer ✓</span>`
+              : `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 shrink-0">Correct Answer</span>`;
+          } else if (isUserSel) {
+            boxCls = 'bg-rose-50 border-rose-400 text-rose-950 font-semibold';
+            badgeCls = 'bg-rose-600 text-white';
+            tagHtml = `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-rose-600 text-white shrink-0">Your Answer ✗</span>`;
+          }
+
+          return `
+            <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-sm ${boxCls}">
+              <span class="w-6 h-6 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 ${badgeCls}">${labels[i]}</span>
+              <div class="flex-1">${buildOptionTextHtml(q, i)}</div>
+              ${tagHtml}
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <article id="review_q_${rec.qIndex}" class="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-4 transition-all">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold">Q${rec.qIndex + 1}</span>
+                ${statusBadge}
+              </div>
+
+              <!-- Exact Time Spent + Speed Tag -->
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="font-mono text-xs font-extrabold text-slate-800">⏱️ ${formatDurationCompact(rec.seconds)}</span>
+                ${speedBadge}
+              </div>
+            </div>
+
+            <div class="space-y-1.5">${buildQuestionHtml(q)}</div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optionsHtml}</div>
+
+            <!-- Full Solution Revealed Here -->
+            <div class="rounded-xl bg-slate-50 border border-slate-200/90 p-4 space-y-2">
+              <div class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">
+                <i data-lucide="file-check-2" class="w-4 h-4"></i>
+                Step-by-Step Solution
+              </div>
+              ${buildSolutionHtml(q)}
+            </div>
+
+            ${q.trick ? `
+              <div class="rounded-xl bg-amber-50 border border-amber-200/90 p-4 space-y-1">
+                <div class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-800">
+                  <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600"></i>
+                  Short Trick / Key Concept
+                </div>
+                <div class="text-sm text-amber-950 leading-relaxed">${formatMultiline(q.trick)}</div>
+              </div>
+            ` : ''}
+          </article>
+        `;
+      }).join('');
+
+      refreshIcons();
+      renderKaTeX(container);
+    }
+
+    function retakeLastDpp() {
+      if (!lastAnalysis) return;
+      setupConfig.chapter = lastAnalysis.chapter;
+      setupConfig.set = lastAnalysis.set;
+      setupConfig.title = lastAnalysis.title;
+      setupConfig.questions = lastAnalysis.records.map(r => r.question);
+      setupConfig.timerMode = lastAnalysis.timerMode;
+      setupConfig.sectionalMinutes = lastAnalysis.sectionalMinutes || 15;
+      setupConfig.markingScheme = lastAnalysis.markingScheme;
+
+      document.getElementById('setupModalTitle').textContent = setupConfig.title;
+      document.getElementById('setupQCount').textContent = setupConfig.questions.length;
+      selectSetupTimerMode(setupConfig.timerMode);
+      selectSectionalPreset(setupConfig.sectionalMinutes);
+      selectMarkingScheme(setupConfig.markingScheme);
+      document.getElementById('testSetupModal').classList.remove('hidden');
+      refreshIcons();
+    }
+
+    function backToDppSets() {
+      showDppLobby();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================================
+       12. SAVED VIEW (BOOKMARKS & MISTAKE BANK)
+    ========================================================================= */
+    function setSavedSubTab(sub) {
+      savedSubTab = sub;
+      renderSavedView();
+    }
+
+    function renderSavedView() {
+      const bookmarked = allItems.filter(i => userProgress.bookmarkedIds.includes(i.id));
+      const mistakes = allItems.filter(i => userProgress.mistakeIds.includes(i.id));
+
+      document.getElementById('savedBookmarkCount').textContent = bookmarked.length;
+      document.getElementById('savedMistakeCount').textContent = mistakes.length;
+
+      document.querySelectorAll('.saved-sub-btn').forEach(btn => {
+        const active = btn.dataset.subtab === savedSubTab;
+        btn.className = active
+          ? 'saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-600 shadow-xs transition-all'
+          : 'saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all';
+      });
+
+      document.getElementById('savedMistakeActionBanner').classList.toggle('hidden', !(savedSubTab === 'mistakes' && mistakes.length > 0));
+
+      const container = document.getElementById('savedItemsContainer');
+      const list = savedSubTab === 'bookmarks' ? bookmarked : mistakes;
+
+      if (list.length === 0) {
+        const isBm = savedSubTab === 'bookmarks';
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
+            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+              <i data-lucide="${isBm ? 'bookmark' : 'check-circle-2'}" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-bold text-slate-800">${isBm ? 'No Bookmarks Yet' : 'Mistake Bank is Clear!'}</h3>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto">
+              ${isBm
+                ? 'Tap the bookmark icon on any Class Note to keep it here for quick revision.'
+                : 'Any DPP question you get wrong during a test will appear here automatically.'}
+            </p>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      container.innerHTML = list.map((item, idx) => renderNoteCardHtml(item, idx, true, savedSubTab === 'mistakes')).join('');
+      refreshIcons();
+      renderKaTeX(container);
+    }
+
+    /* =========================================================================
+       13. BOOTSTRAP ON LOAD
+    ========================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProgress();
+      refreshIcons();
+      switchTab('home');
+      fetchMathData(false);
+    });
+
+    window.addEventListener('load', () => {
+      renderKaTeX(document.body);
+    });
+  </script>
+</body>
+</html>
+```
