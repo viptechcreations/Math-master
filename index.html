@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,10 +136,10 @@
     };
   </script>
 
-  <!-- KaTeX CSS & JS (Safe-guarded in JS so offline/slow CDN never breaks app) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+  <!-- KaTeX CSS & JS (Loaded reliably from jsDelivr with instant onload trigger) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="if (window.renderMath) window.renderMath(document.body);"></script>
 
   <style>
     body {
@@ -184,6 +183,21 @@
     }
     .spin-icon {
       animation: spinSlow 0.65s linear infinite;
+    }
+
+    /* 3D Flashcard Flip Utilities */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
     }
   </style>
 </head>
@@ -339,17 +353,17 @@
           </div>
           <div id="statMistakeCount" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</div>
           <p class="text-[11px] font-semibold text-rose-600 mt-1">Tap to revise</p>
-        </div>
-      </div>
-
-      <!-- Chapters Section -->
+      <!-- Formula Vault Section -->
       <div class="space-y-3">
-        <div>
-          <h2 class="text-lg font-extrabold text-slate-900">Chapters</h2>
-          <p class="text-xs text-slate-500">Choose a chapter to revise Class Notes or take a timed DPP test.</p>
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-900">Formula Vault</h2>
+            <p class="text-xs text-slate-500">Tap any topic box to revise formulas with interactive flashcards.</p>
+          </div>
+          <span id="vaultTotalPill" class="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">0 Formulas</span>
         </div>
-        <div id="chapterGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          <!-- Populated dynamically -->
+        <div id="formulaVaultGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+          <!-- Populated dynamically by topic -->
         </div>
       </div>
     </section>
@@ -867,6 +881,103 @@
     </div>
   </div>
 
+  <!-- ==================== MODAL 3: FORMULA STUDY MODAL ==================== -->
+  <div id="formulaModal" onclick="closeFormulaModal()" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3.5 sm:p-4">
+    <div onclick="event.stopPropagation()" class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-xl max-h-[88vh] flex flex-col overflow-hidden">
+      <!-- Modal Header -->
+      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <div id="fmTopicIcon" class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"></div>
+          <div class="min-w-0">
+            <h3 id="fmTopicTitle" class="text-base sm:text-lg font-extrabold text-slate-900 truncate">Formula Topic</h3>
+            <p id="fmTopicStats" class="text-xs font-semibold text-slate-500">0/0 mastered</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeFormulaModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center shrink-0" aria-label="Close">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="px-5 py-3 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between gap-2 shrink-0">
+        <div class="inline-flex bg-slate-200/70 p-1 rounded-xl">
+          <button type="button" onclick="setFormulaModalMode('flashcards')" data-fmmode="flashcards" class="fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all">
+            Flashcards
+          </button>
+          <button type="button" onclick="setFormulaModalMode('list')" data-fmmode="list" class="fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all">
+            All Formulas
+          </button>
+        </div>
+        <span id="fmDeckCounter" class="text-xs font-extrabold text-indigo-600">1 / 1</span>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 overflow-y-auto flex-1">
+        <!-- Flashcards View -->
+        <div id="fmFlashcardsView" class="space-y-4">
+          <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+            <div id="fmProgressBar" class="h-full bg-indigo-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <!-- 3D Flip Card -->
+          <div id="fmCardStage" class="perspective-1000">
+            <div id="fmFlipInner" onclick="flipFormulaCard()" class="relative w-full min-h-[250px] sm:min-h-[270px] transition-transform duration-500 transform-style-3d cursor-pointer select-none">
+              <!-- Front Face -->
+              <div class="absolute inset-0 backface-hidden rounded-2xl border-2 border-indigo-100 bg-gradient-to-br from-white to-indigo-50/40 p-6 flex flex-col justify-between shadow-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">Question / Prompt</span>
+                  <span id="fmMasteredTag" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">Mastered</span>
+                </div>
+                <div id="fmFrontContent" class="my-auto py-4 text-center space-y-2"></div>
+                <div class="text-center text-xs font-bold text-indigo-500 flex items-center justify-center gap-1.5">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                  <span>Tap card to reveal formula</span>
+                </div>
+              </div>
+
+              <!-- Back Face -->
+              <div class="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-white to-emerald-50/40 p-6 flex flex-col justify-between shadow-sm overflow-y-auto">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700">Formula &amp; Trick</span>
+                  <span class="text-[11px] font-semibold text-slate-400">Tap to flip back</span>
+                </div>
+                <div id="fmBackContent" class="my-auto py-3 space-y-3 text-center"></div>
+                <div class="text-center text-[11px] font-semibold text-slate-400">Rate your recall below</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flashcard Action Controls -->
+          <div id="fmCardControls" class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="handleFormulaReviseAgain()" class="py-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all active:scale-95">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Revise Again</span>
+            </button>
+            <button type="button" onclick="handleFormulaGotIt()" class="py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5 transition-all active:scale-95">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Got It</span>
+            </button>
+          </div>
+
+          <!-- Deck Completed State -->
+          <div id="fmDeckDone" class="hidden rounded-2xl bg-emerald-50 border border-emerald-200 p-6 text-center space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h4 class="text-base font-extrabold text-emerald-950">Deck Complete!</h4>
+            <p class="text-xs text-emerald-800">Great job revising all formulas in this topic.</p>
+            <button type="button" onclick="restartFormulaDeck()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all active:scale-95">
+              Restart Deck
+            </button>
+          </div>
+        </div>
+
+        <!-- All Formulas List View -->
+        <div id="fmListView" class="hidden space-y-3"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== TOAST STACK ==================== -->
   <div id="toastStack" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
 
@@ -875,131 +986,115 @@
     /* =========================================================================
        1. CONFIGURATION & INLINE SVG HELPERS
     ========================================================================= */
-    const CLASS_NOTES_URL = './class_notes.json';
-    const DPP_URL = './dpp.json';
+    const CLASS_NOTES_URLS = ['./data/class_notes.json', './class_notes.json'];
+    const DPP_URLS = ['./data/dpp.json', './dpp.json'];
+    const FORMULAS_URLS = ['./data/formulas.json', './formulas.json'];
     const STORAGE_KEY = 'math_master_state_v3';
 
     const SVG = {
       bookmark: (filled) => `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>`,
-      checkCircle: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
-      xCircle: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-      minusCircle: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
-      clock: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-      bulb: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>`,
-      fileCheck: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>`,
-      eye: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+// ... existing code ... -->
       bolt: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
       trash: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
-      book: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`
+      book: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+      shape2d: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="11" height="11" rx="2"/><circle cx="16.5" cy="16.5" r="4.5"/></svg>`,
+      shape3d: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+      algebra: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 6"/><path d="M4 6l8 12"/><path d="M16 7a2 2 0 0 1 4 0c0 1.5-2 2.5-4 4h4"/></svg>`,
+      percent: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
+      trig: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18L3 4v16z"/><path d="M3 15a5 5 0 0 1 5 5"/></svg>`,
+      geometry: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="12 3 20 17 4 17 12 3"/></svg>`,
+      sigma: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7V4H6l6 8-6 8h12v-3"/></svg>`
     };
 
     /* =========================================================================
-       2. BUILT-IN FALLBACK STARTER DATASET (REPLACED SILENTLY BY REMOTE FILES)
+       2. BUILT-IN FALLBACK STARTER DATASETS (REPLACED SILENTLY BY REMOTE FILES)
     ========================================================================= */
-    const STARTER_DATA = [
-      {
-        id: 'pct-c1-concept',
-        category: 'class_notes',
-        chapter: 'Percentage',
-        set: 'Class 1',
-        exam: 'Basic Concept',
-        q_en: 'Important Percentage-to-Fraction Conversion Table',
-        q_hi: 'महत्वपूर्ण प्रतिशत से भिन्न (Percentage-Fraction) सारणी',
-        options: [],
-        answer: 0,
-        solution: '• $1 = 100\\%$ | $\\frac{1}{2} = 50\\%$ | $\\frac{1}{3} = 33\\frac{1}{3}\\%$ | $\\frac{1}{4} = 25\\%$ | $\\frac{1}{5} = 20\\%$<br>• $\\frac{1}{6} = 16\\frac{2}{3}\\%$ | $\\frac{1}{7} = 14\\frac{2}{7}\\%$ | $\\frac{1}{8} = 12\\frac{1}{2}\\%$ | $\\frac{1}{9} = 11\\frac{1}{9}\\%$ | $\\frac{1}{10} = 10\\%$<br>• $\\frac{1}{11} = 9\\frac{1}{11}\\%$ | $\\frac{1}{12} = 8\\frac{1}{3}\\%$ | $\\frac{3}{8} = 37\\frac{1}{2}\\%$ | $\\frac{5}{8} = 62\\frac{1}{2}\\%$',
-        trick: 'Roz 2 minute is table ko revise karein — poora Arithmetic isi par based hai.'
-      },
-      {
-        id: 'pct-c1-q1',
-        category: 'class_notes',
-        chapter: 'Percentage',
-        set: 'Class 1',
-        exam: 'SSC CHSL 2024',
-        q_en: 'If out of 75 toys 18 are for boys and the rest are for girls, then what is the percentage of toys for girls?',
-        q_hi: 'यदि 75 खिलौनों में से 18 खिलौने लड़कों के लिए हैं और शेष लड़कियों के लिए हैं, तो लड़कियों के खिलौनों का प्रतिशत क्या है?',
-        options: ['76%', '57%', '67%', '18%'],
-        answer: 0,
-        solution: 'Girls $= 75 - 18 = 57$.<br>Percentage $= \\frac{57}{75} \\times 100 = \\frac{19}{25} \\times 100 = 76\\%$.',
-        trick: 'Boys % $= \\frac{18}{75} \\times 100 = 24\\% \\Rightarrow$ Girls % $= 100\\% - 24\\% = 76\\%$.'
-      },
-      {
-        id: 'pct-c1-q2',
-        category: 'class_notes',
-        chapter: 'Percentage',
-        set: 'Class 1',
-        exam: 'SSC CHSL 2024',
-        q_en: "Ram's income is $2.5\\%$ more than Shyam's income. By what percent is Shyam's income less than Ram's income?",
-        q_hi: 'राम की आय श्याम की आय से $2.5\\%$ अधिक है। श्याम की आय राम की आय से कितने प्रतिशत कम है?',
-        options: ['1.43%', '4.43%', '2.43%', '3.43%'],
-        answer: 2,
-        solution: '$2.5\\% = \\frac{1}{40}$. Let Shyam $= 40$, then Ram $= 41$.<br>Less % $= \\frac{1}{41} \\times 100 \\approx 2.43\\%$.',
-        trick: 'AB Rule: $+\\frac{1}{40}$ se wapas aane par $-\\frac{1}{41} \\approx 2.43\\%$.'
-      },
-      {
-        id: 'ratio-c1-q1',
-        category: 'class_notes',
-        chapter: 'Ratio & Proportion',
-        set: 'Class 1',
-        exam: 'SSC CGL',
-        q_en: 'If $A : B = 2 : 3$ and $B : C = 4 : 5$, then find $A : B : C$.',
-        q_hi: 'यदि $A : B = 2 : 3$ और $B : C = 4 : 5$ है, तो $A : B : C$ ज्ञात कीजिए।',
-        options: ['8 : 12 : 15', '6 : 12 : 15', '8 : 10 : 15', '4 : 12 : 15'],
-        answer: 0,
-        solution: 'Equalize $B$: multiply first ratio by $4$ and second by $3$.<br>$A : B = 8 : 12$ and $B : C = 12 : 15 \\Rightarrow A : B : C = 8 : 12 : 15$.',
-        trick: 'Reverse N-method: $(2\\times 4) : (3\\times 4) : (3\\times 5) = 8 : 12 : 15$.'
-      },
-      {
-        id: 'pct-dpp1-q1',
-        category: 'dpp',
-        chapter: 'Percentage',
-        set: 'DPP 1',
-        exam: 'RRB NTPC CBT-1, 2025',
-        q_en: 'If $2\\%$ of $x$ is 24, then find the value of $x$.',
-        q_hi: 'यदि $x$ का $2\\%$, 24 है, तो $x$ का मान ज्ञात कीजिए।',
-        options: ['1200', '2500', '2400', '1300'],
-        answer: 0,
-        solution: '$\\frac{2}{100} \\times x = 24 \\Rightarrow x = 24 \\times 50 = 1200$.',
-        trick: '$2\\% = 24 \\Rightarrow 1\\% = 12 \\Rightarrow 100\\% = 1200$.'
-      },
-      {
-        id: 'pct-dpp1-q2',
-        category: 'dpp',
-        chapter: 'Percentage',
-        set: 'DPP 1',
-        exam: 'CDS-II, 2024',
-        q_en: 'What is the square root of $64\\%$?',
-        q_hi: '$64\\%$ का वर्गमूल क्या है?',
-        options: ['0.08%', '0.8%', '8%', '80%'],
-        answer: 3,
-        solution: '$\\sqrt{64\\%} = \\sqrt{\\frac{64}{100}} = \\frac{8}{10} = 0.8 = 80\\%$.',
-        trick: '$\\sqrt{0.64} = 0.8$, aur % me badalne par $0.8 \\times 100 = 80\\%$.'
-      },
-      {
-        id: 'pct-dpp1-q3',
-        category: 'dpp',
-        chapter: 'Percentage',
-        set: 'DPP 1',
-        exam: 'SSC CGL',
-        q_en: 'Numbers A and B are $30\\%$ and $50\\%$, respectively, more than C. The ratio of A to B is:',
-        q_hi: 'संख्या A और B क्रमशः $30\\%$ और $50\\%$ संख्या C से अधिक हैं। A का B से अनुपात है:',
-        options: ['13 : 15', '15 : 13', '5 : 4', '4 : 5'],
-        answer: 0,
-        solution: 'Let $C = 100$. Then $A = 130$ and $B = 150$.<br>$A : B = 130 : 150 = 13 : 15$.',
-        trick: 'Direct $(100+30) : (100+50) = 13 : 15$.'
-      },
-      {
-        id: 'ratio-dpp1-q1',
-        category: 'dpp',
-        chapter: 'Ratio & Proportion',
-        set: 'DPP 1',
-        exam: 'SSC CHSL',
-        q_en: 'Find the fourth proportional to $4, 9, 12$.',
-        q_hi: '$4, 9, 12$ का चतुर्थानुपाती (fourth proportional) ज्ञात कीजिए।',
-        options: ['24', '27', '30', '18'],
-        answer: 1,
+// ... existing code ... -->
         solution: 'Fourth proportional $= \\frac{b \\times c}{a} = \\frac{9 \\times 12}{4} = 9 \\times 3 = 27$.',
         trick: '$4 \\times 3 = 12$, so $9 \\times 3 = 27$.'
+      }
+    ];
+
+    const STARTER_FORMULAS = [
+      {
+        id: 'fm-2d-1',
+        topic: 'Mensuration 2D',
+        title_en: 'Area & Circumference of a Circle',
+        title_hi: 'वृत्त (Circle) का क्षेत्रफल और परिधि',
+        formula: '$$\\text{Area} = \\pi r^2 \\quad | \\quad \\text{Circumference} = 2\\pi r$$',
+        note: 'When $r = 7$, Area $= 154$ and Circumference $= 44$.'
+      },
+      {
+        id: 'fm-2d-2',
+        topic: 'Mensuration 2D',
+        title_en: 'Equilateral Triangle (Area & Height)',
+        title_hi: 'समबाहु त्रिभुज (Equilateral Triangle) का क्षेत्रफल और ऊँचाई',
+        formula: '$$\\text{Area} = \\frac{\\sqrt{3}}{4}a^2 \\quad | \\quad h = \\frac{\\sqrt{3}}{2}a$$',
+        note: 'Inradius $r = \\frac{a}{2\\sqrt{3}}$, Circumradius $R = \\frac{a}{\\sqrt{3}}$.'
+      },
+      {
+        id: 'fm-2d-3',
+        topic: 'Mensuration 2D',
+        title_en: 'Area of a Trapezium',
+        title_hi: 'समलंब चतुर्भुज (Trapezium) का क्षेत्रफल',
+        formula: '$$\\text{Area} = \\frac{1}{2} \\times (a + b) \\times h$$',
+        note: '$a$ and $b$ are parallel sides, $h$ is perpendicular height.'
+      },
+      {
+        id: 'fm-3d-1',
+        topic: 'Mensuration 3D',
+        title_en: 'Right Circular Cylinder (Volume & CSA)',
+        title_hi: 'बेलन (Cylinder) का आयतन और वक्र पृष्ठीय क्षेत्रफल',
+        formula: '$$V = \\pi r^2 h \\quad | \\quad \\text{CSA} = 2\\pi r h \\quad | \\quad \\text{TSA} = 2\\pi r(r + h)$$',
+        note: 'Ratio of Cylinder to Cone volume (same $r, h$) is $3 : 1$.'
+      },
+      {
+        id: 'fm-3d-2',
+        topic: 'Mensuration 3D',
+        title_en: 'Right Circular Cone (Volume & Slant Height)',
+        title_hi: 'शंकु (Cone) का आयतन और तिर्यक ऊँचाई',
+        formula: '$$V = \\frac{1}{3}\\pi r^2 h \\quad | \\quad l = \\sqrt{r^2 + h^2} \\quad | \\quad \\text{CSA} = \\pi r l$$',
+        note: 'Use Pythagorean triplets like $(3, 4, 5)$ or $(5, 12, 13)$ for $r, h, l$.'
+      },
+      {
+        id: 'fm-3d-3',
+        topic: 'Mensuration 3D',
+        title_en: 'Sphere & Hemisphere (Volume & Surface Area)',
+        title_hi: 'गोला और अर्धगोला (Sphere & Hemisphere)',
+        formula: '$$V_{\\text{sphere}} = \\frac{4}{3}\\pi r^3 \\quad | \\quad \\text{SA} = 4\\pi r^2 \\quad | \\quad \\text{TSA}_{\\text{hemi}} = 3\\pi r^2$$',
+        note: 'Hemisphere CSA $= 2\\pi r^2$, TSA $= 3\\pi r^2$.'
+      },
+      {
+        id: 'fm-alg-1',
+        topic: 'Algebra',
+        title_en: 'Sum & Difference of Cubes',
+        title_hi: 'घनों का योग और अंतर ($a^3 \\pm b^3$)',
+        formula: '$$a^3 + b^3 = (a+b)(a^2 - ab + b^2)$$<br>$$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$$',
+        note: 'Also remember: $(a+b)^3 = a^3 + b^3 + 3ab(a+b)$.'
+      },
+      {
+        id: 'fm-alg-2',
+        topic: 'Algebra',
+        title_en: 'Reciprocal Power Shortcut ($x + \\frac{1}{x} = k$)',
+        title_hi: 'यदि $x + \\frac{1}{x} = k$ हो, तो वर्ग और घन का मान',
+        formula: '$$x^2 + \\frac{1}{x^2} = k^2 - 2 \\quad | \\quad x^3 + \\frac{1}{x^3} = k^3 - 3k$$',
+        note: 'If $x - \\frac{1}{x} = k$, then $x^2 + \\frac{1}{x^2} = k^2 + 2$ and $x^3 - \\frac{1}{x^3} = k^3 + 3k$.'
+      },
+      {
+        id: 'fm-pct-1',
+        topic: 'Percentage',
+        title_en: 'Successive Percentage Change Formula',
+        title_hi: 'क्रमागत प्रतिशत परिवर्तन (Successive % Change)',
+        formula: '$$\\text{Net \\% Change} = \\left(x + y + \\frac{xy}{100}\\right)\\%$$',
+        note: 'Use positive sign for increase and negative sign for decrease.'
+      },
+      {
+        id: 'fm-pct-2',
+        topic: 'Percentage',
+        title_en: 'AB Rule (Constant Product / Expenditure)',
+        title_hi: 'AB नियम (खर्च समान रखने पर कमी/वृद्धि)',
+        formula: '$$+\\frac{a}{b} \\longrightarrow -\\frac{a}{b + a} \\quad | \\quad -\\frac{a}{b} \\longrightarrow +\\frac{a}{b - a}$$',
+        note: 'Example: Price $+25\\% (+\\frac{1}{4}) \\Rightarrow$ Consumption $-20\\% (-\\frac{1}{5})$.'
       }
     ];
 
@@ -1007,148 +1102,54 @@
        3. APPLICATION STATE & LOCAL PERSISTENCE
     ========================================================================= */
     let dataset = [];
+    let formulasData = [];
     let currentTab = 'home';
-    let currentLang = 'both';
-    let notesChapter = 'All';
-    let notesSet = 'All';
-    let hideSolutions = false;
-    let dppChapter = 'All';
-    let savedSubTab = 'mistakes';
-
+// ... existing code ... -->
     let progress = {
       streak: 1,
       lastActiveDate: '',
       solvedIds: [],
       mistakes: [],
       bookmarks: [],
+      masteredFormulas: [],
       totalAttempts: 0,
       totalCorrect: 0,
       testsCompleted: 0,
       bestScores: {}
     };
 
-    let setupState = {
-      chapter: '',
-      set: '',
-      title: '',
-      questions: [],
-      timerMode: 'sectional',
-      sectionalMinutes: 15,
-      marking: 'ssc'
-    };
-
-    let cbt = {
-      active: false,
-      title: '',
-      chapter: '',
-      set: '',
-      timerMode: 'sectional',
-      totalLimitSec: 900,
-      marking: 'ssc',
-      questions: [],
+    let formulaStudy = {
+      open: false,
+      topic: '',
+      mode: 'flashcards',
+      queue: [],
       index: 0,
-      answers: [],
-      marked: [],
-      visited: [],
-      qTimes: [],
-      qStartMs: 0,
-      testStartMs: 0,
-      elapsedSec: 0,
-      intervalId: null
+      flipped: false
     };
-
-    let lastAnalysis = null;
-    let analysisFilter = 'all';
-    let analysisSortSlowest = false;
-
-    function getTodayISO() {
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    function loadProgress() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          progress = {
-            streak: Number(parsed.streak) || 1,
-            lastActiveDate: parsed.lastActiveDate || '',
+// ... existing code ... -->
             solvedIds: Array.isArray(parsed.solvedIds) ? parsed.solvedIds : [],
             mistakes: Array.isArray(parsed.mistakes) ? parsed.mistakes : [],
             bookmarks: Array.isArray(parsed.bookmarks) ? parsed.bookmarks : [],
+            masteredFormulas: Array.isArray(parsed.masteredFormulas) ? parsed.masteredFormulas : [],
             totalAttempts: Number(parsed.totalAttempts) || 0,
-            totalCorrect: Number(parsed.totalCorrect) || 0,
-            testsCompleted: Number(parsed.testsCompleted) || 0,
-            bestScores: parsed.bestScores && typeof parsed.bestScores === 'object' ? parsed.bestScores : {}
-          };
-        }
-      } catch (_) {
-        // Keep defaults
-      }
-      checkStreak();
-    }
-
-    function saveProgress() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-      } catch (_) {
-        // Ignore quota/private mode errors
-      }
-    }
-
-    function checkStreak() {
-      const today = getTodayISO();
-      if (!progress.lastActiveDate) {
-        progress.lastActiveDate = today;
-        progress.streak = 1;
-        saveProgress();
-        return;
-      }
-      if (progress.lastActiveDate === today) return;
-
-      const prev = new Date(progress.lastActiveDate + 'T00:00:00');
-      const curr = new Date(today + 'T00:00:00');
-      const diffDays = Math.round((curr - prev) / 86400000);
-      if (diffDays === 1) {
-        progress.streak = (progress.streak || 0) + 1;
-      } else if (diffDays > 1) {
-        progress.streak = 1;
-      }
-      progress.lastActiveDate = today;
-      saveProgress();
-    }
-
+// ... existing code ... -->
     /* =========================================================================
-       4. DATA NORMALIZATION & SILENT DUAL-FILE LOADER
+       4. DATA NORMALIZATION & SILENT FOLDER + ROOT LOADER
     ========================================================================= */
-    function normalizeItem(raw, idx, defaultCategory = 'dpp') {
-      const cat = String(raw.category || defaultCategory).toLowerCase().trim();
-      const optsEn = Array.isArray(raw.options_en)
-        ? raw.options_en
-        : (Array.isArray(raw.options) ? raw.options : []);
-      const optsHi = Array.isArray(raw.options_hi) ? raw.options_hi : optsEn;
-      const ansIdx = typeof raw.ans === 'number'
-        ? raw.ans
-        : (typeof raw.answer === 'number'
-          ? raw.answer
-          : (typeof raw.correct === 'number' ? raw.correct : 0));
-
-      return {
-        id: String(raw.id || `${cat}_${idx}`),
-        category: cat,
-        chapter: String(raw.chapter || 'General').trim(),
-        set: String(raw.set || (cat === 'class_notes' ? 'Class 1' : 'DPP 1')).trim(),
-        exam: raw.exam ? String(raw.exam).trim() : '',
-        q_en: raw.q_en || raw.question_en || '',
-        q_hi: raw.q_hi || raw.question_hi || '',
-        options_en: optsEn,
-        options_hi: optsHi,
-        ans: ansIdx,
-        sol_en: raw.sol_en || raw.solution_en || raw.solution || '',
-        sol_hi: raw.sol_hi || raw.solution_hi || '',
+// ... existing code ... -->
         trick_en: raw.trick_en || raw.trick || '',
         trick_hi: raw.trick_hi || ''
+      };
+    }
+
+    function normalizeFormula(raw, idx) {
+      return {
+        id: String(raw.id || `fm_${idx}`),
+        topic: String(raw.topic || raw.chapter || 'General').trim(),
+        title_en: raw.title_en || raw.title || raw.q_en || '',
+        title_hi: raw.title_hi || raw.q_hi || '',
+        formula: raw.formula || raw.sol_en || raw.solution || '',
+        note: raw.note || raw.trick || raw.trick_en || ''
       };
     }
 
@@ -1159,260 +1160,91 @@
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
     }
 
+    async function fetchFirstAvailable(urls) {
+      for (const url of urls) {
+        try {
+          const data = await fetchJsonArray(url);
+          if (data) return data;
+        } catch (_) {
+          // Try next fallback path
+        }
+      }
+      return null;
+    }
+
     async function fetchRemoteContent(isManual = false) {
       const icon = document.getElementById('refreshIcon');
       if (icon && isManual) icon.classList.add('spin-icon');
 
       try {
-        const [notesRes, dppRes] = await Promise.allSettled([
-          fetchJsonArray(CLASS_NOTES_URL),
-          fetchJsonArray(DPP_URL)
+        const [notesRes, dppRes, formulasRes] = await Promise.allSettled([
+          fetchFirstAvailable(CLASS_NOTES_URLS),
+          fetchFirstAvailable(DPP_URLS),
+          fetchFirstAvailable(FORMULAS_URLS)
         ]);
 
         const notesRaw = notesRes.status === 'fulfilled' && notesRes.value ? notesRes.value : [];
         const dppRaw = dppRes.status === 'fulfilled' && dppRes.value ? dppRes.value : [];
+        const formulasRaw = formulasRes.status === 'fulfilled' && formulasRes.value ? formulasRes.value : [];
 
+        let updated = false;
         if (notesRaw.length > 0 || dppRaw.length > 0) {
           const normalizedNotes = notesRaw.map((item, i) => normalizeItem(item, i, 'class_notes'));
           const normalizedDpps = dppRaw.map((item, i) => normalizeItem(item, i, 'dpp'));
           dataset = [...normalizedNotes, ...normalizedDpps];
-          refreshAll();
+          updated = true;
         }
+        if (formulasRaw.length > 0) {
+          formulasData = formulasRaw.map((item, i) => normalizeFormula(item, i));
+          updated = true;
+        }
+        if (updated) refreshAll();
       } catch (_) {
-        // Silently keep built-in starter dataset when remote files are unavailable
+        // Silently keep built-in starter datasets when remote files are unavailable
       } finally {
         if (icon) setTimeout(() => icon.classList.remove('spin-icon'), 450);
         if (isManual) showToast('Content updated', 'success');
       }
     }
-
-    /* =========================================================================
-       5. UTILITY HELPERS (NATURAL SORT, KATEX SAFE RENDER, FORMATTERS, TOAST)
-    ========================================================================= */
-    function naturalSort(a, b) {
-      return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' });
-    }
-
-    function getNotes() {
-      return dataset.filter(x => x.category === 'class_notes');
-    }
-
-    function getDpps() {
-      return dataset.filter(x => x.category === 'dpp' && Array.isArray(x.options_en) && x.options_en.length > 0);
-    }
-
-    function getChapters(category) {
-      const src = category ? dataset.filter(x => x.category === category) : dataset;
-      return [...new Set(src.map(x => x.chapter).filter(Boolean))];
-    }
-
-    function getSets(category, chapter) {
-      const src = dataset.filter(x => x.category === category && (chapter === 'All' || x.chapter === chapter));
-      return [...new Set(src.map(x => x.set).filter(Boolean))].sort(naturalSort);
-    }
-
-    function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function formatRichText(str) {
-      return escapeHtml(str)
-        .replace(/\n/g, '<br>')
-        .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
-        .replace(/&lt;(\/?)(b|strong|i|u)&gt;/gi, '<$1$2>')
-        .replace(/&amp;nbsp;/gi, '&nbsp;');
-    }
-
-    function formatMMSS(sec) {
-      const s = Math.max(0, Math.floor(sec));
-      return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-    }
-
-    function formatCompactSec(sec) {
-      const s = Math.max(0, Math.round(sec));
-      if (s < 60) return `${s}s`;
-      const m = Math.floor(s / 60);
-      const r = s % 60;
-      return r === 0 ? `${m}m` : `${m}m ${r}s`;
-    }
-
-    function safeRenderMath(el) {
-      if (!el) return;
-      try {
-        if (typeof window.renderMathInElement === 'function') {
-          window.renderMathInElement(el, {
-            delimiters: [
-              { left: '$$', right: '$$', display: true },
-              { left: '$', right: '$', display: false },
-              { left: '\\(', right: '\\)', display: false },
-              { left: '\\[', right: '\\]', display: true }
-            ],
-            throwOnError: false
-          });
-        }
-      } catch (_) {
-        // Skip safely
-      }
-    }
-
-    function showToast(message, type = 'success') {
-      const stack = document.getElementById('toastStack');
-      if (!stack) return;
-      const el = document.createElement('div');
-      const borderCls = type === 'error' ? 'border-rose-200 text-rose-800' : (type === 'info' ? 'border-indigo-200 text-indigo-800' : 'border-emerald-200 text-emerald-800');
-      const iconHtml = type === 'error' ? `<span class="text-rose-500">${SVG.xCircle}</span>` : `<span class="text-emerald-500">${SVG.checkCircle}</span>`;
-      el.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl bg-white border shadow-md text-xs sm:text-sm font-semibold transition-all duration-300 ${borderCls}`;
-      el.innerHTML = `${iconHtml}<span>${escapeHtml(message)}</span>`;
-      stack.appendChild(el);
-      setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(12px)';
-        setTimeout(() => el.remove(), 300);
-      }, 2600);
-    }
-
-    /* Bilingual Renderers */
-    function renderQuestionText(item) {
-      let html = '';
-      if ((currentLang === 'both' || currentLang === 'en') && item.q_en) {
-        html += `<p class="text-[15px] sm:text-base font-semibold text-slate-900 leading-relaxed">${escapeHtml(item.q_en)}</p>`;
-      }
-      if ((currentLang === 'both' || currentLang === 'hi') && item.q_hi) {
-        html += `<p class="font-hindi text-[15px] sm:text-base ${currentLang === 'both' ? 'text-slate-600 font-medium' : 'text-slate-900 font-semibold'} leading-relaxed">${escapeHtml(item.q_hi)}</p>`;
-      }
-      return html;
-    }
-
-    function renderOptionText(item, i) {
-      const en = item.options_en?.[i] ?? '';
-      const hi = item.options_hi?.[i] ?? en;
-      if (currentLang === 'en') return `<span>${escapeHtml(en)}</span>`;
-      if (currentLang === 'hi') return `<span class="font-hindi">${escapeHtml(hi)}</span>`;
-      if (String(en).trim() === String(hi).trim()) return `<span>${escapeHtml(en)}</span>`;
-      return `<span>${escapeHtml(en)} <span class="text-slate-400 mx-1">/</span> <span class="font-hindi">${escapeHtml(hi)}</span></span>`;
-    }
-
-    function renderSolutionBox(item) {
-      let html = '';
-      if ((currentLang === 'both' || currentLang === 'en') && item.sol_en) {
-        html += `<div class="text-sm text-slate-700 leading-relaxed">${formatRichText(item.sol_en)}</div>`;
-      }
-      if ((currentLang === 'both' || currentLang === 'hi') && item.sol_hi) {
-        html += `<div class="font-hindi text-sm ${currentLang === 'both' && item.sol_en ? 'text-slate-600 pt-2 mt-2 border-t border-slate-200/70' : 'text-slate-700'} leading-relaxed">${formatRichText(item.sol_hi)}</div>`;
-      }
-      if (!html && item.sol_en) {
-        html = `<div class="text-sm text-slate-700 leading-relaxed">${formatRichText(item.sol_en)}</div>`;
-      }
-      return html || `<div class="text-xs text-slate-400 italic">Solution not available.</div>`;
-    }
-
-    function renderTrickBox(item) {
-      let content = '';
-      if ((currentLang === 'both' || currentLang === 'en') && item.trick_en) {
-        content += `<div class="text-sm text-amber-950 leading-relaxed">${formatRichText(item.trick_en)}</div>`;
-      }
-      if ((currentLang === 'both' || currentLang === 'hi') && item.trick_hi) {
-        content += `<div class="font-hindi text-sm ${currentLang === 'both' && item.trick_en ? 'text-amber-900 pt-1.5 mt-1.5 border-t border-amber-200/70' : 'text-amber-950'} leading-relaxed">${formatRichText(item.trick_hi)}</div>`;
-      }
-      if (!content && item.trick_en) {
-        content = `<div class="text-sm text-amber-950 leading-relaxed">${formatRichText(item.trick_en)}</div>`;
-      }
-      if (!content) return '';
-      return `
-        <div class="rounded-xl bg-amber-50 border border-amber-200/90 p-4 space-y-1.5">
-          <div class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-800">
-            <span class="text-amber-600">${SVG.bulb}</span>
-            <span>Short Trick</span>
-          </div>
-          ${content}
-        </div>
-      `;
-    }
-
-    /* =========================================================================
-       6. NAVIGATION & LANGUAGE SWITCHING
-    ========================================================================= */
-    function switchTab(tab) {
-      currentTab = tab;
-      ['home', 'notes', 'dpp', 'saved'].forEach(t => {
-        const panel = document.getElementById(`view-${t}`);
-        if (panel) panel.classList.toggle('hidden', t !== tab);
-      });
-
-      document.querySelectorAll('.desktop-nav-btn').forEach(btn => {
-        const active = btn.dataset.nav === tab;
-        btn.className = active
-          ? 'desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-bold bg-white text-indigo-600 shadow-xs transition-all'
-          : 'desktop-nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all';
-      });
-
-      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-        const active = btn.dataset.nav === tab;
-        btn.className = active
-          ? 'mobile-nav-btn relative flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl text-indigo-600 bg-indigo-50 transition-all'
-          : 'mobile-nav-btn relative flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl text-slate-500 transition-all';
-      });
-
-      if (tab === 'home') renderHome();
-      if (tab === 'notes') renderNotesTab();
-      if (tab === 'dpp') {
-        const isAnalysisOpen = !document.getElementById('dppAnalysisPanel').classList.contains('hidden');
-        if (!isAnalysisOpen) renderDppLobby();
-      }
-      if (tab === 'saved') renderSavedTab();
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
+// ... existing code ... -->
     function setLanguage(lang) {
       currentLang = lang;
       updateLangButtons();
       if (cbt.active) renderCbtQuestion();
+      if (formulaStudy.open) renderFormulaModalContent();
       if (currentTab === 'notes') renderNotesList();
       if (currentTab === 'dpp' && !document.getElementById('dppAnalysisPanel').classList.contains('hidden')) {
         renderAnalysisReview();
       }
       if (currentTab === 'saved') renderSavedTab();
     }
-
-    function updateLangButtons() {
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        const active = btn.dataset.lang === currentLang;
-        btn.className = active
-          ? 'lang-btn px-2 sm:px-2.5 py-1 rounded-lg bg-white text-indigo-600 shadow-xs font-extrabold transition-all'
-          : 'lang-btn px-2 sm:px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-800 font-semibold transition-all';
-      });
-    }
-
-    function updateMistakeBadges() {
-      const validIds = new Set(dataset.map(i => i.id));
-      const count = progress.mistakes.filter(id => validIds.has(id)).length;
-      const pill = document.getElementById('navMistakePill');
-      const dot = document.getElementById('mobileMistakeDot');
-      if (pill) {
-        pill.textContent = count;
-        pill.classList.toggle('hidden', count === 0);
-      }
-      if (dot) dot.classList.toggle('hidden', count === 0);
-    }
-
-    function refreshAll() {
-      updateLangButtons();
-      updateMistakeBadges();
-      renderHome();
-      renderNotesTab();
-      renderDppLobby();
-      renderSavedTab();
-    }
-
+// ... existing code ... -->
     /* =========================================================================
-       7. TAB 1: HOME DASHBOARD
+       7. TAB 1: HOME DASHBOARD & FORMULA VAULT
     ========================================================================= */
+    function getTopicMeta(topic) {
+      const t = String(topic || '').toLowerCase();
+      if (t.includes('2d')) {
+        return { icon: SVG.shape2d, boxBg: 'bg-sky-50 text-sky-600', bar: 'bg-sky-500', hover: 'hover:border-sky-300' };
+      }
+      if (t.includes('3d')) {
+        return { icon: SVG.shape3d, boxBg: 'bg-violet-50 text-violet-600', bar: 'bg-violet-500', hover: 'hover:border-violet-300' };
+      }
+      if (t.includes('algebra')) {
+        return { icon: SVG.algebra, boxBg: 'bg-amber-50 text-amber-600', bar: 'bg-amber-500', hover: 'hover:border-amber-300' };
+      }
+      if (t.includes('percent')) {
+        return { icon: SVG.percent, boxBg: 'bg-emerald-50 text-emerald-600', bar: 'bg-emerald-500', hover: 'hover:border-emerald-300' };
+      }
+      if (t.includes('trig')) {
+        return { icon: SVG.trig, boxBg: 'bg-rose-50 text-rose-600', bar: 'bg-rose-500', hover: 'hover:border-rose-300' };
+      }
+      if (t.includes('geom')) {
+        return { icon: SVG.geometry, boxBg: 'bg-teal-50 text-teal-600', bar: 'bg-teal-500', hover: 'hover:border-teal-300' };
+      }
+      return { icon: SVG.sigma, boxBg: 'bg-indigo-50 text-indigo-600', bar: 'bg-indigo-500', hover: 'hover:border-indigo-300' };
+    }
+
     function renderHome() {
       updateMistakeBadges();
       const notes = getNotes();
@@ -1438,1060 +1270,252 @@
       document.getElementById('statTestsTaken').textContent = `${progress.testsCompleted} tests completed`;
       document.getElementById('statMistakeCount').textContent = mistakeCount;
 
-      const chapters = getChapters();
-      const grid = document.getElementById('chapterGrid');
-      grid.innerHTML = chapters.map(ch => {
-        const chNoteSets = getSets('class_notes', ch);
-        const chDppSets = getSets('dpp', ch);
-        const chDppQs = dpps.filter(d => d.chapter === ch);
-        const chSolved = chDppQs.filter(d => progress.solvedIds.includes(d.id)).length;
-        const pct = chDppQs.length > 0 ? Math.round((chSolved / chDppQs.length) * 100) : 0;
+      renderFormulaVault();
+    }
+
+    function renderFormulaVault() {
+      const topics = [...new Set(formulasData.map(f => f.topic).filter(Boolean))];
+      const totalPill = document.getElementById('vaultTotalPill');
+      if (totalPill) {
+        totalPill.textContent = `${formulasData.length} ${formulasData.length === 1 ? 'Formula' : 'Formulas'}`;
+      }
+
+      const grid = document.getElementById('formulaVaultGrid');
+      if (!grid) return;
+
+      if (topics.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">
+            No formulas available yet.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = topics.map(topic => {
+        const items = formulasData.filter(f => f.topic === topic);
+        const mastered = items.filter(f => progress.masteredFormulas.includes(f.id)).length;
+        const pct = items.length > 0 ? Math.round((mastered / items.length) * 100) : 0;
+        const meta = getTopicMeta(topic);
 
         return `
-          <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:border-indigo-300 transition-all flex flex-col justify-between gap-3.5">
+          <button type="button" onclick="openFormulaModal('${escapeHtml(topic)}')" class="text-left bg-white rounded-2xl border border-slate-200/90 ${meta.hover} p-4 sm:p-5 shadow-sm transition-all active:scale-[0.98] flex flex-col justify-between gap-3.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="w-10 h-10 rounded-xl ${meta.boxBg} flex items-center justify-center shrink-0">
+                ${meta.icon}
+              </div>
+              <span class="text-[11px] font-extrabold text-slate-400">${pct}%</span>
+            </div>
+
             <div>
-              <div class="flex items-start justify-between gap-2">
-                <h3 class="font-extrabold text-sm sm:text-base text-slate-900">${escapeHtml(ch)}</h3>
-                <span class="text-xs font-extrabold text-slate-400">${pct}%</span>
-              </div>
-              <div class="flex flex-wrap items-center gap-1.5 mt-2 text-[11px] font-bold">
-                <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700">${chNoteSets.length} ${chNoteSets.length === 1 ? 'Class' : 'Classes'}</span>
-                <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700">${chDppSets.length} ${chDppSets.length === 1 ? 'DPP' : 'DPPs'} (${chDppQs.length} Qs)</span>
-              </div>
+              <h3 class="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">${escapeHtml(topic)}</h3>
+              <p class="text-[11px] font-semibold text-slate-500 mt-0.5">${items.length} ${items.length === 1 ? 'formula' : 'formulas'} • ${mastered} mastered</p>
             </div>
 
             <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              <div class="h-full ${meta.bar} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
             </div>
-
-            <div class="flex items-center gap-2">
-              <button type="button" onclick="openChapterNotes('${escapeHtml(ch)}')" class="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 text-xs font-bold transition-colors">
-                Open Notes
-              </button>
-              <button type="button" onclick="openChapterDpp('${escapeHtml(ch)}')" class="flex-1 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white text-xs font-bold transition-colors">
-                DPP Sets
-              </button>
-            </div>
-          </div>
+          </button>
         `;
       }).join('');
     }
 
-    function openChapterNotes(ch) {
-      notesChapter = ch;
-      notesSet = 'All';
-      switchTab('notes');
+    function openFormulaModal(topic) {
+      const items = formulasData.filter(f => f.topic === topic);
+      if (items.length === 0) return;
+
+      formulaStudy = {
+        open: true,
+        topic,
+        mode: 'flashcards',
+        queue: [...items],
+        index: 0,
+        flipped: false
+      };
+
+      const meta = getTopicMeta(topic);
+      const iconBox = document.getElementById('fmTopicIcon');
+      iconBox.className = `w-10 h-10 rounded-xl ${meta.boxBg} flex items-center justify-center shrink-0`;
+      iconBox.innerHTML = meta.icon;
+      document.getElementById('fmTopicTitle').textContent = topic;
+
+      document.getElementById('formulaModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      renderFormulaModalContent();
     }
 
-    function openChapterDpp(ch) {
-      dppChapter = ch;
-      showDppLobby();
-      switchTab('dpp');
+    function closeFormulaModal() {
+      formulaStudy.open = false;
+      document.getElementById('formulaModal').classList.add('hidden');
+      if (!cbt.active) document.body.style.overflow = '';
+      renderFormulaVault();
+    }
+
+    function setFormulaModalMode(mode) {
+      formulaStudy.mode = mode;
+      renderFormulaModalContent();
+    }
+
+    function renderFormulaTitle(item) {
+      let html = '';
+      if ((currentLang === 'both' || currentLang === 'en') && item.title_en) {
+        html += `<div class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">${escapeHtml(item.title_en)}</div>`;
+      }
+      if ((currentLang === 'both' || currentLang === 'hi') && item.title_hi) {
+        html += `<div class="font-hindi text-sm sm:text-base ${currentLang === 'both' && item.title_en ? 'text-slate-600 font-semibold' : 'text-slate-900 font-extrabold'} leading-snug">${escapeHtml(item.title_hi)}</div>`;
+      }
+      return html || `<div class="text-base font-extrabold text-slate-900">Formula</div>`;
+    }
+
+    function renderFormulaModalContent() {
+      if (!formulaStudy.open) return;
+      const allTopicItems = formulasData.filter(f => f.topic === formulaStudy.topic);
+      const masteredCount = allTopicItems.filter(f => progress.masteredFormulas.includes(f.id)).length;
+      document.getElementById('fmTopicStats').textContent = `${masteredCount}/${allTopicItems.length} mastered`;
+
+      document.querySelectorAll('.fm-mode-btn').forEach(btn => {
+        const active = btn.dataset.fmmode === formulaStudy.mode;
+        btn.className = active
+          ? 'fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-extrabold bg-white text-indigo-600 shadow-xs transition-all'
+          : 'fm-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all';
+      });
+
+      const flashView = document.getElementById('fmFlashcardsView');
+      const listView = document.getElementById('fmListView');
+      const counter = document.getElementById('fmDeckCounter');
+
+      if (formulaStudy.mode === 'flashcards') {
+        flashView.classList.remove('hidden');
+        listView.classList.add('hidden');
+
+        const total = formulaStudy.queue.length;
+        const done = formulaStudy.index >= total;
+
+        document.getElementById('fmCardStage').classList.toggle('hidden', done);
+        document.getElementById('fmCardControls').classList.toggle('hidden', done);
+        document.getElementById('fmDeckDone').classList.toggle('hidden', !done);
+
+        if (done) {
+          counter.textContent = `${total} / ${total}`;
+          document.getElementById('fmProgressBar').style.width = '100%';
+          return;
+        }
+
+        const card = formulaStudy.queue[formulaStudy.index];
+        counter.textContent = `${formulaStudy.index + 1} / ${total}`;
+        document.getElementById('fmProgressBar').style.width = `${((formulaStudy.index + 1) / Math.max(1, total)) * 100}%`;
+
+        const isMastered = progress.masteredFormulas.includes(card.id);
+        document.getElementById('fmMasteredTag').classList.toggle('hidden', !isMastered);
+
+        const flipInner = document.getElementById('fmFlipInner');
+        flipInner.classList.toggle('rotate-y-180', formulaStudy.flipped);
+
+        document.getElementById('fmFrontContent').innerHTML = renderFormulaTitle(card);
+        document.getElementById('fmBackContent').innerHTML = `
+          <div class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">${formatRichText(card.formula)}</div>
+          ${card.note ? `<div class="rounded-xl bg-amber-50 border border-amber-200/90 px-3.5 py-2.5 text-xs sm:text-sm text-amber-950 font-medium text-left">${formatRichText(card.note)}</div>` : ''}
+        `;
+
+        renderMath(flashView);
+      } else {
+        flashView.classList.add('hidden');
+        listView.classList.remove('hidden');
+        counter.textContent = `${allTopicItems.length} total`;
+
+        listView.innerHTML = allTopicItems.map((item, idx) => {
+          const isMastered = progress.masteredFormulas.includes(item.id);
+          return `
+            <div class="rounded-2xl border border-slate-200/90 bg-slate-50/50 p-4 space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div class="space-y-0.5">
+                  <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-600">Formula ${idx + 1}</span>
+                  ${renderFormulaTitle(item)}
+                </div>
+                <button type="button" onclick="toggleFormulaMastered('${item.id}')" class="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
+                  isMastered ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-white border-slate-200 text-slate-500 hover:border-emerald-300 hover:text-emerald-700'
+                }">
+                  ${SVG.checkCircle}
+                  <span>${isMastered ? 'Mastered' : 'Mark Done'}</span>
+                </button>
+              </div>
+              <div class="rounded-xl bg-white border border-slate-200/80 p-3.5 text-sm sm:text-base text-slate-900 overflow-x-auto">${formatRichText(item.formula)}</div>
+              ${item.note ? `<div class="rounded-xl bg-amber-50 border border-amber-200/80 px-3 py-2 text-xs text-amber-950 font-medium">${formatRichText(item.note)}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        renderMath(listView);
+      }
+    }
+
+    function flipFormulaCard() {
+      formulaStudy.flipped = !formulaStudy.flipped;
+      const flipInner = document.getElementById('fmFlipInner');
+      if (flipInner) flipInner.classList.toggle('rotate-y-180', formulaStudy.flipped);
+      renderMath(document.getElementById('fmFlashcardsView'));
+    }
+
+    function handleFormulaGotIt() {
+      const card = formulaStudy.queue[formulaStudy.index];
+      if (card && !progress.masteredFormulas.includes(card.id)) {
+        progress.masteredFormulas.push(card.id);
+        saveProgress();
+      }
+      formulaStudy.index++;
+      formulaStudy.flipped = false;
+      renderFormulaModalContent();
+    }
+
+    function handleFormulaReviseAgain() {
+      const card = formulaStudy.queue[formulaStudy.index];
+      if (card) {
+        formulaStudy.queue.push(card);
+      }
+      formulaStudy.index++;
+      formulaStudy.flipped = false;
+      renderFormulaModalContent();
+    }
+
+    function restartFormulaDeck() {
+      const items = formulasData.filter(f => f.topic === formulaStudy.topic);
+      formulaStudy.queue = [...items];
+      formulaStudy.index = 0;
+      formulaStudy.flipped = false;
+      renderFormulaModalContent();
+    }
+
+    function toggleFormulaMastered(id) {
+      const idx = progress.masteredFormulas.indexOf(id);
+      if (idx === -1) {
+        progress.masteredFormulas.push(id);
+      } else {
+        progress.masteredFormulas.splice(idx, 1);
+      }
+      saveProgress();
+      renderFormulaModalContent();
     }
 
     function openSavedOn(sub) {
       savedSubTab = sub;
       switchTab('saved');
     }
-
-    /* =========================================================================
-       8. TAB 2: CLASS NOTES
-    ========================================================================= */
-    function renderNotesTab() {
-      const chapters = getChapters('class_notes');
-      if (notesChapter !== 'All' && !chapters.includes(notesChapter)) {
-        notesChapter = 'All';
-        notesSet = 'All';
-      }
-
-      const allNotesCount = getNotes().length;
-      const chPills = document.getElementById('notesChapterPills');
-      const allBtn = `
-        <button type="button" onclick="selectNotesChapter('All')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
-          notesChapter === 'All' ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
-        }">
-          <span>All</span>
-          <span class="px-1.5 py-0.5 rounded-md text-[10px] ${notesChapter === 'All' ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}">${allNotesCount}</span>
-        </button>
-      `;
-
-      chPills.innerHTML = allBtn + chapters.map(ch => {
-        const count = getNotes().filter(n => n.chapter === ch).length;
-        const active = notesChapter === ch;
-        return `
-          <button type="button" onclick="selectNotesChapter('${escapeHtml(ch)}')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
-            active ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
-          }">
-            <span>${escapeHtml(ch)}</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] ${active ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}">${count}</span>
-          </button>
-        `;
-      }).join('');
-
-      const sets = getSets('class_notes', notesChapter);
-      if (notesSet !== 'All' && !sets.includes(notesSet)) notesSet = 'All';
-
-      const filteredByCh = getNotes().filter(n => notesChapter === 'All' || n.chapter === notesChapter);
-      const setPills = document.getElementById('notesSetPills');
-      setPills.innerHTML = `
-        <button type="button" onclick="selectNotesSet('All')" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
-          notesSet === 'All' ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-400'
-        }">
-          <span>All</span>
-          <span class="px-1.5 py-0.5 rounded-full text-[10px] ${notesSet === 'All' ? 'bg-slate-700 text-white' : 'bg-white text-slate-500'}">${filteredByCh.length}</span>
-        </button>
-      ` + sets.map(s => {
-        const cnt = filteredByCh.filter(n => n.set === s).length;
-        const active = notesSet === s;
-        return `
-          <button type="button" onclick="selectNotesSet('${escapeHtml(s)}')" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
-            active ? 'bg-indigo-100 text-indigo-800 border-indigo-400' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-indigo-300'
-          }">
-            <span>${escapeHtml(s)}</span>
-            <span class="px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-indigo-600 text-white' : 'bg-white text-slate-500'}">${cnt}</span>
-          </button>
-        `;
-      }).join('');
-
-      renderNotesList();
-    }
-
-    function selectNotesChapter(ch) {
-      notesChapter = ch;
-      notesSet = 'All';
-      renderNotesTab();
-    }
-
-    function selectNotesSet(s) {
-      notesSet = s;
-      renderNotesTab();
-    }
-
-    function toggleHideSolutions(checked) {
-      hideSolutions = checked;
-      renderNotesList();
-    }
-
-    function renderNotesList() {
-      const list = getNotes().filter(item => {
-        if (notesChapter !== 'All' && item.chapter !== notesChapter) return false;
-        if (notesSet !== 'All' && item.set !== notesSet) return false;
-        return true;
-      });
-
-      const container = document.getElementById('notesListContainer');
-      if (list.length === 0) {
-        container.innerHTML = `
-          <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
-            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">${SVG.book}</div>
-            <h3 class="font-bold text-slate-800">No Class Notes Found</h3>
-            <p class="text-xs text-slate-500">Select another chapter or class set.</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = list.map((item, idx) => buildSolvedCardHtml(item, idx, false)).join('');
-      safeRenderMath(container);
-    }
-
-    function buildSolvedCardHtml(item, idx, forceShowSolutions = false, extraActionHtml = '') {
-      const isBm = progress.bookmarks.includes(item.id);
-      const labels = ['A', 'B', 'C', 'D', 'E'];
-      const isConcept = !Array.isArray(item.options_en) || item.options_en.length === 0;
-      const shouldHide = hideSolutions && !forceShowSolutions;
-      const solId = `sol_box_${item.id}_${idx}`;
-
-      const examBadge = item.exam
-        ? `<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 border border-sky-200/70">${escapeHtml(item.exam)}</span>`
-        : '';
-
-      const optsHtml = isConcept
-        ? ''
-        : `
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            ${item.options_en.map((_, i) => {
-              const isCorrect = i === item.ans;
-              const hi = !shouldHide && isCorrect;
-              return `
-                <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-sm ${
-                  hi ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-semibold' : 'bg-slate-50/70 border-slate-200/80 text-slate-700'
-                }">
-                  <span class="w-6 h-6 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 ${
-                    hi ? 'bg-emerald-600 text-white' : 'bg-white border border-slate-200 text-slate-500'
-                  }">${labels[i] || i + 1}</span>
-                  <div class="flex-1">${renderOptionText(item, i)}</div>
-                  ${hi ? `<span class="text-emerald-600 shrink-0">${SVG.checkCircle}</span>` : ''}
-                </div>
-              `;
-            }).join('')}
-          </div>
-        `;
-
-      const revealBtnLabel = isConcept
-        ? 'Tap to Reveal Notes'
-        : `Tap to Reveal Solution (${labels[item.ans] || ''})`;
-
-      return `
-        <article class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-6 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex flex-wrap items-center gap-1.5">
-              <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">${escapeHtml(item.chapter)}</span>
-              <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">${escapeHtml(item.set)}</span>
-              ${isConcept
-                ? `<span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 border border-purple-200/70">Concept</span>`
-                : `<span class="text-[11px] font-bold px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-500">Q${idx + 1}</span>`
-              }
-              ${examBadge}
-            </div>
-
-            <div class="flex items-center gap-1.5">
-              ${extraActionHtml}
-              <button type="button" onclick="toggleBookmark('${item.id}')" class="w-8 h-8 rounded-xl border flex items-center justify-center transition-all ${
-                isBm ? 'bg-indigo-50 border-indigo-300 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-600'
-              }" title="Bookmark">
-                ${SVG.bookmark(isBm)}
-              </button>
-            </div>
-          </div>
-
-          <div class="space-y-1.5">${renderQuestionText(item)}</div>
-          ${optsHtml}
-
-          ${shouldHide ? `
-            <button type="button" onclick="revealSingleSolution('${solId}', this)" class="w-full py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors">
-              ${SVG.eye}
-              <span>${revealBtnLabel}</span>
-            </button>
-          ` : ''}
-
-          <div id="${solId}" class="${shouldHide ? 'hidden' : ''} space-y-3 pt-1">
-            <div class="rounded-xl bg-slate-50 border border-slate-200/90 p-4 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">
-                  ${SVG.fileCheck}
-                  <span>${isConcept ? 'Concept &amp; Notes' : "Sir's Solution"}</span>
-                </span>
-                ${isConcept ? '' : `<span class="text-xs font-extrabold text-emerald-700 bg-emerald-100/80 px-2.5 py-0.5 rounded-md">Answer: ${labels[item.ans] || ''}</span>`}
-              </div>
-              ${renderSolutionBox(item)}
-            </div>
-            ${renderTrickBox(item)}
-          </div>
-        </article>
-      `;
-    }
-
-    function revealSingleSolution(id, btn) {
-      const box = document.getElementById(id);
-      if (box) {
-        box.classList.remove('hidden');
-        safeRenderMath(box);
-      }
-      if (btn) btn.classList.add('hidden');
-    }
-
-    function toggleBookmark(id) {
-      const i = progress.bookmarks.indexOf(id);
-      if (i === -1) {
-        progress.bookmarks.push(id);
-        showToast('Added to Bookmarks', 'success');
-      } else {
-        progress.bookmarks.splice(i, 1);
-        showToast('Removed from Bookmarks', 'info');
-      }
-      saveProgress();
-      if (currentTab === 'notes') renderNotesList();
-      if (currentTab === 'saved') renderSavedTab();
-      if (currentTab === 'dpp' && !document.getElementById('dppAnalysisPanel').classList.contains('hidden')) {
-        renderAnalysisReview();
-      }
-    }
-
-    /* =========================================================================
-       9. TAB 3: DPP LOBBY & TEST SETUP MODAL
-    ========================================================================= */
-    function showDppLobby() {
-      document.getElementById('dppLobbyPanel').classList.remove('hidden');
-      document.getElementById('dppAnalysisPanel').classList.add('hidden');
-      renderDppLobby();
-    }
-
-    function renderDppLobby() {
-      const validIds = new Set(dataset.map(i => i.id));
-      document.getElementById('lobbyMistakeCount').textContent = progress.mistakes.filter(id => validIds.has(id)).length;
-
-      const chapters = getChapters('dpp');
-      if (dppChapter !== 'All' && !chapters.includes(dppChapter)) dppChapter = 'All';
-
-      const allDpps = getDpps();
-      const pills = document.getElementById('dppChapterPills');
-      pills.innerHTML = `
-        <button type="button" onclick="selectDppChapter('All')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
-          dppChapter === 'All' ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
-        }">
-          <span>All</span>
-          <span class="px-1.5 py-0.5 rounded-md text-[10px] ${dppChapter === 'All' ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}">${allDpps.length}</span>
-        </button>
-      ` + chapters.map(ch => {
-        const cnt = allDpps.filter(d => d.chapter === ch).length;
-        const active = dppChapter === ch;
-        return `
-          <button type="button" onclick="selectDppChapter('${escapeHtml(ch)}')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
-            active ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
-          }">
-            <span>${escapeHtml(ch)}</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] ${active ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'}">${cnt}</span>
-          </button>
-        `;
-      }).join('');
-
-      const targetChapters = dppChapter === 'All' ? chapters : [dppChapter];
-      const setCards = [];
-      targetChapters.forEach(ch => {
-        const sets = getSets('dpp', ch);
-        sets.forEach(setName => {
-          const qs = allDpps.filter(d => d.chapter === ch && d.set === setName);
-          if (qs.length > 0) setCards.push({ chapter: ch, set: setName, qs });
-        });
-      });
-
-      document.getElementById('dppHeading').textContent = dppChapter === 'All' ? 'All DPP Sets' : `${dppChapter} — DPP Sets`;
-      document.getElementById('dppSetCount').textContent = `${setCards.length} ${setCards.length === 1 ? 'set' : 'sets'}`;
-
-      const grid = document.getElementById('dppSetsGrid');
-      if (setCards.length === 0) {
-        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No DPP sets available.</div>`;
-        return;
-      }
-
-      grid.innerHTML = setCards.map(({ chapter, set, qs }) => {
-        const solved = qs.filter(q => progress.solvedIds.includes(q.id)).length;
-        const bestKey = `${chapter}__${set}`;
-        const best = progress.bestScores[bestKey];
-        const bestBadge = best
-          ? `<span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">Best: ${best.score}/${best.maxScore}</span>`
-          : '';
-
-        return `
-          <div class="bg-white rounded-2xl border border-slate-200/90 hover:border-indigo-400 p-5 shadow-sm transition-all flex flex-col justify-between gap-4">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">${escapeHtml(chapter)}</span>
-                <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">${qs.length} Qs</span>
-              </div>
-              <div class="flex items-center justify-between gap-2">
-                <h4 class="text-base font-extrabold text-slate-900">${escapeHtml(set)}</h4>
-                ${bestBadge}
-              </div>
-              <p class="text-xs text-slate-500 mt-1"><span class="text-emerald-600 font-semibold">${solved}/${qs.length}</span> attempted</p>
-            </div>
-
-            <button type="button" onclick="openSetupModal('${escapeHtml(chapter)}', '${escapeHtml(set)}')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all active:scale-95">
-              ${SVG.bolt}
-              <span>Start Test</span>
-            </button>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function selectDppChapter(ch) {
-      dppChapter = ch;
-      renderDppLobby();
-    }
-
-    function openSetupModal(chapter, setName) {
-      const qs = getDpps().filter(d => d.chapter === chapter && d.set === setName);
-      if (qs.length === 0) {
-        showToast('No questions in this set.', 'error');
-        return;
-      }
-      setupState.chapter = chapter;
-      setupState.set = setName;
-      setupState.title = `${chapter} — ${setName}`;
-      setupState.questions = qs;
-
-      document.getElementById('setupModalTitle').textContent = setupState.title;
-      document.getElementById('setupQCount').textContent = qs.length;
-      selectSetupTimerMode(setupState.timerMode);
-      selectPresetMinutes(setupState.sectionalMinutes);
-      selectSetupMarking(setupState.marking);
-      document.getElementById('setupModal').classList.remove('hidden');
-    }
-
-    function openMistakeBankTestSetup() {
-      const qs = dataset.filter(i => progress.mistakes.includes(i.id));
-      if (qs.length === 0) {
-        showToast('Your Mistake Bank is clear!', 'info');
-        return;
-      }
-      setupState.chapter = 'Mistake Bank';
-      setupState.set = 'Revision Test';
-      setupState.title = 'Mistake Bank — Revision CBT';
-      setupState.questions = qs;
-
-      document.getElementById('setupModalTitle').textContent = setupState.title;
-      document.getElementById('setupQCount').textContent = qs.length;
-      selectSetupTimerMode(setupState.timerMode);
-      selectPresetMinutes(setupState.sectionalMinutes);
-      selectSetupMarking(setupState.marking);
-      document.getElementById('setupModal').classList.remove('hidden');
-    }
-
-    function closeSetupModal() {
-      document.getElementById('setupModal').classList.add('hidden');
-    }
-
-    function selectSetupTimerMode(mode) {
-      setupState.timerMode = mode;
-      const freeBtn = document.getElementById('btnModeFree');
-      const secBtn = document.getElementById('btnModeSectional');
-      const presets = document.getElementById('sectionalPresetsBox');
-
-      freeBtn.className = mode === 'free'
-        ? 'text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all'
-        : 'text-left p-3.5 rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all';
-      secBtn.className = mode === 'sectional'
-        ? 'text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all'
-        : 'text-left p-3.5 rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all';
-
-      presets.classList.toggle('hidden', mode !== 'sectional');
-    }
-
-    function selectPresetMinutes(mins) {
-      setupState.sectionalMinutes = Math.max(1, parseInt(mins, 10) || 15);
-      document.getElementById('customMinInput').value = setupState.sectionalMinutes;
-      document.querySelectorAll('.preset-btn').forEach(btn => {
-        const active = Number(btn.dataset.preset) === setupState.sectionalMinutes;
-        btn.className = active
-          ? 'preset-btn px-3 py-1.5 rounded-lg text-xs font-extrabold border border-indigo-600 bg-indigo-600 text-white transition-all'
-          : 'preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-indigo-300 transition-all';
-      });
-    }
-
-    function onCustomMinutes(val) {
-      const m = Math.max(1, Math.min(180, parseInt(val, 10) || 1));
-      setupState.sectionalMinutes = m;
-      document.querySelectorAll('.preset-btn').forEach(btn => {
-        const active = Number(btn.dataset.preset) === m;
-        btn.className = active
-          ? 'preset-btn px-3 py-1.5 rounded-lg text-xs font-extrabold border border-indigo-600 bg-indigo-600 text-white transition-all'
-          : 'preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:border-indigo-300 transition-all';
-      });
-    }
-
-    function selectSetupMarking(scheme) {
-      setupState.marking = scheme;
-      document.getElementById('btnMarkSsc').className = scheme === 'ssc'
-        ? 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-left transition-all'
-        : 'p-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-left transition-all';
-      document.getElementById('btnMarkSimple').className = scheme === 'simple'
-        ? 'p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-left transition-all'
-        : 'p-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-left transition-all';
-    }
-
-    /* =========================================================================
-       10. LIVE FULL-SCREEN CBT TEST ENGINE (NO SOLUTIONS DURING TEST)
-    ========================================================================= */
-    function beginCbtTest() {
-      closeSetupModal();
-      const qs = setupState.questions;
-      if (!qs || qs.length === 0) return;
-
-      clearInterval(cbt.intervalId);
-      const now = Date.now();
-      cbt = {
-        active: true,
-        title: setupState.title,
-        chapter: setupState.chapter,
-        set: setupState.set,
-        timerMode: setupState.timerMode,
-        totalLimitSec: setupState.sectionalMinutes * 60,
-        marking: setupState.marking,
-        questions: qs,
-        index: 0,
-        answers: new Array(qs.length).fill(null),
-        marked: new Array(qs.length).fill(false),
-        visited: qs.map((_, i) => i === 0),
-        qTimes: new Array(qs.length).fill(0),
-        qStartMs: now,
-        testStartMs: now,
-        elapsedSec: 0,
-        intervalId: null
-      };
-
-      document.getElementById('cbtTitle').textContent = cbt.title;
-      document.getElementById('cbtMarkingTag').textContent = cbt.marking === 'ssc' ? '+2 / -0.5' : '+1 / 0';
-      document.getElementById('cbtModeTag').textContent = cbt.timerMode === 'free' ? 'Free Mode' : `Sectional (${setupState.sectionalMinutes}m)`;
-      document.getElementById('cbtQTotal').textContent = qs.length;
-
-      document.getElementById('cbtOverlay').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-
-      renderCbtQuestion();
-      renderCbtPalette();
-      updateCbtTimerUI();
-
-      cbt.intervalId = setInterval(() => {
-        if (!cbt.active) return;
-        cbt.elapsedSec = Math.floor((Date.now() - cbt.testStartMs) / 1000);
-        updateCbtTimerUI();
-        if (cbt.timerMode === 'sectional' && cbt.elapsedSec >= cbt.totalLimitSec) {
-          submitCbtTest(true);
-        }
-      }, 500);
-    }
-
-    function commitCurrentQTime() {
-      if (!cbt.active) return;
-      const now = Date.now();
-      const deltaSec = Math.max(0, (now - cbt.qStartMs) / 1000);
-      cbt.qTimes[cbt.index] = (cbt.qTimes[cbt.index] || 0) + deltaSec;
-      cbt.qStartMs = now;
-    }
-
-    function updateCbtTimerUI() {
-      const badge = document.getElementById('cbtTimerBadge');
-      const txt = document.getElementById('cbtTimerText');
-      if (cbt.timerMode === 'free') {
-        txt.textContent = formatMMSS(cbt.elapsedSec);
-        badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white font-mono text-xs sm:text-sm font-extrabold';
-      } else {
-        const rem = Math.max(0, cbt.totalLimitSec - cbt.elapsedSec);
-        txt.textContent = formatMMSS(rem);
-        badge.className = rem <= 60
-          ? 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white font-mono text-xs sm:text-sm font-extrabold timer-urgent'
-          : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-mono text-xs sm:text-sm font-extrabold';
-      }
-    }
-
-    function renderCbtQuestion() {
-      const i = cbt.index;
-      const q = cbt.questions[i];
-      const total = cbt.questions.length;
-      const sel = cbt.answers[i];
-      const isMarked = cbt.marked[i];
-      const labels = ['A', 'B', 'C', 'D'];
-
-      document.getElementById('cbtQNum').textContent = i + 1;
-      document.getElementById('cbtProgressBar').style.width = `${((i + 1) / total) * 100}%`;
-      document.getElementById('cbtMarkedPill').classList.toggle('hidden', !isMarked);
-      document.getElementById('cbtMarkBtnLabel').textContent = isMarked ? 'Unmark Review' : 'Mark for Review';
-
-      const qBox = document.getElementById('cbtQuestionBox');
-      qBox.innerHTML = (q.exam ? `<div class="inline-flex text-[11px] font-bold px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 border border-sky-200/70 mb-1">${escapeHtml(q.exam)}</div>` : '') + renderQuestionText(q);
-
-      const optBox = document.getElementById('cbtOptionsBox');
-      optBox.innerHTML = q.options_en.map((_, optIdx) => {
-        const active = sel === optIdx;
-        return `
-          <button type="button" onclick="selectCbtOption(${optIdx})" class="w-full text-left flex items-center gap-3 p-3.5 sm:p-4 rounded-xl border-2 transition-all active:scale-[0.99] ${
-            active
-              ? 'border-indigo-600 bg-indigo-50/70 text-slate-900 font-semibold shadow-xs'
-              : 'border-slate-200 bg-white hover:border-indigo-300 text-slate-800'
-          }">
-            <span class="w-7 h-7 rounded-full border-2 text-xs font-extrabold flex items-center justify-center shrink-0 ${
-              active ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 text-slate-500 bg-slate-50'
-            }">${labels[optIdx] || optIdx + 1}</span>
-            <div class="flex-1 text-sm sm:text-[15px]">${renderOptionText(q, optIdx)}</div>
-          </button>
-        `;
-      }).join('');
-
-      document.getElementById('cbtPrevBtn').disabled = i === 0;
-      document.getElementById('cbtNextLabel').textContent = i === total - 1 ? 'Save & Submit' : 'Save & Next';
-
-      safeRenderMath(document.getElementById('cbtOverlay'));
-    }
-
-    function selectCbtOption(optIdx) {
-      cbt.answers[cbt.index] = optIdx;
-      renderCbtQuestion();
-      renderCbtPalette();
-    }
-
-    function clearCbtAnswer() {
-      cbt.answers[cbt.index] = null;
-      renderCbtQuestion();
-      renderCbtPalette();
-    }
-
-    function toggleCbtMark() {
-      cbt.marked[cbt.index] = !cbt.marked[cbt.index];
-      renderCbtQuestion();
-      renderCbtPalette();
-    }
-
-    function jumpCbt(target) {
-      if (target < 0 || target >= cbt.questions.length || target === cbt.index) return;
-      commitCurrentQTime();
-      cbt.index = target;
-      cbt.visited[target] = true;
-      renderCbtQuestion();
-      renderCbtPalette();
-    }
-
-    function cbtPrev() {
-      if (cbt.index > 0) jumpCbt(cbt.index - 1);
-    }
-
-    function cbtSaveAndNext() {
-      if (cbt.index < cbt.questions.length - 1) {
-        jumpCbt(cbt.index + 1);
-      } else {
-        openSubmitModal();
-      }
-    }
-
-    function togglePaletteDrawer(open) {
-      document.getElementById('paletteDrawerBackdrop').classList.toggle('hidden', !open);
-      if (open) renderCbtPalette();
-    }
-
-    function renderCbtPalette() {
-      const answeredCount = cbt.answers.filter(a => a !== null).length;
-      document.getElementById('paletteSummaryText').textContent = `${answeredCount}/${cbt.questions.length} Answered`;
-
-      document.getElementById('cbtPaletteGrid').innerHTML = cbt.questions.map((_, i) => {
-        const cur = i === cbt.index;
-        const ans = cbt.answers[i] !== null;
-        const mrk = cbt.marked[i];
-        const vis = cbt.visited[i];
-
-        let cls = 'bg-slate-200 text-slate-600';
-        if (mrk) cls = 'bg-purple-600 text-white';
-        else if (ans) cls = 'bg-emerald-500 text-white';
-        else if (vis) cls = 'bg-rose-500 text-white';
-
-        const ring = cur ? 'ring-2 ring-offset-2 ring-indigo-600 scale-105' : '';
-        const dot = (mrk && ans) ? `<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white"></span>` : '';
-
-        return `
-          <button type="button" onclick="jumpCbt(${i}); togglePaletteDrawer(false);" class="relative h-10 rounded-xl font-extrabold text-xs flex items-center justify-center transition-all ${cls} ${ring}">
-            ${i + 1}${dot}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function openSubmitModal() {
-      const answered = cbt.answers.filter(a => a !== null).length;
-      const marked = cbt.marked.filter(Boolean).length;
-      const unanswered = cbt.questions.length - answered;
-      document.getElementById('confAnswered').textContent = answered;
-      document.getElementById('confMarked').textContent = marked;
-      document.getElementById('confUnanswered').textContent = unanswered;
-      document.getElementById('submitModal').classList.remove('hidden');
-    }
-
-    function closeSubmitModal() {
-      document.getElementById('submitModal').classList.add('hidden');
-    }
-
-    /* =========================================================================
-       11. SUBMIT CBT & DEEP POST-TEST ANALYSIS
-    ========================================================================= */
-    function submitCbtTest(isAuto = false) {
-      if (!cbt.active) return;
-      commitCurrentQTime();
-      closeSubmitModal();
-      togglePaletteDrawer(false);
-
-      clearInterval(cbt.intervalId);
-      const totalElapsed = Math.max(1, Math.round((Date.now() - cbt.testStartMs) / 1000));
-      cbt.active = false;
-      document.getElementById('cbtOverlay').classList.add('hidden');
-      document.body.style.overflow = '';
-
-      const pos = cbt.marking === 'ssc' ? 2 : 1;
-      const neg = cbt.marking === 'ssc' ? 0.5 : 0;
-
-      let correct = 0, wrong = 0, skipped = 0, score = 0;
-      let tCorrect = 0, tWrong = 0, tSkipped = 0;
-
-      const records = cbt.questions.map((q, idx) => {
-        const userAns = cbt.answers[idx];
-        const sec = Math.round(cbt.qTimes[idx] || 0);
-        let status = 'skipped';
-
-        if (userAns === null) {
-          skipped++;
-          tSkipped += sec;
-        } else if (userAns === q.ans) {
-          status = 'correct';
-          correct++;
-          score += pos;
-          tCorrect += sec;
-
-          progress.totalAttempts++;
-          progress.totalCorrect++;
-          if (q.category === 'dpp' && !progress.solvedIds.includes(q.id)) progress.solvedIds.push(q.id);
-          const mi = progress.mistakes.indexOf(q.id);
-          if (mi !== -1) progress.mistakes.splice(mi, 1);
-        } else {
-          status = 'wrong';
-          wrong++;
-          score -= neg;
-          tWrong += sec;
-
-          progress.totalAttempts++;
-          if (q.category === 'dpp' && !progress.solvedIds.includes(q.id)) progress.solvedIds.push(q.id);
-          if (!progress.mistakes.includes(q.id)) progress.mistakes.push(q.id);
-        }
-
-        return { idx, q, userAns, status, sec };
-      });
-
-      progress.testsCompleted++;
-      const maxScore = records.length * pos;
-      const cleanScore = Number.isInteger(score) ? score : Number(score.toFixed(1));
-      const bestKey = `${cbt.chapter}__${cbt.set}`;
-      const prev = progress.bestScores[bestKey];
-      if (!prev || cleanScore >= prev.score) {
-        progress.bestScores[bestKey] = { score: cleanScore, maxScore };
-      }
-      checkStreak();
-      saveProgress();
-      updateMistakeBadges();
-
-      const fastest = [...records].sort((a, b) => a.sec - b.sec)[0];
-      const slowest = [...records].sort((a, b) => b.sec - a.sec)[0];
-      const attempted = correct + wrong;
-      const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
-
-      lastAnalysis = {
-        title: cbt.title,
-        chapter: cbt.chapter,
-        set: cbt.set,
-        timerMode: cbt.timerMode,
-        sectionalMinutes: Math.round(cbt.totalLimitSec / 60),
-        marking: cbt.marking,
-        score: cleanScore,
-        maxScore,
-        accuracy,
-        attempted,
-        correct,
-        wrong,
-        skipped,
-        totalElapsed,
-        trackedTotal: tCorrect + tWrong + tSkipped,
-        avgSec: Math.round(totalElapsed / Math.max(1, records.length)),
-        tCorrect,
-        tWrong,
-        tSkipped,
-        fastest,
-        slowest,
-        records
-      };
-
-      analysisFilter = 'all';
-      analysisSortSlowest = false;
-
-      if (isAuto) showToast('Time up! Test auto-submitted.', 'info');
-      else showToast('Test submitted! Analysis ready.', 'success');
-
-      switchTab('dpp');
-      renderAnalysisView();
-    }
-
-    function renderAnalysisView() {
-      if (!lastAnalysis) return;
-      const a = lastAnalysis;
-      document.getElementById('dppLobbyPanel').classList.add('hidden');
-      document.getElementById('dppAnalysisPanel').classList.remove('hidden');
-
-      document.getElementById('analysisTitle').textContent = a.title;
-      document.getElementById('analysisSubtitle').textContent =
-        `${a.timerMode === 'free' ? 'Free Mode' : `Sectional (${a.sectionalMinutes} Min)`} • ${a.marking === 'ssc' ? 'SSC (+2 / -0.5)' : 'Simple (+1 / 0)'}`;
-
-      document.getElementById('anScore').textContent = a.score;
-      document.getElementById('anMaxScore').textContent = `out of ${a.maxScore}`;
-      document.getElementById('anAccuracy').textContent = `${a.accuracy}%`;
-      document.getElementById('anAttempted').textContent = `${a.attempted}/${a.records.length} attempted`;
-      document.getElementById('anCorrect').textContent = a.correct;
-      document.getElementById('anWrong').textContent = a.wrong;
-      document.getElementById('anSkipped').textContent = a.skipped;
-      document.getElementById('anTotalTime').textContent = formatMMSS(a.totalElapsed);
-      document.getElementById('anAvgTime').textContent = `Avg ${formatCompactSec(a.avgSec)} / Q`;
-
-      if (a.fastest) document.getElementById('anFastest').textContent = `Q${a.fastest.idx + 1} • ${formatCompactSec(a.fastest.sec)}`;
-      if (a.slowest) document.getElementById('anSlowest').textContent = `Q${a.slowest.idx + 1} • ${formatCompactSec(a.slowest.sec)}`;
-
-      const denom = Math.max(1, a.trackedTotal);
-      const pC = Math.round((a.tCorrect / denom) * 100);
-      const pW = Math.round((a.tWrong / denom) * 100);
-      const pS = Math.max(0, 100 - pC - pW);
-
-      document.getElementById('anTrackedTime').textContent = `${formatCompactSec(a.trackedTotal)} tracked`;
-      document.getElementById('barCorrect').style.width = `${(a.tCorrect / denom) * 100}%`;
-      document.getElementById('barWrong').style.width = `${(a.tWrong / denom) * 100}%`;
-      document.getElementById('barSkipped').style.width = `${(a.tSkipped / denom) * 100}%`;
-
-      document.getElementById('lblTimeCorrect').textContent = `${formatCompactSec(a.tCorrect)} (${pC}%)`;
-      document.getElementById('lblTimeWrong').textContent = `${formatCompactSec(a.tWrong)} (${pW}%)`;
-      document.getElementById('lblTimeSkipped').textContent = `${formatCompactSec(a.tSkipped)} (${pS}%)`;
-
-      renderAnalysisControls();
-      renderAnalysisReview();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function setAnalysisFilter(f) {
-      analysisFilter = f;
-      renderAnalysisControls();
-      renderAnalysisReview();
-    }
-
-    function toggleAnalysisSort() {
-      analysisSortSlowest = !analysisSortSlowest;
-      renderAnalysisControls();
-      renderAnalysisReview();
-    }
-
-    function jumpToReview(which) {
-      if (!lastAnalysis) return;
-      const target = which === 'fastest' ? lastAnalysis.fastest : lastAnalysis.slowest;
-      if (!target) return;
-      if (analysisFilter !== 'all') {
-        analysisFilter = 'all';
-        renderAnalysisControls();
-        renderAnalysisReview();
-      }
-      const el = document.getElementById(`rev_card_${target.idx}`);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        el.classList.add('ring-2', 'ring-indigo-500');
-        setTimeout(() => el.classList.remove('ring-2', 'ring-indigo-500'), 1800);
-      }
-    }
-
-    function renderAnalysisControls() {
-      const a = lastAnalysis;
-      const filters = [
-        { key: 'all', label: 'All', count: a.records.length },
-        { key: 'correct', label: 'Correct', count: a.correct },
-        { key: 'wrong', label: 'Wrong', count: a.wrong },
-        { key: 'skipped', label: 'Skipped', count: a.skipped }
-      ];
-
-      document.getElementById('analysisFilterPills').innerHTML = filters.map(f => {
-        const active = analysisFilter === f.key;
-        return `
-          <button type="button" onclick="setAnalysisFilter('${f.key}')" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
-            active ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-indigo-300'
-          }">
-            <span>${f.label}</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] ${active ? 'bg-indigo-500 text-white' : 'bg-white text-slate-500'}">${f.count}</span>
-          </button>
-        `;
-      }).join('');
-
-      document.getElementById('sortSlowestBtn').className = analysisSortSlowest
-        ? 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-500 bg-rose-50 text-rose-700 text-xs font-extrabold transition-all'
-        : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all';
-    }
-
-    function renderAnalysisReview() {
-      if (!lastAnalysis) return;
-      let list = [...lastAnalysis.records];
-      if (analysisFilter !== 'all') list = list.filter(r => r.status === analysisFilter);
-      if (analysisSortSlowest) list.sort((a, b) => b.sec - a.sec);
-
-      const container = document.getElementById('analysisReviewList');
-      if (list.length === 0) {
-        container.innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm font-semibold text-slate-500">No questions match this filter.</div>`;
-        return;
-      }
-
-      const labels = ['A', 'B', 'C', 'D'];
-      container.innerHTML = list.map(rec => {
-        const q = rec.q;
-        const isBm = progress.bookmarks.includes(q.id);
-
-        const speedTag = rec.sec <= 30
-          ? `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-700">Fast</span>`
-          : (rec.sec <= 60
-            ? `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-700">Moderate</span>`
-            : `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-700">Slow</span>`);
-
-        const statusBadge = {
-          correct: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold">${SVG.checkCircle}<span>Correct</span></span>`,
-          wrong: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 border border-rose-200 text-xs font-extrabold">${SVG.xCircle}<span>Wrong</span></span>`,
-          skipped: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 text-xs font-extrabold">${SVG.minusCircle}<span>Skipped</span></span>`
-        }[rec.status];
-
-        const optsHtml = q.options_en.map((_, i) => {
-          const isCorr = i === q.ans;
-          const isUser = i === rec.userAns;
-          let box = 'bg-slate-50/70 border-slate-200 text-slate-700';
-          let num = 'bg-white border border-slate-200 text-slate-500';
-          let pill = '';
-
-          if (isCorr) {
-            box = 'bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold';
-            num = 'bg-emerald-600 text-white';
-            pill = isUser
-              ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-600 text-white shrink-0">Your Answer ✓</span>`
-              : `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 shrink-0">Correct</span>`;
-          } else if (isUser) {
-            box = 'bg-rose-50 border-rose-400 text-rose-950 font-semibold';
-            num = 'bg-rose-600 text-white';
-            pill = `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-rose-600 text-white shrink-0">Your Answer ✗</span>`;
-          }
-
-          return `
-            <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-sm ${box}">
-              <span class="w-6 h-6 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 ${num}">${labels[i] || i + 1}</span>
-              <div class="flex-1">${renderOptionText(q, i)}</div>
-              ${pill}
-            </div>
-          `;
-        }).join('');
-
-        const examBadge = q.exam
-          ? `<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 border border-sky-200/70">${escapeHtml(q.exam)}</span>`
-          : '';
-
-        return `
-          <article id="rev_card_${rec.idx}" class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-6 space-y-4 transition-all">
-            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold">Q${rec.idx + 1}</span>
-                ${statusBadge}
-                ${examBadge}
-              </div>
-
-              <div class="flex items-center gap-2">
-                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-50 border border-slate-200">
-                  <span class="text-indigo-600">${SVG.clock}</span>
-                  <span class="font-mono text-xs font-extrabold text-slate-800">${formatCompactSec(rec.sec)}</span>
-                  ${speedTag}
-                </div>
-                <button type="button" onclick="toggleBookmark('${q.id}')" class="w-8 h-8 rounded-xl border flex items-center justify-center transition-all ${
-                  isBm ? 'bg-indigo-50 border-indigo-300 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-600'
-                }" title="Bookmark">
-                  ${SVG.bookmark(isBm)}
-                </button>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">${renderQuestionText(q)}</div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optsHtml}</div>
-
-            <div class="rounded-xl bg-slate-50 border border-slate-200/90 p-4 space-y-2">
-              <div class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">
-                ${SVG.fileCheck}
-                <span>Step-by-Step Solution</span>
-              </div>
-              ${renderSolutionBox(q)}
-            </div>
-
-            ${renderTrickBox(q)}
-          </article>
-        `;
-      }).join('');
-
-      safeRenderMath(container);
-    }
-
-    function retakeLastTest() {
-      if (!lastAnalysis) return;
-      setupState.chapter = lastAnalysis.chapter;
-      setupState.set = lastAnalysis.set;
-      setupState.title = lastAnalysis.title;
-      setupState.questions = lastAnalysis.records.map(r => r.q);
-      setupState.timerMode = lastAnalysis.timerMode;
-      setupState.sectionalMinutes = lastAnalysis.sectionalMinutes || 15;
-      setupState.marking = lastAnalysis.marking;
-
-      document.getElementById('setupModalTitle').textContent = setupState.title;
-      document.getElementById('setupQCount').textContent = setupState.questions.length;
-      selectSetupTimerMode(setupState.timerMode);
-      selectPresetMinutes(setupState.sectionalMinutes);
-      selectSetupMarking(setupState.marking);
-      document.getElementById('setupModal').classList.remove('hidden');
-    }
-
-    /* =========================================================================
-       12. TAB 4: SAVED (MISTAKE BANK & BOOKMARKS)
-    ========================================================================= */
-    function setSavedSubTab(sub) {
-      savedSubTab = sub;
-      renderSavedTab();
-    }
-
-    function markMistakeMastered(id) {
-      const i = progress.mistakes.indexOf(id);
-      if (i !== -1) {
-        progress.mistakes.splice(i, 1);
-        saveProgress();
-        updateMistakeBadges();
-        showToast('Marked as mastered!', 'success');
-        renderSavedTab();
-      }
-    }
-
-    function renderSavedTab() {
-      const mistakes = dataset.filter(i => progress.mistakes.includes(i.id));
-      const bookmarks = dataset.filter(i => progress.bookmarks.includes(i.id));
-
-      document.getElementById('savedMistakeCount').textContent = mistakes.length;
-      document.getElementById('savedBookmarkCount').textContent = bookmarks.length;
-
-      document.querySelectorAll('.saved-sub-btn').forEach(btn => {
-        const active = btn.dataset.savedtab === savedSubTab;
-        btn.className = active
-          ? 'saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-600 shadow-xs transition-all'
-          : 'saved-sub-btn px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all';
-      });
-
-      document.getElementById('mistakeActionBanner').classList.toggle('hidden', !(savedSubTab === 'mistakes' && mistakes.length > 0));
-
-      const container = document.getElementById('savedListContainer');
-      const list = savedSubTab === 'mistakes' ? mistakes : bookmarks;
-
-      if (list.length === 0) {
-        const isM = savedSubTab === 'mistakes';
-        container.innerHTML = `
-          <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
-            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
-              ${isM ? SVG.checkCircle : SVG.bookmark(false)}
-            </div>
-            <h3 class="font-bold text-slate-800">${isM ? 'Mistake Bank is Clear!' : 'No Bookmarks Yet'}</h3>
-            <p class="text-xs text-slate-500 max-w-sm mx-auto">
-              ${isM ? 'Wrongly answered DPP questions appear here automatically for quick revision.' : 'Tap the bookmark icon on any Class Note or DPP review card to save it here.'}
-            </p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = list.map((item, idx) => {
-        const actionBtn = savedSubTab === 'mistakes'
-          ? `<button type="button" onclick="markMistakeMastered('${item.id}')" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold transition-colors">${SVG.checkCircle}<span>Mastered</span></button>`
-          : `<button type="button" onclick="toggleBookmark('${item.id}')" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-xs font-bold transition-colors">${SVG.trash}<span>Remove</span></button>`;
-        return buildSolvedCardHtml(item, idx, true, actionBtn);
-      }).join('');
-
-      safeRenderMath(container);
-    }
-
+// ... existing code ... -->
     /* =========================================================================
        13. INITIALIZATION
     ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       loadProgress();
       dataset = STARTER_DATA.map((item, i) => normalizeItem(item, i));
+      formulasData = STARTER_FORMULAS.map((item, i) => normalizeFormula(item, i));
       refreshAll();
       switchTab('home');
       fetchRemoteContent(false);
     });
 
     window.addEventListener('load', () => {
-      safeRenderMath(document.body);
+      renderMath(document.body);
     });
   </script>
 </body>
 </html>
-```
