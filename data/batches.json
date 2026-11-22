@@ -1,0 +1,14 @@
+[
+  {
+    "id": "selection-vod-1",
+    "name": "Selection VOD 1.0",
+    "thumb": "./images/selection-vod-1.jpg",
+    "folder": "./data/selection-vod-1"
+  },
+  {
+    "id": "ultra-calci-1",
+    "name": "Calculation King — Ultra Calci Batch 1.1",
+    "thumb": "./images/ultra-calci-1.jpg",
+    "folder": "./data/ultra-calci-1"
+  }
+]
