@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,19 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Math Master — Notes &amp; Practice</title>
 
-  <!-- Mobile Web App & Standalone Shortcut Meta Tags -->
+  <!-- PWA & Mobile Standalone Meta Tags -->
   <meta name="theme-color" content="#4f46e5" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Math Master" />
+  <link rel="manifest" href="./manifest.json" />
 
   <!-- Crisp Static Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%234f46e5'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='url(%23g)'/%3E%3Cpath d='M364 156V116H148l108 140-108 140h216v-40' fill='none' stroke='%23ffffff' stroke-width='44' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
-  <!-- Dynamic 512x512 PNG App Icon & Web App Manifest Generator -->
+  <!-- Dynamic 512x512 Purple-Indigo Sigma PNG App Icon Generator -->
   <script>
-    (function setupAppIconAndManifest() {
+    (function generateDynamicAppIcons() {
       try {
         var size = 512;
         var canvas = document.createElement('canvas');
@@ -45,8 +47,8 @@
         ctx.fillStyle = grad;
         ctx.fill();
 
-        var glow = ctx.createRadialGradient(size * 0.25, size * 0.18, 10, size * 0.25, size * 0.18, size * 0.75);
-        glow.addColorStop(0, 'rgba(255,255,255,0.18)');
+        var glow = ctx.createRadialGradient(size * 0.25, size * 0.18, 12, size * 0.25, size * 0.18, size * 0.78);
+        glow.addColorStop(0, 'rgba(255,255,255,0.22)');
         glow.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = glow;
         ctx.fill();
@@ -68,34 +70,19 @@
         var pngDataUrl = canvas.toDataURL('image/png');
         var head = document.head;
 
-        var appleIcon = document.createElement('link');
-        appleIcon.rel = 'apple-touch-icon';
-        appleIcon.sizes = '512x512';
-        appleIcon.href = pngDataUrl;
-        head.appendChild(appleIcon);
+        var appleLink = document.createElement('link');
+        appleLink.rel = 'apple-touch-icon';
+        appleLink.sizes = '512x512';
+        appleLink.href = pngDataUrl;
+        head.appendChild(appleLink);
 
-        var pngIcon = document.createElement('link');
-        pngIcon.rel = 'icon';
-        pngIcon.type = 'image/png';
-        pngIcon.sizes = '512x512';
-        pngIcon.href = pngDataUrl;
-        head.appendChild(pngIcon);
-
-        var manifestObj = {
-          name: 'Math Master',
-          short_name: 'Math Master',
-          start_url: window.location.href,
-          display: 'standalone',
-          background_color: '#f8fafc',
-          theme_color: '#4f46e5',
-          icons: [{ src: pngDataUrl, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }]
-        };
-        var blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-        var manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = URL.createObjectURL(blob);
-        head.appendChild(manifestLink);
-      } catch (e) {}
+        var pngLink = document.createElement('link');
+        pngLink.rel = 'icon';
+        pngLink.type = 'image/png';
+        pngLink.sizes = '512x512';
+        pngLink.href = pngDataUrl;
+        head.appendChild(pngLink);
+      } catch (err) {}
     })();
   </script>
 
@@ -119,7 +106,7 @@
     };
   </script>
 
-  <!-- KaTeX 0.16.11 CSS & JS (jsDelivr, no defer) -->
+  <!-- KaTeX 0.16.11 (jsDelivr CDN, no defer) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="if (window.renderMath) window.renderMath(document.body);"></script>
@@ -167,7 +154,7 @@
     .timer-urgent {
       animation: pulseUrgent 1s infinite;
     }
-    /* 3D Flashcard Flip */
+    /* 3D Flashcard Flip Utilities */
     .perspective-1000 {
       perspective: 1000px;
     }
@@ -189,7 +176,7 @@
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
     <div class="max-w-5xl mx-auto px-3.5 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-3">
 
-      <!-- Left: Logo + Brand -->
+      <!-- Brand Logo & Title -->
       <button type="button" onclick="switchTab('home')" class="flex items-center gap-2.5 text-left group focus:outline-none shrink-0">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-sm shadow-indigo-200 group-hover:from-indigo-700 group-hover:to-purple-700 transition-all">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -227,15 +214,15 @@
         </button>
       </nav>
 
-      <!-- Right Controls: Language Toggle + Refresh -->
+      <!-- Language Toggle + Refresh -->
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <div class="inline-flex items-center bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200/80 text-[11px] sm:text-xs font-bold" role="group" aria-label="Language">
+        <div class="inline-flex items-center bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200/80 text-[11px] sm:text-xs font-bold" role="group" aria-label="Language Switcher">
           <button type="button" onclick="setLanguage('en')" data-lang="en" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">EN</button>
           <button type="button" onclick="setLanguage('hi')" data-lang="hi" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">HI</button>
           <button type="button" onclick="setLanguage('both')" data-lang="both" class="lang-btn px-2 sm:px-2.5 py-1 rounded-lg transition-all">Both</button>
         </div>
 
-        <button type="button" onclick="fetchRemoteContent(true)" title="Refresh content" aria-label="Refresh content" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200/80 flex items-center justify-center transition-all active:scale-95">
+        <button type="button" onclick="fetchAllRemoteData(true)" title="Refresh" aria-label="Refresh content" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200/80 flex items-center justify-center transition-all active:scale-95">
           <svg id="refreshIcon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
             <path d="M3 3v5h5" />
@@ -253,9 +240,9 @@
     <!-- ==================== VIEW 1: HOME ==================== -->
     <section id="view-home" class="view-panel space-y-6">
 
-      <!-- Hero Card -->
+      <!-- Hero Banner -->
       <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-7 relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-52 h-52 bg-indigo-50/90 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
+        <div class="absolute right-0 top-0 w-56 h-56 bg-indigo-50/90 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
         <div class="relative flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">
@@ -268,7 +255,7 @@
               Class Notes &amp; CBT DPP Arena
             </h1>
             <p class="text-sm text-slate-600 max-w-xl leading-relaxed">
-              Revise chapter-wise <span class="font-semibold text-slate-800">Class Notes</span>, master <span class="font-semibold text-slate-800">Formulas</span>, and take timed <span class="font-semibold text-slate-800">DPP Tests</span> with deep time analysis.
+              Revise batch-wise <span class="font-semibold text-slate-800">Class Notes</span>, flip through <span class="font-semibold text-slate-800">Formula Flashcards</span>, and attempt timed <span class="font-semibold text-slate-800">DPP Tests</span> with deep time analysis.
             </p>
           </div>
 
@@ -295,7 +282,7 @@
             </div>
           </div>
           <div id="statNotesCount" class="text-2xl sm:text-3xl font-extrabold text-slate-900">0</div>
-          <p id="statNotesSets" class="text-[11px] font-semibold text-indigo-600 mt-1">0 class sets</p>
+          <p id="statNotesSets" class="text-[11px] font-semibold text-indigo-600 mt-1">0 class sets available</p>
         </div>
 
         <div onclick="switchTab('dpp')" class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm hover:border-emerald-300 cursor-pointer transition-all">
@@ -306,9 +293,9 @@
             </div>
           </div>
           <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">
-            <span id="statDppSolved">0</span><span id="statDppTotal" class="text-sm font-semibold text-slate-400">/0</span>
+            <span id="statDppAttempted">0</span><span id="statDppTotal" class="text-sm font-semibold text-slate-400">/0</span>
           </div>
-          <p id="statDppSets" class="text-[11px] font-semibold text-emerald-600 mt-1">0 DPP sets ready</p>
+          <p id="statDppBatches" class="text-[11px] font-semibold text-emerald-600 mt-1">0 batches ready</p>
         </div>
 
         <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm">
@@ -334,12 +321,12 @@
         </div>
       </div>
 
-      <!-- Formula Vault Section -->
+      <!-- Formula Vault (Auto-Grouped by Topic, No Chapters List on Home) -->
       <div class="space-y-3">
         <div class="flex items-center justify-between gap-2">
           <div>
             <h2 class="text-lg font-extrabold text-slate-900">Formula Vault</h2>
-            <p class="text-xs text-slate-500">Tap any topic to revise flashcards &amp; formulas</p>
+            <p class="text-xs text-slate-500">Tap any topic to practice 3D flashcards &amp; formulas</p>
           </div>
           <span id="vaultTotalPill" class="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">0 Formulas</span>
         </div>
@@ -347,76 +334,103 @@
       </div>
     </section>
 
-    <!-- ==================== VIEW 2: CLASS NOTES ==================== -->
+    <!-- ==================== VIEW 2: CLASS NOTES (2-LEVEL BATCH ARCHITECTURE) ==================== -->
     <section id="view-notes" class="view-panel hidden space-y-5">
-      <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-              <svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              <span>Class Notes</span>
-            </h2>
-            <p class="text-xs text-slate-500 mt-0.5">Select a chapter and class set to revise step-by-step solutions &amp; tricks</p>
-          </div>
+
+      <!-- LEVEL 1: NOTES BATCH LOBBY -->
+      <div id="notesBatchLobbyPanel" class="space-y-5">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm">
+          <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+            <svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Class Notes Batches</span>
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Choose a batch to revise chapter-wise concepts, solved questions &amp; short tricks</p>
+        </div>
+
+        <div id="notesBatchGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"></div>
+      </div>
+
+      <!-- LEVEL 2: INSIDE SELECTED NOTES BATCH -->
+      <div id="notesBatchDetailPanel" class="hidden space-y-5">
+        <div class="flex items-center justify-between gap-2">
+          <button type="button" onclick="backToNotesBatchLobby()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-95">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>All Batches</span>
+          </button>
 
           <!-- Hide / Show Solutions Toggle -->
-          <label class="inline-flex items-center gap-2.5 self-start sm:self-auto px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer select-none hover:border-indigo-300 transition-colors">
+          <label class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 cursor-pointer select-none hover:border-indigo-300 transition-colors">
             <input type="checkbox" id="hideSolutionsToggle" onchange="toggleHideSolutions(this.checked)" class="sr-only peer" />
             <div class="w-9 h-5 bg-slate-300 peer-checked:bg-indigo-600 rounded-full relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:transition-transform peer-checked:after:translate-x-4"></div>
             <span id="hideSolutionsLabel" class="text-xs font-bold text-slate-700">Hide Solutions</span>
           </label>
         </div>
 
-        <div class="space-y-1.5 pt-2 border-t border-slate-100">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Chapter</div>
-          <div id="notesChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
-        </div>
-
-        <div id="notesSetRow" class="space-y-1.5">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Class Set</div>
-          <div id="notesSetPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
-        </div>
-      </div>
-
-      <div id="notesListContainer" class="space-y-4"></div>
-    </section>
-
-    <!-- ==================== VIEW 3: DPP PRACTICE (CBT) ==================== -->
-    <section id="view-dpp" class="view-panel hidden space-y-5">
-
-      <!-- A. DPP LOBBY -->
-      <div id="dppLobbyPanel" class="space-y-5">
         <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <div>
-              <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                <svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>DPP Practice Arena</span>
-              </h2>
-              <p class="text-xs text-slate-500 mt-0.5">Select a chapter and launch a timed CBT practice test</p>
-            </div>
-            <button type="button" onclick="openMistakeBankTestSetup()" class="inline-flex items-center gap-2 self-start px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all active:scale-95">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span>Mistake Bank (<span id="lobbyMistakeCount">0</span>)</span>
-            </button>
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">Selected Batch</span>
+            <h2 id="notesSelectedBatchTitle" class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight mt-0.5">Batch Name</h2>
           </div>
 
           <div class="space-y-1.5 pt-2 border-t border-slate-100">
             <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Chapter</div>
-            <div id="dppChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+            <div id="notesChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Class Set</div>
+            <div id="notesSetPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
           </div>
         </div>
 
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 id="dppHeading" class="text-base font-extrabold text-slate-900">Available DPP Sets</h3>
-            <span id="dppSetCount" class="text-xs font-semibold text-slate-500">0 sets</span>
+        <div id="notesListContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: DPP PRACTICE (2-LEVEL BATCH -> CBT -> ANALYSIS) ==================== -->
+    <section id="view-dpp" class="view-panel hidden space-y-5">
+
+      <!-- LEVEL 1: DPP BATCH LOBBY -->
+      <div id="dppBatchLobbyPanel" class="space-y-5">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>DPP Practice Batches</span>
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Select a batch to open its chapter-wise DPP sets &amp; timed CBT tests</p>
           </div>
-          <div id="dppSetsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+          <button type="button" onclick="openMistakeBankTestSetup()" class="inline-flex items-center gap-2 self-start sm:self-auto px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all active:scale-95">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Mistake Bank (<span id="lobbyMistakeCount">0</span>)</span>
+          </button>
         </div>
+
+        <div id="dppBatchGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"></div>
       </div>
 
-      <!-- B. DEEP POST-TEST ANALYSIS -->
+      <!-- LEVEL 2: INSIDE SELECTED DPP BATCH -->
+      <div id="dppBatchDetailPanel" class="hidden space-y-5">
+        <div class="flex items-center justify-between gap-2">
+          <button type="button" onclick="backToDppBatchLobby()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-95">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>All Batches</span>
+          </button>
+          <span id="dppBatchSetCount" class="text-xs font-bold text-slate-500">0 sets</span>
+        </div>
+
+        <div id="dppBatchBanner" class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden"></div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm space-y-2">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Chapter</div>
+          <div id="dppBatchChapterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5"></div>
+        </div>
+
+        <div id="dppSetsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+
+      <!-- LEVEL 3: DEEP POST-TEST ANALYSIS -->
       <div id="dppAnalysisPanel" class="hidden space-y-5">
         <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="space-y-1">
@@ -432,8 +446,8 @@
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               <span>Retake Test</span>
             </button>
-            <button type="button" onclick="showDppLobby()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all active:scale-95">
-              Back to DPP Sets
+            <button type="button" onclick="exitAnalysisView()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all active:scale-95">
+              Back to Sets
             </button>
           </div>
         </div>
@@ -504,7 +518,6 @@
             </div>
           </div>
 
-          <!-- Stacked Time Bar -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs font-bold text-slate-700">
               <span>Where Did Your Time Go?</span>
@@ -532,7 +545,7 @@
           </div>
         </div>
 
-        <!-- Filter Tabs & Review List -->
+        <!-- Filter Pills & Per-Question Review -->
         <div class="space-y-4">
           <div class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
             <div id="analysisFilterPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
@@ -554,7 +567,7 @@
             <svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
             <span>Saved Vault</span>
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">Revise your Mistake Bank and Bookmarked questions</p>
+          <p class="text-xs text-slate-500 mt-0.5">Revise your Mistake Bank and Bookmarked items</p>
         </div>
 
         <div class="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200/80 self-start">
@@ -660,7 +673,7 @@
           </div>
         </div>
 
-        <div id="cbtQuestionBox" class="space-y-2.5 min-h-[56px]"></div>
+        <div id="cbtQuestionBox" class="space-y-3 min-h-[56px]"></div>
         <div id="cbtOptionsBox" class="grid grid-cols-1 gap-2.5"></div>
       </div>
     </div>
@@ -673,14 +686,14 @@
             <span id="cbtMarkBtnLabel">Mark for Review</span>
           </button>
           <button type="button" onclick="clearCbtAnswer()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all active:scale-95">
-            Clear
+            Clear Response
           </button>
         </div>
 
         <div class="flex items-center gap-2 ml-auto">
           <button type="button" id="cbtPrevBtn" onclick="cbtPrev()" class="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            <span>Prev</span>
+            <span>Previous</span>
           </button>
           <button type="button" id="cbtNextBtn" onclick="cbtSaveAndNext()" class="px-4 sm:px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center gap-1 transition-all active:scale-95">
             <span id="cbtNextLabel">Save &amp; Next</span>
@@ -749,7 +762,7 @@
                 <span class="font-extrabold text-sm text-slate-900">Free Mode</span>
                 <svg class="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
-              <p class="text-[11px] text-slate-500 leading-snug">Count-up stopwatch with no time limit. Tracks seconds per question.</p>
+              <p class="text-[11px] text-slate-500 leading-snug">Count-up stopwatch with no time limit. Tracks exact seconds per question.</p>
             </button>
 
             <button type="button" id="btnModeSectional" onclick="selectSetupTimerMode('sectional')" class="text-left p-3.5 rounded-xl border-2 transition-all">
@@ -757,14 +770,14 @@
                 <span class="font-extrabold text-sm text-slate-900">Sectional Timer</span>
                 <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="2" x2="14" y2="2"/><line x1="12" y1="14" x2="15" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
               </div>
-              <p class="text-[11px] text-slate-500 leading-snug">Countdown timer. Auto-submits when time reaches 00:00.</p>
+              <p class="text-[11px] text-slate-500 leading-snug">Countdown timer with auto-submit when time reaches 00:00.</p>
             </button>
           </div>
 
           <div id="sectionalPresetsBox" class="rounded-xl bg-slate-50 border border-slate-200 p-3.5 space-y-3">
             <div class="text-xs font-bold text-slate-700">Duration Presets:</div>
             <div class="flex flex-wrap gap-2">
-              <button type="button" onclick="selectPresetMinutes(15)" data-preset="15" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">15 Min • 25 Qs Pattern</button>
+              <button type="button" onclick="selectPresetMinutes(15)" data-preset="15" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">15 Min - 25 Qs Pattern</button>
               <button type="button" onclick="selectPresetMinutes(10)" data-preset="10" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">10 Min</button>
               <button type="button" onclick="selectPresetMinutes(20)" data-preset="20" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">20 Min</button>
               <button type="button" onclick="selectPresetMinutes(30)" data-preset="30" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-bold border transition-all">30 Min</button>
@@ -781,11 +794,11 @@
           <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">2. Marking Scheme</div>
           <div class="grid grid-cols-2 gap-2.5">
             <button type="button" id="btnMarkSsc" onclick="selectSetupMarking('ssc')" class="p-3 rounded-xl border-2 text-left transition-all">
-              <div class="font-extrabold text-sm text-slate-900">SSC Exam</div>
+              <div class="font-extrabold text-sm text-slate-900">SSC (+2 / -0.5)</div>
               <div class="text-xs font-bold text-emerald-600 mt-0.5">+2 <span class="text-slate-400">/</span> <span class="text-rose-600">-0.5</span></div>
             </button>
             <button type="button" id="btnMarkSimple" onclick="selectSetupMarking('simple')" class="p-3 rounded-xl border-2 text-left transition-all">
-              <div class="font-extrabold text-sm text-slate-900">Simple</div>
+              <div class="font-extrabold text-sm text-slate-900">Simple (+1 / 0)</div>
               <div class="text-xs font-bold text-emerald-600 mt-0.5">+1 <span class="text-slate-400">/</span> <span class="text-slate-500">0</span></div>
             </button>
           </div>
@@ -837,7 +850,7 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 3: FORMULA STUDY SHEET ==================== -->
+  <!-- ==================== MODAL 3: FORMULA STUDY MODAL ==================== -->
   <div id="formulaModal" onclick="closeFormulaModal()" class="hidden fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-3.5 sm:p-4">
     <div onclick="event.stopPropagation()" class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-xl max-h-[88vh] flex flex-col overflow-hidden">
       <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 shrink-0">
@@ -873,7 +886,7 @@
               <!-- Front -->
               <div class="absolute inset-0 backface-hidden rounded-2xl border-2 border-indigo-100 bg-gradient-to-br from-white to-indigo-50/40 p-6 flex flex-col justify-between shadow-sm">
                 <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">Prompt</span>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">Formula Prompt</span>
                   <span id="fmMasteredTag" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">Mastered</span>
                 </div>
                 <div id="fmFrontContent" class="my-auto py-4 text-center space-y-2"></div>
@@ -924,26 +937,56 @@
     </div>
   </div>
 
+  <!-- ==================== MODAL 4: IMAGE TAP-TO-ZOOM LIGHTBOX ==================== -->
+  <div id="imageLightbox" onclick="closeImageLightbox()" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex flex-col">
+    <div onclick="event.stopPropagation()" class="px-4 py-3 flex items-center justify-between gap-2 bg-slate-900/80 border-b border-white/10 text-white shrink-0">
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="adjustLightboxZoom(-0.25)" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors" aria-label="Zoom out">−</button>
+        <span id="lightboxZoomPct" class="text-xs font-mono font-bold min-w-[44px] text-center">100%</span>
+        <button type="button" onclick="adjustLightboxZoom(0.25)" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors" aria-label="Zoom in">+</button>
+        <button type="button" onclick="resetLightboxZoom()" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold transition-colors">Reset</button>
+      </div>
+      <button type="button" onclick="closeImageLightbox()" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-rose-500 text-white flex items-center justify-center transition-colors" aria-label="Close image">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="flex-1 overflow-auto flex items-center justify-center p-4">
+      <img id="lightboxImg" src="" alt="Question Diagram" onclick="event.stopPropagation()" class="max-w-full max-h-full rounded-xl shadow-2xl transition-transform duration-200 origin-center" />
+    </div>
+  </div>
+
   <!-- ==================== TOAST STACK ==================== -->
   <div id="toastStack" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
 
   <!-- ==================== APPLICATION SCRIPT ==================== -->
   <script>
     /* =========================================================================
-       1. CONFIGURATION & INLINE SVG HELPERS
+       1. CONFIGURATION & INLINE SVG ICON REGISTRY
     ========================================================================= */
-    const CLASS_NOTES_URLS = ['./data/class_notes.json', './class_notes.json'];
-    const DPP_URLS = ['./data/dpp.json', './dpp.json'];
+    const BATCHES_INDEX_URL = './data/batches.json';
+    const LEGACY_NOTES_URLS = ['./data/class_notes.json', './class_notes.json'];
+    const LEGACY_DPP_URLS = ['./data/dpp.json', './dpp.json'];
+    const LEGACY_COMBINED_URLS = ['./data/math_data.json', './math_data.json'];
     const FORMULAS_URLS = ['./data/formulas.json', './formulas.json'];
-    const COMBINED_URLS = ['./data/math_data.json', './math_data.json'];
-    const STORAGE_KEY = 'math_master_state_v4';
+    const STORAGE_KEY = 'math_master_state_v6';
+
+    const BATCH_GRADIENTS = [
+      'from-indigo-600 via-purple-600 to-fuchsia-600',
+      'from-sky-600 via-blue-600 to-indigo-700',
+      'from-emerald-600 via-teal-600 to-cyan-600',
+      'from-amber-500 via-orange-600 to-rose-600',
+      'from-violet-600 via-indigo-600 to-blue-600'
+    ];
 
     const SVG = {
       bookmark: (filled) => `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>`,
       checkCircle: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
       bolt: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      book: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
       trash: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
       clock: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      zoom: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>`,
+      layers: `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
       shape2d: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="11" height="11" rx="2"/><circle cx="16.5" cy="16.5" r="4.5"/></svg>`,
       shape3d: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
       algebra: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 6"/><path d="M4 6l8 12"/><path d="M16 7a2 2 0 0 1 4 0c0 1.5-2 2.5-4 4h4"/></svg>`,
@@ -954,12 +997,30 @@
     };
 
     /* =========================================================================
-       2. BUILT-IN FALLBACK STARTER DATA (USED ONLY IF EXTERNAL FILES ABSENT)
+       2. BUILT-IN DEFAULT DATA FALLBACK (2 BATCHES + FORMULAS)
     ========================================================================= */
-    const STARTER_NOTES = [
+    const DEFAULT_BATCHES = [
       {
-        id: 'pct-c1-concept',
+        id: 'selection-vod-1',
+        name: 'Selection VOD 1.0',
+        thumb: './images/selection-vod-1.jpg',
+        folder: './data/selection-vod-1'
+      },
+      {
+        id: 'ultra-calci-1',
+        name: 'Calculation King — Ultra Calci Batch 1.1',
+        thumb: './images/ultra-calci-1.jpg',
+        folder: './data/ultra-calci-1'
+      }
+    ];
+
+    const DEFAULT_NOTES = [
+      {
+        id: 'sv1-pct-c1-concept',
         category: 'class_notes',
+        batchId: 'selection-vod-1',
+        batch: 'Selection VOD 1.0',
+        batch_thumb: './images/selection-vod-1.jpg',
         chapter: 'Percentage',
         set: 'Class 1',
         exam: 'Basic Concept',
@@ -967,12 +1028,15 @@
         q_hi: 'महत्वपूर्ण प्रतिशत से भिन्न (Percentage-Fraction) सारणी',
         options: [],
         answer: 0,
-        solution: '<b>Standard Fractions:</b><br>• $\\frac{1}{2} = 50\\%$ | $\\frac{1}{3} = 33\\frac{1}{3}\\%$ | $\\frac{1}{4} = 25\\%$ | $\\frac{1}{5} = 20\\%$<br>• $\\frac{1}{6} = 16\\frac{2}{3}\\%$ | $\\frac{1}{7} = 14\\frac{2}{7}\\%$ | $\\frac{1}{8} = 12\\frac{1}{2}\\%$ | $\\frac{1}{9} = 11\\frac{1}{9}\\%$',
+        solution: '<b>Standard Fractions:</b><br>• $\\frac{1}{2} = 50\\%$ | $\\frac{1}{3} = 33\\frac{1}{3}\\%$ | $\\frac{1}{4} = 25\\%$ | $\\frac{1}{5} = 20\\%$<br>• $\\frac{1}{6} = 16\\frac{2}{3}\\%$ | $\\frac{1}{7} = 14\\frac{2}{7}\\%$ | $\\frac{1}{8} = 12\\frac{1}{2}\\%$ | $\\frac{1}{9} = 11\\frac{1}{9}\\%$<br>• $\\frac{3}{8} = 37\\frac{1}{2}\\%$ | $\\frac{5}{8} = 62\\frac{1}{2}\\%$ | $\\frac{4}{7} = 57\\frac{1}{7}\\%$ | $\\frac{5}{7} = 71\\frac{3}{7}\\%$',
         trick: 'Revise this table daily for 2 minutes to speed up Percentage, Profit & Loss, and CI calculations.'
       },
       {
-        id: 'pct-c1-q1',
+        id: 'sv1-pct-c1-q1',
         category: 'class_notes',
+        batchId: 'selection-vod-1',
+        batch: 'Selection VOD 1.0',
+        batch_thumb: './images/selection-vod-1.jpg',
         chapter: 'Percentage',
         set: 'Class 1',
         exam: 'SSC CHSL 2024',
@@ -982,13 +1046,48 @@
         answer: 0,
         solution: 'Girls toys $= 75 - 18 = 57$.<br>Percentage $= \\frac{57}{75} \\times 100 = \\frac{19}{25} \\times 100 = 76\\%$.',
         trick: 'Boys % $= \\frac{18}{75} \\times 100 = 24\\% \\Rightarrow$ Girls % $= 100\\% - 24\\% = 76\\%$.'
+      },
+      {
+        id: 'uc1-calc-c1-concept',
+        category: 'class_notes',
+        batchId: 'ultra-calci-1',
+        batch: 'Calculation King — Ultra Calci Batch 1.1',
+        batch_thumb: './images/ultra-calci-1.jpg',
+        chapter: 'Calculation Tricks',
+        set: 'Class 1',
+        exam: 'Vedic Base Method',
+        q_en: 'Multiplying Numbers Near Base 100 or 1000',
+        q_hi: 'आधार 100 या 1000 के पास की संख्याओं का त्वरित गुणा',
+        options: [],
+        answer: 0,
+        solution: '<b>Example:</b> $997 \\times 996$ (Base $1000$)<br>• Deviations: $-3$ and $-4$<br>• Left Part $= 997 - 4 = 993$<br>• Right Part $= (-3) \\times (-4) = 012$ (3 digits for base 1000)<br>• Answer $= 993012$',
+        trick: 'Base 100 ke liye right side me 2 digits aur Base 1000 ke liye 3 digits rakhein.'
+      },
+      {
+        id: 'uc1-calc-c1-q1',
+        category: 'class_notes',
+        batchId: 'ultra-calci-1',
+        batch: 'Calculation King — Ultra Calci Batch 1.1',
+        batch_thumb: './images/ultra-calci-1.jpg',
+        chapter: 'Calculation Tricks',
+        set: 'Class 1',
+        exam: 'Speed Drill',
+        q_en: 'Find the square of $108$ mentally.',
+        q_hi: '$108$ का वर्ग (Square) मानसिक रूप से ज्ञात कीजिए।',
+        options: ['11664', '11464', '11864', '10664'],
+        answer: 0,
+        solution: 'Base $= 100$, Surplus $= +8$.<br>• Left Part $= 108 + 8 = 116$<br>• Right Part $= 8^2 = 64$<br>• Answer $= 11664$.',
+        trick: 'Number me surplus jodo ($108 + 8 = 116$) aur peeche surplus ka square ($64$) likh do.'
       }
     ];
 
-    const STARTER_DPP = [
+    const DEFAULT_DPP = [
       {
-        id: 'pct-dpp1-q1',
+        id: 'sv1-pct-dpp1-q1',
         category: 'dpp',
+        batchId: 'selection-vod-1',
+        batch: 'Selection VOD 1.0',
+        batch_thumb: './images/selection-vod-1.jpg',
         chapter: 'Percentage',
         set: 'DPP 1',
         exam: 'SSC CHSL 2024',
@@ -1000,11 +1099,14 @@
         trick: 'AB Rule: $+\\frac{1}{40} \\rightarrow -\\frac{1}{41} \\approx 2.43\\%$.'
       },
       {
-        id: 'pct-dpp1-q2',
+        id: 'sv1-pct-dpp1-q2',
         category: 'dpp',
+        batchId: 'selection-vod-1',
+        batch: 'Selection VOD 1.0',
+        batch_thumb: './images/selection-vod-1.jpg',
         chapter: 'Percentage',
         set: 'DPP 1',
-        exam: 'CDS-II, 2024',
+        exam: 'CDS-II 2024',
         q_en: 'What is the square root of $64\\%$?',
         q_hi: '$64\\%$ का वर्गमूल क्या है?',
         options: ['0.08%', '0.8%', '8%', '80%'],
@@ -1013,21 +1115,40 @@
         trick: 'Never mark $8\\%$! $\\frac{8}{10} \\times 100\\% = 80\\%$.'
       },
       {
-        id: 'pct-dpp1-q3',
+        id: 'uc1-calc-dpp1-q1',
         category: 'dpp',
-        chapter: 'Percentage',
+        batchId: 'ultra-calci-1',
+        batch: 'Calculation King — Ultra Calci Batch 1.1',
+        batch_thumb: './images/ultra-calci-1.jpg',
+        chapter: 'Calculation Tricks',
         set: 'DPP 1',
-        exam: 'SSC CGL',
-        q_en: 'Numbers A and B are $30\\%$ and $50\\%$, respectively, more than C. The ratio of A to B is:',
-        q_hi: 'संख्या A और B संख्या C से क्रमशः $30\\%$ और $50\\%$ अधिक हैं। A का B से अनुपात है:',
-        options: ['13 : 15', '15 : 13', '5 : 4', '4 : 5'],
+        exam: 'Ultra Calci Batch 1.1',
+        q_en: 'Find the value of $999 \\times 998$ using the Base 1000 shortcut.',
+        q_hi: 'बेस 1000 शॉर्टकट से $999 \\times 998$ का मान ज्ञात कीजिए।',
+        options: ['997002', '998002', '997001', '996002'],
         answer: 0,
-        solution: 'Let $C = 100$. Then $A = 130$ and $B = 150$.<br>$A : B = 130 : 150 = 13 : 15$.',
-        trick: 'Direct ratio $= (100+30) : (100+50) = 13 : 15$.'
+        solution: 'Base $= 1000$: Deviations are $-1$ and $-2$.<br>Left $= 998 - 1 = 997$, Right $= (-1)(-2) = 002$.<br>Result $= 997002$.',
+        trick: 'Cross subtract ($998 - 1 = 997$) and multiply deviations ($1 \\times 2 = 002$).'
+      },
+      {
+        id: 'uc1-calc-dpp1-q2',
+        category: 'dpp',
+        batchId: 'ultra-calci-1',
+        batch: 'Calculation King — Ultra Calci Batch 1.1',
+        batch_thumb: './images/ultra-calci-1.jpg',
+        chapter: 'Calculation Tricks',
+        set: 'DPP 1',
+        exam: 'Ultra Calci Batch 1.1',
+        q_en: 'Find the value of $75^2$.',
+        q_hi: '$75^2$ का मान ज्ञात कीजिए।',
+        options: ['5225', '5625', '5425', '5825'],
+        answer: 1,
+        solution: 'For any number ending in 5:<br>Left $= 7 \\times (7 + 1) = 56$, Right $= 5^2 = 25$.<br>Answer $= 5625$.',
+        trick: 'Ending with 5: multiply tens digit by next integer ($7 \\times 8 = 56$) and append $25$.'
       }
     ];
 
-    const STARTER_FORMULAS = [
+    const DEFAULT_FORMULAS = [
       {
         id: 'fm-2d-1',
         topic: 'Mensuration 2D',
@@ -1079,8 +1200,9 @@
     ];
 
     /* =========================================================================
-       3. STATE & LOCALSTORAGE
+       3. APPLICATION STATE & LOCALSTORAGE
     ========================================================================= */
+    let batchesMeta = [];
     let notesData = [];
     let dppData = [];
     let formulasData = [];
@@ -1089,12 +1211,22 @@
     let currentLang = 'both';
     let hideSolutions = false;
 
+    // Notes 2-level state
+    let notesSubView = 'batches'; // 'batches' | 'detail'
+    let selectedNotesBatch = '';
     let selectedNotesChapter = '';
     let selectedNotesSet = '';
-    let selectedDppChapter = '';
+
+    // DPP 2-level + analysis state
+    let dppSubView = 'batches'; // 'batches' | 'detail' | 'analysis'
+    let selectedDppBatch = '';
+    let selectedDppChapter = 'All';
+
     let savedSubTab = 'mistakes';
+    let lightboxScale = 1;
 
     let progress = {
+      lang: 'both',
       streak: 1,
       lastActiveDate: '',
       solvedIds: [],
@@ -1153,6 +1285,7 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           progress = {
+            lang: ['en', 'hi', 'both'].includes(parsed.lang) ? parsed.lang : 'both',
             streak: Number(parsed.streak) || 1,
             lastActiveDate: parsed.lastActiveDate || '',
             solvedIds: Array.isArray(parsed.solvedIds) ? parsed.solvedIds : [],
@@ -1165,6 +1298,7 @@
             bestScores: parsed.bestScores && typeof parsed.bestScores === 'object' ? parsed.bestScores : {}
           };
         }
+        currentLang = progress.lang || 'both';
         const today = new Date().toISOString().slice(0, 10);
         if (progress.lastActiveDate && progress.lastActiveDate !== today) {
           const diffDays = Math.round((new Date(today) - new Date(progress.lastActiveDate)) / 86400000);
@@ -1177,6 +1311,7 @@
 
     function saveProgress() {
       try {
+        progress.lang = currentLang;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
       } catch (e) {}
     }
@@ -1222,20 +1357,29 @@
     window.renderMath = renderMath;
 
     /* =========================================================================
-       5. DATA NORMALIZATION & SILENT FOLDER + ROOT LOADER
+       5. BATCH-WISE FOLDER LOADER + LEGACY & BUILT-IN FALLBACKS
     ========================================================================= */
-    function normalizeQuestion(raw, idx, forcedCat) {
-      const cat = String(raw.category || forcedCat || 'dpp').toLowerCase().trim();
+    function normalizeQuestion(raw, idx, forcedCat, batchInfo) {
+      const cat = String(forcedCat || raw.category || 'dpp').toLowerCase().trim();
       const opts = Array.isArray(raw.options) ? raw.options.map(String) : [];
       const ans = typeof raw.answer === 'number' ? raw.answer : (typeof raw.correct === 'number' ? raw.correct : 0);
+      const bName = batchInfo ? batchInfo.name : String(raw.batch || 'General Batch').trim();
+      const bId = batchInfo ? batchInfo.id : String(raw.batchId || bName.toLowerCase().replace(/[^a-z0-9]+/g, '-')).trim();
+      const bThumb = batchInfo ? (batchInfo.thumb || '') : (raw.batch_thumb ? String(raw.batch_thumb).trim() : '');
+
       return {
-        id: String(raw.id || `${cat}_${idx}`),
+        id: String(raw.id || `${bId}_${cat}_${idx}`),
         category: cat === 'class_notes' ? 'class_notes' : 'dpp',
+        batchId: bId,
+        batch: bName,
+        batch_thumb: bThumb,
         chapter: String(raw.chapter || 'General').trim(),
         set: String(raw.set || (cat === 'class_notes' ? 'Class 1' : 'DPP 1')).trim(),
         exam: raw.exam ? String(raw.exam).trim() : '',
         q_en: raw.q_en || raw.question || '',
         q_hi: raw.q_hi || '',
+        image: raw.image ? String(raw.image).trim() : '',
+        solution_image: raw.solution_image ? String(raw.solution_image).trim() : '',
         options: opts,
         answer: ans,
         solution: raw.solution || raw.sol_en || '',
@@ -1255,63 +1399,107 @@
       };
     }
 
-    async function fetchJsonArray(url) {
-      const res = await fetch(`${url}?v=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) return null;
-      const parsed = await res.json();
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
+    async function fetchArraySilent(url) {
+      try {
+        const sep = url.includes('?') ? '&' : '?';
+        const res = await fetch(`${url}${sep}t=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) return null;
+        const parsed = await res.json();
+        return Array.isArray(parsed) && parsed.length > 0 ? parsed : null;
+      } catch (e) {
+        return null;
+      }
     }
 
     async function fetchFirstAvailable(urls) {
       for (let i = 0; i < urls.length; i++) {
-        try {
-          const data = await fetchJsonArray(urls[i]);
-          if (data) return data;
-        } catch (e) {}
+        const arr = await fetchArraySilent(urls[i]);
+        if (arr) return arr;
       }
       return null;
     }
 
-    async function fetchRemoteContent(isManual) {
+    async function fetchAllRemoteData(isManual) {
       const icon = document.getElementById('refreshIcon');
       if (icon && isManual) icon.classList.add('spin-icon');
 
       try {
-        const results = await Promise.allSettled([
-          fetchFirstAvailable(CLASS_NOTES_URLS),
-          fetchFirstAvailable(DPP_URLS),
-          fetchFirstAvailable(FORMULAS_URLS),
-          fetchFirstAvailable(COMBINED_URLS)
+        // 1. Primary Mode: Batch-wise folders via ./data/batches.json
+        const [batchesRaw, formulasRaw] = await Promise.all([
+          fetchArraySilent(BATCHES_INDEX_URL),
+          fetchFirstAvailable(FORMULAS_URLS)
         ]);
 
-        const notesRaw = results[0].status === 'fulfilled' ? results[0].value : null;
-        const dppRaw = results[1].status === 'fulfilled' ? results[1].value : null;
-        const formulasRaw = results[2].status === 'fulfilled' ? results[2].value : null;
-        const combinedRaw = results[3].status === 'fulfilled' ? results[3].value : null;
+        let loadedSomething = false;
 
-        let updated = false;
-
-        if (notesRaw) {
-          notesData = notesRaw.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
-          updated = true;
-        }
-        if (dppRaw) {
-          dppData = dppRaw.map((item, i) => normalizeQuestion(item, i, 'dpp'));
-          updated = true;
-        }
-        if (!notesRaw && !dppRaw && combinedRaw) {
-          const splitNotes = combinedRaw.filter(x => String(x.category || '').toLowerCase() === 'class_notes');
-          const splitDpp = combinedRaw.filter(x => String(x.category || '').toLowerCase() !== 'class_notes');
-          if (splitNotes.length) notesData = splitNotes.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
-          if (splitDpp.length) dppData = splitDpp.map((item, i) => normalizeQuestion(item, i, 'dpp'));
-          updated = true;
-        }
         if (formulasRaw) {
           formulasData = formulasRaw.map((item, i) => normalizeFormula(item, i));
-          updated = true;
+          loadedSomething = true;
         }
 
-        if (updated) refreshAll();
+        if (batchesRaw) {
+          const cleanBatches = batchesRaw.map((b, i) => ({
+            id: String(b.id || `batch-${i + 1}`),
+            name: String(b.name || `Batch ${i + 1}`).trim(),
+            thumb: b.thumb ? String(b.thumb).trim() : '',
+            folder: String(b.folder || `./data/${b.id || `batch-${i + 1}`}`).replace(/\/+$/, '')
+          }));
+
+          const batchFetches = cleanBatches.map(async (b) => {
+            const [bNotes, bDpp] = await Promise.all([
+              fetchArraySilent(`${b.folder}/class_notes.json`),
+              fetchArraySilent(`${b.folder}/dpp.json`)
+            ]);
+            return {
+              batch: b,
+              notes: bNotes ? bNotes.map((item, idx) => normalizeQuestion(item, idx, 'class_notes', b)) : [],
+              dpp: bDpp ? bDpp.map((item, idx) => normalizeQuestion(item, idx, 'dpp', b)) : []
+            };
+          });
+
+          const settled = await Promise.all(batchFetches);
+          const mergedNotes = [];
+          const mergedDpp = [];
+          settled.forEach(entry => {
+            mergedNotes.push(...entry.notes);
+            mergedDpp.push(...entry.dpp);
+          });
+
+          batchesMeta = cleanBatches;
+          if (mergedNotes.length > 0 || mergedDpp.length > 0) {
+            notesData = mergedNotes;
+            dppData = mergedDpp;
+            loadedSomething = true;
+          }
+        } else {
+          // 2. Legacy Fallback: root or ./data/ class_notes.json & dpp.json
+          const [legacyNotes, legacyDpp, legacyCombined] = await Promise.all([
+            fetchFirstAvailable(LEGACY_NOTES_URLS),
+            fetchFirstAvailable(LEGACY_DPP_URLS),
+            fetchFirstAvailable(LEGACY_COMBINED_URLS)
+          ]);
+
+          if (legacyNotes) {
+            notesData = legacyNotes.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
+            loadedSomething = true;
+          }
+          if (legacyDpp) {
+            dppData = legacyDpp.map((item, i) => normalizeQuestion(item, i, 'dpp'));
+            loadedSomething = true;
+          }
+          if (!legacyNotes && !legacyDpp && legacyCombined) {
+            const splitNotes = legacyCombined.filter(x => String(x.category || '').toLowerCase() === 'class_notes');
+            const splitDpp = legacyCombined.filter(x => String(x.category || '').toLowerCase() !== 'class_notes');
+            if (splitNotes.length) notesData = splitNotes.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
+            if (splitDpp.length) dppData = splitDpp.map((item, i) => normalizeQuestion(item, i, 'dpp'));
+            loadedSomething = true;
+          }
+          if (loadedSomething) {
+            batchesMeta = [];
+          }
+        }
+
+        if (loadedSomething) refreshAll();
       } catch (e) {} finally {
         if (icon) setTimeout(() => icon.classList.remove('spin-icon'), 450);
         if (isManual) showToast('Content updated', 'success');
@@ -1319,7 +1507,7 @@
     }
 
     /* =========================================================================
-       6. UTILITIES & FORMATTING
+       6. UTILITIES, IMAGE LIGHTBOX & FORMATTING
     ========================================================================= */
     function escapeHtml(str) {
       return String(str || '')
@@ -1328,6 +1516,14 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    }
+
+    function escapeJsStr(str) {
+      return String(str || '')
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '&quot;')
+        .replace(/\n/g, ' ');
     }
 
     function formatRichText(str) {
@@ -1356,6 +1552,87 @@
       return getAllQuestions().find(q => q.id === id) || null;
     }
 
+    function buildBatchCardsData(itemsArray) {
+      const map = new Map();
+      // Seed from batchesMeta first so order is preserved
+      batchesMeta.forEach(b => {
+        map.set(b.name, {
+          id: b.id,
+          name: b.name,
+          thumb: b.thumb || '',
+          items: [],
+          chapters: new Set(),
+          sets: new Set()
+        });
+      });
+
+      itemsArray.forEach(item => {
+        const bName = item.batch || 'General Batch';
+        if (!map.has(bName)) {
+          map.set(bName, {
+            id: item.batchId || bName,
+            name: bName,
+            thumb: item.batch_thumb || '',
+            items: [],
+            chapters: new Set(),
+            sets: new Set()
+          });
+        }
+        const entry = map.get(bName);
+        if (!entry.thumb && item.batch_thumb) entry.thumb = item.batch_thumb;
+        entry.items.push(item);
+        entry.chapters.add(item.chapter);
+        entry.sets.add(`${item.chapter}__${item.set}`);
+      });
+
+      return Array.from(map.values()).filter(b => b.items.length > 0);
+    }
+
+    function renderQuestionImageHtml(src, label) {
+      if (!src) return '';
+      const safeSrc = escapeHtml(src);
+      const jsSrc = escapeJsStr(src);
+      return `
+        <div class="pt-1">
+          <button type="button" onclick="openImageLightbox('${jsSrc}')" class="group relative inline-block max-w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-50 hover:border-indigo-300 transition-all text-left">
+            <img src="${safeSrc}" alt="${escapeHtml(label || 'Figure')}" loading="lazy" onerror="this.closest('div').style.display='none'" class="max-h-60 w-auto max-w-full object-contain block" />
+            <span class="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-900/75 text-white text-[10px] font-bold opacity-90 group-hover:opacity-100">
+              ${SVG.zoom}
+              <span>Tap to zoom</span>
+            </span>
+          </button>
+        </div>
+      `;
+    }
+
+    function openImageLightbox(src) {
+      if (!src) return;
+      lightboxScale = 1;
+      const img = document.getElementById('lightboxImg');
+      img.src = src;
+      img.style.transform = 'scale(1)';
+      document.getElementById('lightboxZoomPct').textContent = '100%';
+      document.getElementById('imageLightbox').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImageLightbox() {
+      document.getElementById('imageLightbox').classList.add('hidden');
+      if (!cbt.active && !formulaStudy.open) document.body.style.overflow = '';
+    }
+
+    function adjustLightboxZoom(delta) {
+      lightboxScale = Math.max(0.75, Math.min(3, Number((lightboxScale + delta).toFixed(2))));
+      document.getElementById('lightboxImg').style.transform = `scale(${lightboxScale})`;
+      document.getElementById('lightboxZoomPct').textContent = `${Math.round(lightboxScale * 100)}%`;
+    }
+
+    function resetLightboxZoom() {
+      lightboxScale = 1;
+      document.getElementById('lightboxImg').style.transform = 'scale(1)';
+      document.getElementById('lightboxZoomPct').textContent = '100%';
+    }
+
     function renderQuestionText(item) {
       let html = '';
       if ((currentLang === 'both' || currentLang === 'en') && item.q_en) {
@@ -1365,16 +1642,44 @@
         const cls = currentLang === 'both' && item.q_en ? 'text-slate-600 font-medium text-sm' : 'text-slate-900 font-bold text-sm sm:text-base';
         html += `<div class="font-hindi ${cls} leading-relaxed">${formatRichText(item.q_hi)}</div>`;
       }
+      if (item.image) {
+        html += renderQuestionImageHtml(item.image, 'Question Image');
+      }
       return html;
+    }
+
+    function renderBatchThumbBox(batch, grad, badgeLabel, rightPillText) {
+      const fallbackBanner = `
+        <div class="${batch.thumb ? 'hidden ' : ''}absolute inset-0 bg-gradient-to-br ${grad} p-5 flex flex-col justify-between text-white">
+          <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-white/10 pointer-events-none"></div>
+          <div class="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-xs text-[11px] font-bold">
+            ${SVG.layers}
+            <span>${escapeHtml(badgeLabel)}</span>
+          </div>
+          <div class="font-extrabold text-xl sm:text-2xl leading-tight drop-shadow-xs">${escapeHtml(batch.name)}</div>
+        </div>
+      `;
+
+      const imgTag = batch.thumb
+        ? `<img src="${escapeHtml(batch.thumb)}" alt="${escapeHtml(batch.name)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />`
+        : '';
+
+      return `
+        <div class="relative w-full aspect-video bg-slate-100 overflow-hidden shrink-0">
+          ${imgTag}
+          ${fallbackBanner}
+          <span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-slate-900/75 text-white text-[11px] font-extrabold backdrop-blur-xs">
+            ${escapeHtml(rightPillText)}
+          </span>
+        </div>
+      `;
     }
 
     function showToast(msg, type) {
       const stack = document.getElementById('toastStack');
       if (!stack) return;
       const el = document.createElement('div');
-      const colors = type === 'error'
-        ? 'bg-rose-600 text-white'
-        : 'bg-slate-900 text-white';
+      const colors = type === 'error' ? 'bg-rose-600 text-white' : 'bg-slate-900 text-white';
       el.className = `${colors} px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold pointer-events-auto transition-all`;
       el.textContent = msg;
       stack.appendChild(el);
@@ -1409,8 +1714,8 @@
       });
 
       if (tab === 'home') renderHome();
-      if (tab === 'notes') renderNotesView();
-      if (tab === 'dpp') renderDppLobby();
+      if (tab === 'notes') renderNotesSection();
+      if (tab === 'dpp') renderDppSection();
       if (tab === 'saved') renderSavedView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1426,13 +1731,12 @@
 
     function setLanguage(lang) {
       currentLang = lang;
+      saveProgress();
       updateLangButtons();
       if (cbt.active) renderCbtQuestion();
       if (formulaStudy.open) renderFormulaModalContent();
-      if (currentTab === 'notes') renderNotesList();
-      if (currentTab === 'dpp' && !document.getElementById('dppAnalysisPanel').classList.contains('hidden')) {
-        renderAnalysisReview();
-      }
+      if (currentTab === 'notes' && notesSubView === 'detail') renderNotesList();
+      if (currentTab === 'dpp' && dppSubView === 'analysis') renderAnalysisReview();
       if (currentTab === 'saved') renderSavedView();
     }
 
@@ -1458,8 +1762,8 @@
       updateLangButtons();
       updateSavedBadges();
       renderHome();
-      if (currentTab === 'notes') renderNotesView();
-      if (currentTab === 'dpp') renderDppLobby();
+      if (currentTab === 'notes') renderNotesSection();
+      if (currentTab === 'dpp') renderDppSection();
       if (currentTab === 'saved') renderSavedView();
     }
 
@@ -1482,18 +1786,18 @@
       const validDppIds = new Set(dppData.map(d => d.id));
       const validAllIds = new Set(getAllQuestions().map(q => q.id));
 
-      const noteSetCount = new Set(notesData.map(n => `${n.chapter}__${n.set}`)).size;
-      const dppSetCount = new Set(dppData.map(d => `${d.chapter}__${d.set}`)).size;
+      const noteSetCount = new Set(notesData.map(n => `${n.batch}__${n.chapter}__${n.set}`)).size;
+      const dppBatchCount = buildBatchCardsData(dppData).length;
       const solvedCount = progress.solvedIds.filter(id => validDppIds.has(id)).length;
       const mistakeCount = progress.mistakes.filter(id => validAllIds.has(id)).length;
       const accuracy = progress.totalAttempts > 0 ? Math.round((progress.totalCorrect / progress.totalAttempts) * 100) : 0;
 
       document.getElementById('heroStreakCount').textContent = progress.streak;
       document.getElementById('statNotesCount').textContent = notesData.length;
-      document.getElementById('statNotesSets').textContent = `${noteSetCount} class ${noteSetCount === 1 ? 'set' : 'sets'}`;
-      document.getElementById('statDppSolved').textContent = solvedCount;
+      document.getElementById('statNotesSets').textContent = `${noteSetCount} class ${noteSetCount === 1 ? 'set' : 'sets'} available`;
+      document.getElementById('statDppAttempted').textContent = solvedCount;
       document.getElementById('statDppTotal').textContent = `/${dppData.length}`;
-      document.getElementById('statDppSets').textContent = `${dppSetCount} DPP ${dppSetCount === 1 ? 'set' : 'sets'} ready`;
+      document.getElementById('statDppBatches').textContent = `${dppBatchCount} ${dppBatchCount === 1 ? 'batch' : 'batches'} ready`;
       document.getElementById('statAccuracy').textContent = `${accuracy}%`;
       document.getElementById('statTestsTaken').textContent = `${progress.testsCompleted} tests completed`;
       document.getElementById('statMistakeCount').textContent = mistakeCount;
@@ -1521,7 +1825,7 @@
         const meta = getTopicMeta(topic);
 
         return `
-          <button type="button" onclick="openFormulaModal('${escapeHtml(topic)}')" class="text-left bg-white rounded-2xl border border-slate-200/90 ${meta.hover} p-4 sm:p-5 shadow-sm transition-all active:scale-[0.98] flex flex-col justify-between gap-3.5">
+          <button type="button" onclick="openFormulaModal('${escapeJsStr(topic)}')" class="text-left bg-white rounded-2xl border border-slate-200/90 ${meta.hover} p-4 sm:p-5 shadow-sm transition-all active:scale-[0.98] flex flex-col justify-between gap-3.5">
             <div class="flex items-start justify-between gap-2">
               <div class="w-10 h-10 rounded-xl ${meta.boxBg} flex items-center justify-center shrink-0">${meta.icon}</div>
               <span class="text-[11px] font-extrabold text-slate-400">${pct}%</span>
@@ -1614,9 +1918,7 @@
 
         const isMastered = progress.masteredFormulas.includes(card.id);
         document.getElementById('fmMasteredTag').classList.toggle('hidden', !isMastered);
-
-        const flipInner = document.getElementById('fmFlipInner');
-        flipInner.classList.toggle('rotate-y-180', formulaStudy.flipped);
+        document.getElementById('fmFlipInner').classList.toggle('rotate-y-180', formulaStudy.flipped);
 
         document.getElementById('fmFrontContent').innerHTML = `
           ${card.title && card.title !== card.front ? `<div class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">${formatRichText(card.title)}</div>` : ''}
@@ -1645,7 +1947,7 @@
                   <div class="text-sm sm:text-base font-extrabold text-slate-900">${formatRichText(item.title || item.front)}</div>
                   ${item.title_hi ? `<div class="font-hindi text-xs font-semibold text-slate-600">${formatRichText(item.title_hi)}</div>` : ''}
                 </div>
-                <button type="button" onclick="toggleFormulaMastered('${escapeHtml(item.id)}')" class="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
+                <button type="button" onclick="toggleFormulaMastered('${escapeJsStr(item.id)}')" class="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
                   isMastered ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-white border-slate-200 text-slate-500 hover:border-emerald-300 hover:text-emerald-700'
                 }">
                   ${SVG.checkCircle}
@@ -1705,8 +2007,69 @@
     }
 
     /* =========================================================================
-       9. VIEW 2: CLASS NOTES
+       9. VIEW 2: CLASS NOTES (2-LEVEL BATCH ARCHITECTURE)
     ========================================================================= */
+    function renderNotesSection() {
+      document.getElementById('notesBatchLobbyPanel').classList.toggle('hidden', notesSubView !== 'batches');
+      document.getElementById('notesBatchDetailPanel').classList.toggle('hidden', notesSubView !== 'detail');
+
+      if (notesSubView === 'batches') renderNotesBatchLobby();
+      else renderNotesBatchDetail();
+    }
+
+    function renderNotesBatchLobby() {
+      const batches = buildBatchCardsData(notesData);
+      const grid = document.getElementById('notesBatchGrid');
+
+      if (batches.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-10 text-center text-sm text-slate-500">No class notes available yet.</div>`;
+        return;
+      }
+
+      grid.innerHTML = batches.map((b, idx) => {
+        const grad = BATCH_GRADIENTS[idx % BATCH_GRADIENTS.length];
+        const setLabel = `${b.sets.size} ${b.sets.size === 1 ? 'Class' : 'Classes'}`;
+
+        return `
+          <div onclick="openNotesBatch('${escapeJsStr(b.name)}')" class="group cursor-pointer bg-white rounded-2xl border border-slate-200/90 hover:border-indigo-300 shadow-sm hover:shadow-md overflow-hidden transition-all active:scale-[0.99] flex flex-col">
+            ${renderBatchThumbBox(b, grad, 'Class Notes', setLabel)}
+
+            <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-4">
+              <div>
+                <h3 class="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-indigo-600 transition-colors leading-snug">${escapeHtml(b.name)}</h3>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 mt-1.5">
+                  <span>${b.chapters.size} ${b.chapters.size === 1 ? 'Chapter' : 'Chapters'}</span>
+                  <span>•</span>
+                  <span>${b.sets.size} Class ${b.sets.size === 1 ? 'Set' : 'Sets'}</span>
+                  <span>•</span>
+                  <span>${b.items.length} Notes</span>
+                </div>
+              </div>
+
+              <div class="w-full py-2.5 px-4 rounded-xl bg-indigo-50 group-hover:bg-indigo-600 text-indigo-700 group-hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
+                <span>Open Notes →</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openNotesBatch(batchName) {
+      selectedNotesBatch = batchName;
+      selectedNotesChapter = '';
+      selectedNotesSet = '';
+      notesSubView = 'detail';
+      renderNotesSection();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToNotesBatchLobby() {
+      notesSubView = 'batches';
+      renderNotesSection();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function toggleHideSolutions(checked) {
       hideSolutions = checked;
       const lbl = document.getElementById('hideSolutionsLabel');
@@ -1714,29 +2077,35 @@
       renderNotesList();
     }
 
-    function renderNotesView() {
-      const chapters = [...new Set(notesData.map(n => n.chapter))];
+    function renderNotesBatchDetail() {
+      const batchItems = notesData.filter(n => n.batch === selectedNotesBatch);
+      if (batchItems.length === 0) {
+        backToNotesBatchLobby();
+        return;
+      }
+
+      document.getElementById('notesSelectedBatchTitle').textContent = selectedNotesBatch;
+
+      const chapters = [...new Set(batchItems.map(n => n.chapter))];
       if (!selectedNotesChapter || !chapters.includes(selectedNotesChapter)) {
         selectedNotesChapter = chapters[0] || '';
       }
 
-      const chBox = document.getElementById('notesChapterPills');
-      chBox.innerHTML = chapters.map(ch => {
+      document.getElementById('notesChapterPills').innerHTML = chapters.map(ch => {
         const active = ch === selectedNotesChapter;
-        return `<button type="button" onclick="selectNotesChapter('${escapeHtml(ch)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+        return `<button type="button" onclick="selectNotesChapter('${escapeJsStr(ch)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
           active ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
         }">${escapeHtml(ch)}</button>`;
       }).join('');
 
-      const sets = [...new Set(notesData.filter(n => n.chapter === selectedNotesChapter).map(n => n.set))];
+      const sets = [...new Set(batchItems.filter(n => n.chapter === selectedNotesChapter).map(n => n.set))];
       if (!selectedNotesSet || !sets.includes(selectedNotesSet)) {
         selectedNotesSet = sets[0] || '';
       }
 
-      const setBox = document.getElementById('notesSetPills');
-      setBox.innerHTML = sets.map(s => {
+      document.getElementById('notesSetPills').innerHTML = sets.map(s => {
         const active = s === selectedNotesSet;
-        return `<button type="button" onclick="selectNotesSet('${escapeHtml(s)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+        return `<button type="button" onclick="selectNotesSet('${escapeJsStr(s)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
           active ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-400'
         }">${escapeHtml(s)}</button>`;
       }).join('');
@@ -1747,25 +2116,32 @@
     function selectNotesChapter(ch) {
       selectedNotesChapter = ch;
       selectedNotesSet = '';
-      renderNotesView();
+      renderNotesBatchDetail();
     }
 
     function selectNotesSet(s) {
       selectedNotesSet = s;
-      renderNotesView();
+      renderNotesBatchDetail();
     }
 
     function renderNotesList() {
       const container = document.getElementById('notesListContainer');
-      const items = notesData.filter(n => n.chapter === selectedNotesChapter && n.set === selectedNotesSet);
+      const items = notesData.filter(n =>
+        n.batch === selectedNotesBatch &&
+        n.chapter === selectedNotesChapter &&
+        n.set === selectedNotesSet
+      );
 
       if (items.length === 0) {
         container.innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No class notes found for this selection.</div>`;
         return;
       }
 
-      container.innerHTML = items.map((item, idx) => {
+      let qCounter = 0;
+
+      container.innerHTML = items.map((item) => {
         const isConcept = !item.options || item.options.length === 0;
+        if (!isConcept) qCounter++;
         const isBookmarked = progress.bookmarks.includes(item.id);
 
         const optionsHtml = !isConcept ? `
@@ -1788,10 +2164,13 @@
         ` : '';
 
         const solutionHtml = (!hideSolutions || isConcept) ? `
-          <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-2">
-            <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">${isConcept ? 'Concept & Notes' : 'Step-by-Step Solution'}</div>
-            <div class="text-xs sm:text-sm text-slate-800 leading-relaxed">${formatRichText(item.solution)}</div>
-          </div>
+          ${item.solution || item.solution_image ? `
+            <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-2">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">${isConcept ? 'Concept & Notes' : 'Step-by-Step Solution'}</div>
+              ${item.solution ? `<div class="text-xs sm:text-sm text-slate-800 leading-relaxed">${formatRichText(item.solution)}</div>` : ''}
+              ${item.solution_image ? renderQuestionImageHtml(item.solution_image, 'Solution Image') : ''}
+            </div>
+          ` : ''}
           ${item.trick ? `
             <div class="rounded-xl bg-amber-50 border border-amber-200 p-3.5 text-xs sm:text-sm text-amber-950 leading-relaxed">
               <span class="font-extrabold text-amber-800">Short Trick: </span>${formatRichText(item.trick)}
@@ -1799,7 +2178,7 @@
           ` : ''}
         ` : `
           <div class="rounded-xl bg-slate-50 border border-dashed border-slate-300 p-3 text-center text-xs font-semibold text-slate-500">
-            Solution hidden — turn off "Hide Solutions" to check answer.
+            Solution hidden — turn off "Hide Solutions" to view answer.
           </div>
         `;
 
@@ -1809,10 +2188,13 @@
               <div class="flex flex-wrap items-center gap-1.5">
                 <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(item.chapter)}</span>
                 <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-bold">${escapeHtml(item.set)}</span>
-                ${isConcept ? `<span class="px-2.5 py-0.5 rounded-lg bg-purple-50 text-purple-700 text-[11px] font-bold">Concept</span>` : `<span class="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-500 text-[11px] font-bold">Q${idx + 1}</span>`}
+                ${isConcept
+                  ? `<span class="px-2.5 py-0.5 rounded-lg bg-purple-50 text-purple-700 text-[11px] font-bold">Concept</span>`
+                  : `<span class="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-500 text-[11px] font-bold">Q${qCounter}</span>`
+                }
                 ${item.exam ? `<span class="px-2.5 py-0.5 rounded-lg bg-sky-50 text-sky-700 text-[11px] font-bold">${escapeHtml(item.exam)}</span>` : ''}
               </div>
-              <button type="button" onclick="toggleBookmark('${escapeHtml(item.id)}')" class="w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
+              <button type="button" onclick="toggleBookmark('${escapeJsStr(item.id)}')" class="w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
                 isBookmarked ? 'bg-indigo-50 border-indigo-300 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:text-indigo-600'
               }" aria-label="Bookmark">
                 ${SVG.bookmark(isBookmarked)}
@@ -1840,64 +2222,202 @@
       }
       saveProgress();
       updateSavedBadges();
-      if (currentTab === 'notes') renderNotesList();
-      if (currentTab === 'dpp' && !document.getElementById('dppAnalysisPanel').classList.contains('hidden')) renderAnalysisReview();
+      if (currentTab === 'notes' && notesSubView === 'detail') renderNotesList();
+      if (currentTab === 'dpp' && dppSubView === 'analysis') renderAnalysisReview();
       if (currentTab === 'saved') renderSavedView();
     }
 
     /* =========================================================================
-       10. VIEW 3: DPP PRACTICE ARENA & CBT ENGINE
+       10. VIEW 3: DPP PRACTICE (2-LEVEL BATCH -> CBT -> DEEP ANALYSIS)
     ========================================================================= */
-    function showDppLobby() {
-      document.getElementById('dppAnalysisPanel').classList.add('hidden');
-      document.getElementById('dppLobbyPanel').classList.remove('hidden');
-      renderDppLobby();
+    function renderDppSection() {
+      updateSavedBadges();
+      document.getElementById('dppBatchLobbyPanel').classList.toggle('hidden', dppSubView !== 'batches');
+      document.getElementById('dppBatchDetailPanel').classList.toggle('hidden', dppSubView !== 'detail');
+      document.getElementById('dppAnalysisPanel').classList.toggle('hidden', dppSubView !== 'analysis');
+
+      if (dppSubView === 'batches') renderDppBatchLobby();
+      else if (dppSubView === 'detail') renderDppBatchDetail();
+      else if (dppSubView === 'analysis') renderAnalysisView();
     }
 
-    function renderDppLobby() {
-      updateSavedBadges();
-      const chapters = [...new Set(dppData.map(d => d.chapter))];
-      if (!selectedDppChapter || !chapters.includes(selectedDppChapter)) {
-        selectedDppChapter = chapters[0] || '';
+    function renderDppBatchLobby() {
+      const batches = buildBatchCardsData(dppData);
+      const grid = document.getElementById('dppBatchGrid');
+
+      if (batches.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-10 text-center text-sm text-slate-500">No DPP batches available yet.</div>`;
+        return;
       }
 
-      const chBox = document.getElementById('dppChapterPills');
-      chBox.innerHTML = chapters.map(ch => {
+      grid.innerHTML = batches.map((b, idx) => {
+        const grad = BATCH_GRADIENTS[idx % BATCH_GRADIENTS.length];
+        const totalQ = b.items.length;
+        const solvedQ = b.items.filter(q => progress.solvedIds.includes(q.id)).length;
+        const pct = totalQ > 0 ? Math.round((solvedQ / totalQ) * 100) : 0;
+        const setLabel = `${b.sets.size} ${b.sets.size === 1 ? 'DPP' : 'DPPs'}`;
+
+        return `
+          <div onclick="openDppBatch('${escapeJsStr(b.name)}')" class="group cursor-pointer bg-white rounded-2xl border border-slate-200/90 hover:border-indigo-300 shadow-sm hover:shadow-md overflow-hidden transition-all active:scale-[0.99] flex flex-col">
+            ${renderBatchThumbBox(b, grad, 'DPP Batch', setLabel)}
+
+            <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-4">
+              <div>
+                <h3 class="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-indigo-600 transition-colors leading-snug">${escapeHtml(b.name)}</h3>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 mt-1.5">
+                  <span>${b.chapters.size} ${b.chapters.size === 1 ? 'Chapter' : 'Chapters'}</span>
+                  <span>•</span>
+                  <span>${b.sets.size} DPP ${b.sets.size === 1 ? 'Set' : 'Sets'}</span>
+                  <span>•</span>
+                  <span>${totalQ} Qs</span>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between text-[11px] font-bold">
+                    <span class="text-slate-500">Progress</span>
+                    <span class="text-indigo-600">${solvedQ}/${totalQ} (${pct}%)</span>
+                  </div>
+                  <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                    <div class="h-full bg-indigo-600 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                  </div>
+                </div>
+
+                <div class="w-full py-2.5 px-4 rounded-xl bg-indigo-50 group-hover:bg-indigo-600 text-indigo-700 group-hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
+                  <span>Open DPP Sets →</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openDppBatch(batchName) {
+      selectedDppBatch = batchName;
+      selectedDppChapter = 'All';
+      dppSubView = 'detail';
+      renderDppSection();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToDppBatchLobby() {
+      dppSubView = 'batches';
+      renderDppSection();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectDppChapter(ch) {
+      selectedDppChapter = ch;
+      renderDppBatchDetail();
+    }
+
+    function renderDppBatchDetail() {
+      const batches = buildBatchCardsData(dppData);
+      const batch = batches.find(b => b.name === selectedDppBatch);
+      if (!batch) {
+        backToDppBatchLobby();
+        return;
+      }
+
+      const batchIdx = Math.max(0, batches.findIndex(b => b.name === selectedDppBatch));
+      const grad = BATCH_GRADIENTS[batchIdx % BATCH_GRADIENTS.length];
+      const totalQ = batch.items.length;
+      const solvedQ = batch.items.filter(q => progress.solvedIds.includes(q.id)).length;
+      const pct = totalQ > 0 ? Math.round((solvedQ / totalQ) * 100) : 0;
+
+      const thumbBox = batch.thumb
+        ? `<div class="relative w-full sm:w-52 aspect-video sm:aspect-auto sm:h-32 shrink-0 bg-slate-100 overflow-hidden">
+             <img src="${escapeHtml(batch.thumb)}" alt="${escapeHtml(batch.name)}" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover" />
+             <div class="hidden absolute inset-0 bg-gradient-to-br ${grad} flex items-center justify-center text-white font-extrabold text-sm p-3 text-center">${escapeHtml(batch.name)}</div>
+           </div>`
+        : `<div class="w-full sm:w-52 h-24 sm:h-32 shrink-0 bg-gradient-to-br ${grad} p-4 flex flex-col justify-between text-white">
+             <span class="inline-flex items-center gap-1 self-start px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-bold">${SVG.layers} DPP Batch</span>
+             <span class="font-extrabold text-sm leading-tight">${escapeHtml(batch.name)}</span>
+           </div>`;
+
+      document.getElementById('dppBatchBanner').innerHTML = `
+        <div class="flex flex-col sm:flex-row">
+          ${thumbBox}
+          <div class="p-4 sm:p-5 flex-1 flex flex-col justify-center gap-2.5">
+            <div>
+              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">${escapeHtml(batch.name)}</h2>
+              <p class="text-xs font-semibold text-slate-500 mt-1">
+                ${batch.chapters.size} ${batch.chapters.size === 1 ? 'Chapter' : 'Chapters'} • ${batch.sets.size} DPP ${batch.sets.size === 1 ? 'Set' : 'Sets'} • ${totalQ} Questions
+              </p>
+            </div>
+            <div class="space-y-1 max-w-md">
+              <div class="flex items-center justify-between text-[11px] font-bold">
+                <span class="text-slate-500">Batch Completion</span>
+                <span class="text-emerald-600">${solvedQ}/${totalQ} solved (${pct}%)</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const chapterList = ['All', ...Array.from(batch.chapters)];
+      if (!chapterList.includes(selectedDppChapter)) selectedDppChapter = 'All';
+
+      document.getElementById('dppBatchChapterPills').innerHTML = chapterList.map(ch => {
         const active = ch === selectedDppChapter;
-        return `<button type="button" onclick="selectDppChapter('${escapeHtml(ch)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+        return `<button type="button" onclick="selectDppChapter('${escapeJsStr(ch)}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
           active ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'
         }">${escapeHtml(ch)}</button>`;
       }).join('');
 
-      const chapterItems = dppData.filter(d => d.chapter === selectedDppChapter);
-      const sets = [...new Set(chapterItems.map(d => d.set))];
+      const filteredItems = selectedDppChapter === 'All'
+        ? batch.items
+        : batch.items.filter(q => q.chapter === selectedDppChapter);
 
-      document.getElementById('dppHeading').textContent = selectedDppChapter ? `${selectedDppChapter} — DPP Sets` : 'Available DPP Sets';
-      document.getElementById('dppSetCount').textContent = `${sets.length} ${sets.length === 1 ? 'set' : 'sets'}`;
+      const setMap = new Map();
+      filteredItems.forEach(item => {
+        const key = `${item.chapter}__${item.set}`;
+        if (!setMap.has(key)) {
+          setMap.set(key, { key, chapter: item.chapter, set: item.set, questions: [], exams: new Set() });
+        }
+        const g = setMap.get(key);
+        g.questions.push(item);
+        if (item.exam) g.exams.add(item.exam);
+      });
+
+      const setsArr = Array.from(setMap.values());
+      document.getElementById('dppBatchSetCount').textContent = `${setsArr.length} ${setsArr.length === 1 ? 'set' : 'sets'}`;
 
       const grid = document.getElementById('dppSetsGrid');
-      if (sets.length === 0) {
-        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No DPP sets available yet.</div>`;
+      if (setsArr.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">No DPP sets found in this chapter.</div>`;
         return;
       }
 
-      grid.innerHTML = sets.map(setName => {
-        const qs = chapterItems.filter(d => d.set === setName);
-        const setKey = `${selectedDppChapter}__${setName}`;
-        const best = progress.bestScores[setKey];
+      grid.innerHTML = setsArr.map(s => {
+        const scoreKey = `${batch.name}__${s.chapter}__${s.set}`;
+        const best = progress.bestScores[scoreKey];
+        const examTags = Array.from(s.exams).slice(0, 2);
 
         return `
           <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm flex flex-col justify-between gap-4 hover:border-indigo-300 transition-all">
-            <div class="space-y-2">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between gap-2">
-                <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(selectedDppChapter)}</span>
+                <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(s.chapter)}</span>
                 ${best !== undefined ? `<span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold">Best: ${escapeHtml(String(best))}</span>` : ''}
               </div>
-              <h4 class="text-lg font-extrabold text-slate-900">${escapeHtml(setName)}</h4>
-              <p class="text-xs font-semibold text-slate-500">${qs.length} Questions • CBT Timed Test</p>
+              <div>
+                <h4 class="text-lg font-extrabold text-slate-900">${escapeHtml(s.set)}</h4>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">${s.questions.length} ${s.questions.length === 1 ? 'Question' : 'Questions'} • Timed CBT</p>
+              </div>
+              ${examTags.length ? `
+                <div class="flex flex-wrap gap-1.5">
+                  ${examTags.map(ex => `<span class="px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 text-[10px] font-bold">${escapeHtml(ex)}</span>`).join('')}
+                </div>
+              ` : ''}
             </div>
 
-            <button type="button" onclick="openSetTestSetup('${escapeHtml(selectedDppChapter)}', '${escapeHtml(setName)}')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition-all active:scale-95">
+            <button type="button" onclick="openSetTestSetup('${escapeJsStr(batch.name)}', '${escapeJsStr(s.chapter)}', '${escapeJsStr(s.set)}')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition-all active:scale-95">
               ${SVG.bolt}
               <span>Start Test</span>
             </button>
@@ -1906,17 +2426,12 @@
       }).join('');
     }
 
-    function selectDppChapter(ch) {
-      selectedDppChapter = ch;
-      renderDppLobby();
-    }
-
-    function openSetTestSetup(chapter, setName) {
-      const qs = dppData.filter(d => d.chapter === chapter && d.set === setName);
+    function openSetTestSetup(batchName, chapter, setName) {
+      const qs = dppData.filter(d => d.batch === batchName && d.chapter === chapter && d.set === setName);
       if (qs.length === 0) return;
       setupConfig = {
         title: `${chapter} — ${setName}`,
-        setKey: `${chapter}__${setName}`,
+        setKey: `${batchName}__${chapter}__${setName}`,
         questions: qs,
         timerMode: 'sectional',
         minutes: 15,
@@ -2049,9 +2564,7 @@
         if (cbt.timerMode === 'sectional') {
           cbt.remainingSeconds--;
           updateCbtTimerDisplay();
-          if (cbt.remainingSeconds <= 0) {
-            submitCbtTest(true);
-          }
+          if (cbt.remainingSeconds <= 0) submitCbtTest(true);
         } else {
           updateCbtTimerDisplay();
         }
@@ -2086,13 +2599,12 @@
       document.getElementById('cbtMarkBtnLabel').textContent = isMarked ? 'Unmark Review' : 'Mark for Review';
 
       document.getElementById('cbtPrevBtn').disabled = cbt.index === 0;
-      document.getElementById('cbtNextLabel').textContent = cbt.index === cbt.questions.length - 1 ? 'Save' : 'Save & Next';
+      document.getElementById('cbtNextLabel').textContent = cbt.index === cbt.questions.length - 1 ? 'Finish' : 'Save & Next';
 
       document.getElementById('cbtQuestionBox').innerHTML = renderQuestionText(q);
 
       const selected = cbt.answers[cbt.index];
-      const optsBox = document.getElementById('cbtOptionsBox');
-      optsBox.innerHTML = q.options.map((opt, idx) => {
+      document.getElementById('cbtOptionsBox').innerHTML = q.options.map((opt, idx) => {
         const isSel = selected === idx;
         const letter = String.fromCharCode(65 + idx);
         return `
@@ -2162,8 +2674,7 @@
       const answeredCount = Object.keys(cbt.answers).length;
       document.getElementById('paletteSummaryText').textContent = `${answeredCount} / ${cbt.questions.length} Answered`;
 
-      const grid = document.getElementById('cbtPaletteGrid');
-      grid.innerHTML = cbt.questions.map((_, i) => {
+      document.getElementById('cbtPaletteGrid').innerHTML = cbt.questions.map((_, i) => {
         const isAns = cbt.answers[i] !== undefined;
         const isMarked = Boolean(cbt.marked[i]);
         const isVis = Boolean(cbt.visited[i]);
@@ -2238,17 +2749,15 @@
       progress.testsCompleted += 1;
 
       if (cbt.setKey && cbt.setKey !== 'MISTAKE_BANK') {
-        const prevBest = progress.bestScores[cbt.setKey];
-        if (prevBest === undefined || score > prevBest) {
+        const prevStr = progress.bestScores[cbt.setKey];
+        const prevNum = prevStr !== undefined ? parseFloat(String(prevStr).split('/')[0]) : -Infinity;
+        if (score >= prevNum) {
           progress.bestScores[cbt.setKey] = `${score}/${maxScore}`;
         }
       }
       saveProgress();
 
       const sortedByTime = [...items].sort((a, b) => a.time - b.time);
-      const fastest = sortedByTime[0];
-      const slowest = sortedByTime[sortedByTime.length - 1];
-
       lastAnalysis = {
         title: cbt.title,
         markingLabel: cbt.marking === 'ssc' ? '+2 / -0.5' : '+1 / 0',
@@ -2263,17 +2772,23 @@
         timeCorrect,
         timeWrong,
         timeSkipped,
-        fastest,
-        slowest,
+        fastest: sortedByTime[0],
+        slowest: sortedByTime[sortedByTime.length - 1],
         items
       };
 
       analysisFilter = 'all';
       analysisSortSlowest = false;
+      dppSubView = 'analysis';
 
       if (isAuto) showToast('Time up! Test auto-submitted.', 'error');
       switchTab('dpp');
-      renderAnalysisView();
+    }
+
+    function exitAnalysisView() {
+      dppSubView = selectedDppBatch ? 'detail' : 'batches';
+      renderDppSection();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function retakeLastTest() {
@@ -2281,9 +2796,11 @@
     }
 
     function renderAnalysisView() {
-      if (!lastAnalysis) return;
-      document.getElementById('dppLobbyPanel').classList.add('hidden');
-      document.getElementById('dppAnalysisPanel').classList.remove('hidden');
+      if (!lastAnalysis) {
+        dppSubView = 'batches';
+        renderDppSection();
+        return;
+      }
 
       const a = lastAnalysis;
       document.getElementById('analysisTitle').textContent = a.title;
@@ -2356,8 +2873,7 @@
         }">${f.label}</button>`;
       }).join('');
 
-      const sortBtn = document.getElementById('sortSlowestBtn');
-      sortBtn.className = analysisSortSlowest
+      document.getElementById('sortSlowestBtn').className = analysisSortSlowest
         ? 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold bg-rose-50 border-rose-300 text-rose-700 transition-all'
         : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold bg-white border-slate-200 text-slate-600 hover:border-slate-300 transition-all';
 
@@ -2392,7 +2908,7 @@
                 </span>
                 <span class="px-2 py-0.5 rounded-lg border text-[11px] font-bold ${speedTag.cls}">${speedTag.text}</span>
               </div>
-              <button type="button" onclick="toggleBookmark('${escapeHtml(q.id)}')" class="w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
+              <button type="button" onclick="toggleBookmark('${escapeJsStr(q.id)}')" class="w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
                 isBookmarked ? 'bg-indigo-50 border-indigo-300 text-indigo-600' : 'bg-white border-slate-200 text-slate-400 hover:text-indigo-600'
               }" aria-label="Bookmark">
                 ${SVG.bookmark(isBookmarked)}
@@ -2424,10 +2940,11 @@
               }).join('')}
             </div>
 
-            ${q.solution ? `
+            ${q.solution || q.solution_image ? `
               <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-1.5">
                 <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">Solution</div>
-                <div class="text-xs sm:text-sm text-slate-800 leading-relaxed">${formatRichText(q.solution)}</div>
+                ${q.solution ? `<div class="text-xs sm:text-sm text-slate-800 leading-relaxed">${formatRichText(q.solution)}</div>` : ''}
+                ${q.solution_image ? renderQuestionImageHtml(q.solution_image, 'Solution Image') : ''}
               </div>
             ` : ''}
 
@@ -2499,12 +3016,13 @@
         const q = findQuestionById(id);
         if (!q) return '';
         const isConcept = !q.options || q.options.length === 0;
-        const removeFn = savedSubTab === 'mistakes' ? `removeFromMistakes('${escapeHtml(q.id)}')` : `toggleBookmark('${escapeHtml(q.id)}')`;
+        const removeFn = savedSubTab === 'mistakes' ? `removeFromMistakes('${escapeJsStr(q.id)}')` : `toggleBookmark('${escapeJsStr(q.id)}')`;
 
         return `
           <article class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm space-y-3.5">
             <div class="flex items-start justify-between gap-2">
               <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg bg-purple-50 text-purple-700 text-[11px] font-bold">${escapeHtml(q.batch)}</span>
                 <span class="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-[11px] font-extrabold">${escapeHtml(q.chapter)}</span>
                 <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-bold">${escapeHtml(q.set)}</span>
                 ${q.exam ? `<span class="px-2.5 py-0.5 rounded-lg bg-sky-50 text-sky-700 text-[11px] font-bold">${escapeHtml(q.exam)}</span>` : ''}
@@ -2536,10 +3054,11 @@
               </div>
             ` : ''}
 
-            ${q.solution ? `
-              <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 text-xs sm:text-sm text-slate-800 leading-relaxed">
-                <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 mb-1">Solution</div>
-                ${formatRichText(q.solution)}
+            ${q.solution || q.solution_image ? `
+              <div class="rounded-xl bg-slate-50 border border-slate-200/80 p-4 text-xs sm:text-sm text-slate-800 leading-relaxed space-y-1.5">
+                <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">Solution</div>
+                ${q.solution ? `<div>${formatRichText(q.solution)}</div>` : ''}
+                ${q.solution_image ? renderQuestionImageHtml(q.solution_image, 'Solution Image') : ''}
               </div>
             ` : ''}
 
@@ -2556,16 +3075,24 @@
     }
 
     /* =========================================================================
-       12. INITIALIZATION
+       12. INITIALIZATION & SILENT SERVICE WORKER REGISTRATION
     ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       loadProgress();
-      notesData = STARTER_NOTES.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
-      dppData = STARTER_DPP.map((item, i) => normalizeQuestion(item, i, 'dpp'));
-      formulasData = STARTER_FORMULAS.map((item, i) => normalizeFormula(item, i));
+      batchesMeta = [...DEFAULT_BATCHES];
+      notesData = DEFAULT_NOTES.map((item, i) => normalizeQuestion(item, i, 'class_notes'));
+      dppData = DEFAULT_DPP.map((item, i) => normalizeQuestion(item, i, 'dpp'));
+      formulasData = DEFAULT_FORMULAS.map((item, i) => normalizeFormula(item, i));
+
       refreshAll();
       switchTab('home');
-      fetchRemoteContent(false);
+      fetchAllRemoteData(false);
+
+      try {
+        if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        }
+      } catch (e) {}
     });
 
     window.addEventListener('load', () => {
@@ -2574,3 +3101,4 @@
   </script>
 </body>
 </html>
+```
