@@ -2,93 +2,85 @@
   {
     "id": "m2d-1",
     "topic": "Mensuration 2D",
-    "title": "Square (वर्ग)",
-    "front": "Square (Side = $a$): Area, Perimeter & Diagonal?",
-    "back": "• Area $= a^2 = \\frac{d^2}{2}$<br>• Perimeter $= 4a$<br>• Diagonal $(d) = a\\sqrt{2}$",
-    "trick": "Diagonal diya ho to seedha Area $= \\frac{d^2}{2}$ lagayein, side nikalne ki zaroorat nahi."
+    "title": "General Triangle (विषमबाहु त्रिभुज)",
+    "front": "General Triangle (Sides $a, b, c$): Perimeter, Heron's Area, Sine Area, Inradius ($r$) & Circumradius ($R$)?",
+    "back": "• Perimeter $= a + b + c$, &nbsp; $s = \\frac{a+b+c}{2}$<br>• Area $= \\frac{1}{2} \\times \\text{Base} \\times \\text{Height} = \\frac{1}{2}ab\\sin\\theta$<br>• Heron's Area $= \\sqrt{s(s-a)(s-b)(s-c)}$<br>• $r = \\frac{\\text{Area}}{s}$, &nbsp; $R = \\frac{abc}{4 \\times \\text{Area}}$",
+    "trick": "Jab do sides aur unke beech ka angle $\\theta$ diya ho to seedha $\\frac{1}{2}ab\\sin\\theta$ lagayein."
   },
   {
     "id": "m2d-2",
     "topic": "Mensuration 2D",
-    "title": "Rectangle (आयत)",
-    "front": "Rectangle (Length = $l$, Breadth = $b$): Area, Perimeter & Diagonal?",
-    "back": "• Area $= l \\times b$<br>• Perimeter $= 2(l + b)$<br>• Diagonal $(d) = \\sqrt{l^2 + b^2}$",
-    "trick": "Diagonal, $l$, aur $b$ hamesha Pythagorean Triplet banate hain (jaise 3-4-5, 5-12-13, 8-15-17)."
+    "title": "Right-Angled Triangle (समकोण त्रिभुज)",
+    "front": "Right-Angled Triangle (Base $b$, Height $p$, Hypotenuse $h$): Area, Inradius ($r$), Circumradius ($R$) & Altitude on Hypotenuse?",
+    "back": "• $h^2 = p^2 + b^2$ &nbsp;|&nbsp; Area $= \\frac{1}{2} \\times b \\times p$<br>• Inradius $(r) = \\frac{p + b - h}{2}$<br>• Circumradius $(R) = \\frac{h}{2}$<br>• Altitude on Hypotenuse $= \\frac{p \\times b}{h}$",
+    "trick": "Circumradius hamesha Hypotenuse ka half ($h/2$) hota hai, aur standard triplets (3-4-5, 5-12-13, 8-15-17, 7-24-25) yaad rakhein."
   },
   {
     "id": "m2d-3",
     "topic": "Mensuration 2D",
-    "title": "Triangle — General & Heron's Formula (त्रिभुज)",
-    "front": "Scalene Triangle (Sides $a, b, c$): Area & Semi-perimeter?",
-    "back": "• Area $= \\frac{1}{2} \\times \\text{Base} \\times \\text{Height}$<br>• Semi-perimeter $(s) = \\frac{a + b + c}{2}$<br>• Heron's Area $= \\sqrt{s(s-a)(s-b)(s-c)}$",
-    "trick": "Agar do sides ($a, b$) aur unke beech ka angle $\\theta$ diya ho: Area $= \\frac{1}{2}ab\\sin\\theta$."
+    "title": "Equilateral Triangle (समबाहु त्रिभुज)",
+    "front": "Equilateral Triangle (Side = $a$): Perimeter, Height ($h$), Area, Inradius ($r$) & Circumradius ($R$)?",
+    "back": "• Perimeter $= 3a$ &nbsp;|&nbsp; Height $(h) = \\frac{\\sqrt{3}}{2}a$<br>• Area $= \\frac{\\sqrt{3}}{4}a^2 = \\frac{h^2}{\\sqrt{3}}$<br>• $r = \\frac{a}{2\\sqrt{3}}$, &nbsp; $R = \\frac{a}{\\sqrt{3}}$",
+    "trick": "Ratio yaad rakhein: $r : R = 1 : 2$, aur unke Areas ka ratio $= 1 : 4$."
   },
   {
     "id": "m2d-4",
     "topic": "Mensuration 2D",
-    "title": "Right-Angled Triangle (समकोण त्रिभुज)",
-    "front": "Right-Angled Triangle (Base $b$, Height $p$, Hypotenuse $h$): Area, Inradius & Circumradius?",
-    "back": "• Area $= \\frac{1}{2} \\times b \\times p$<br>• Inradius $(r) = \\frac{p + b - h}{2}$<br>• Circumradius $(R) = \\frac{h}{2}$",
-    "trick": "Circumradius hamesha Hypotenuse ka half ($h/2$) hota hai."
+    "title": "Equilateral Triangle — Internal Point",
+    "front": "Agar Equilateral Triangle ke andar kisi point se teeno sides par perpendiculars $p_1, p_2, p_3$ hon, to Height ($h$) aur Side ($a$) kya hogi?",
+    "back": "• Height $(h) = p_1 + p_2 + p_3$<br>• Side $(a) = \\frac{2}{\\sqrt{3}}(p_1 + p_2 + p_3)$",
+    "trick": "Teeno perpendiculars ka sum hi triangle ki total height hoti hai."
   },
   {
     "id": "m2d-5",
     "topic": "Mensuration 2D",
-    "title": "Equilateral Triangle (समबाहु त्रिभुज)",
-    "front": "Equilateral Triangle (Side = $a$): Area, Height, Inradius & Circumradius?",
-    "back": "• Area $= \\frac{\\sqrt{3}}{4}a^2$<br>• Height $(h) = \\frac{\\sqrt{3}}{2}a$<br>• Inradius $(r) = \\frac{a}{2\\sqrt{3}}$, &nbsp; Circumradius $(R) = \\frac{a}{\\sqrt{3}}$",
-    "trick": "Ratio yaad rakhein: $r : R = 1 : 2$, aur unke Areas ka ratio $= 1 : 4$. Agar height $h$ di ho to Area $= \\frac{h^2}{\\sqrt{3}}$."
+    "title": "Isosceles Triangle (समद्विबाहु त्रिभुज)",
+    "front": "Isosceles Triangle (Equal sides = $a$, Base = $b$): Perimeter, Height ($h$) & Area?",
+    "back": "• Perimeter $= 2a + b$<br>• Height $(h) = \\frac{1}{2}\\sqrt{4a^2 - b^2}$<br>• Area $= \\frac{b}{4}\\sqrt{4a^2 - b^2}$",
+    "trick": "Base $b$ ko aadha ($b/2$) karke Pythagoras se height nikalna formula ratne se tez hota hai."
   },
   {
     "id": "m2d-6",
     "topic": "Mensuration 2D",
-    "title": "Isosceles Triangle (समद्विबाहु त्रिभुज)",
-    "front": "Isosceles Triangle (Equal sides = $a$, Base = $b$): Height & Area?",
-    "back": "• Height $(h) = \\frac{1}{2}\\sqrt{4a^2 - b^2}$<br>• Area $= \\frac{b}{4}\\sqrt{4a^2 - b^2}$",
-    "trick": "Base $b$ ko aadha ($b/2$) karke Pythagoras se height nikalna formula ratne se fast hota hai."
+    "title": "Isosceles Right-Angled Triangle",
+    "front": "Isosceles Right-Angled Triangle (Equal sides = $a$, Hypotenuse = $h$): Hypotenuse & Area?",
+    "back": "• Hypotenuse $(h) = a\\sqrt{2}$<br>• Area $= \\frac{a^2}{2} = \\frac{h^2}{4}$",
+    "trick": "Hypotenuse diya ho to direct Area $= \\frac{h^2}{4}$ lagayein."
   },
   {
     "id": "m2d-7",
     "topic": "Mensuration 2D",
-    "title": "Circle (वृत्त)",
-    "front": "Circle (Radius = $r$): Area, Circumference & Diameter?",
-    "back": "• Area $= \\pi r^2$<br>• Circumference $= 2\\pi r$<br>• Diameter $(d) = 2r$",
-    "trick": "Standard Table yaad rakhein: $r = 7 \\Rightarrow C = 44,\\ A = 154$. Radius $k$ guna hone par $C$ bhi $k$ guna aur Area $k^2$ guna hota hai."
+    "title": "Square (वर्ग)",
+    "front": "Square (Side = $a$, Diagonal = $d$): Perimeter, Diagonal, Area, Inradius ($r$) & Circumradius ($R$)?",
+    "back": "• Perimeter $= 4a$ &nbsp;|&nbsp; Diagonal $(d) = a\\sqrt{2}$<br>• Area $= a^2 = \\frac{d^2}{2}$<br>• $r = \\frac{a}{2}$, &nbsp; $R = \\frac{a}{\\sqrt{2}} = \\frac{d}{2}$",
+    "trick": "Diagonal diya ho to seedha Area $= \\frac{d^2}{2}$ lagayein."
   },
   {
     "id": "m2d-8",
     "topic": "Mensuration 2D",
-    "title": "Semi-Circle (अर्धवृत्त)",
-    "front": "Semi-Circle (Radius = $r$): Area & Perimeter?",
-    "back": "• Area $= \\frac{1}{2}\\pi r^2$<br>• Perimeter $= \\pi r + 2r = r(\\pi + 2) = \\frac{36}{7}r$",
-    "trick": "Perimeter me $+2r$ (diameter) jodna mat bhoolna! Direct ratio: $r = 7 \\Rightarrow \\text{Perimeter} = 36$."
+    "title": "Rectangle (आयत)",
+    "front": "Rectangle (Length = $l$, Breadth = $b$): Perimeter, Diagonal ($d$) & Area?",
+    "back": "• Perimeter $= 2(l + b)$<br>• Diagonal $(d) = \\sqrt{l^2 + b^2}$<br>• Area $= l \\times b$",
+    "trick": "$l, b, d$ hamesha Right-Angle Triplet banate hain."
   },
   {
     "id": "m2d-9",
     "topic": "Mensuration 2D",
-    "title": "Sector & Arc of Circle (त्रिज्यखंड और चाप)",
-    "front": "Sector (Radius = $r$, Angle = $\\theta$): Arc Length & Area of Sector?",
-    "back": "• Arc Length $(l) = \\frac{\\theta}{360^\\circ} \\times 2\\pi r$<br>• Area of Sector $= \\frac{\\theta}{360^\\circ} \\times \\pi r^2 = \\frac{1}{2} \\times l \\times r$",
-    "trick": "Agar arc length $l$ aur radius $r$ diya ho to seedha Area $= \\frac{1}{2} l r$ lagayein."
+    "title": "Parallelogram (समांतर चतुर्भुज)",
+    "front": "Parallelogram (Sides $a, b$, Diagonals $d_1, d_2$): Perimeter, Area & Diagonal Relation?",
+    "back": "• Perimeter $= 2(a + b)$<br>• Area $= \\text{Base} \\times \\text{Height} = ab\\sin\\theta$<br>• Diagonal Relation: $d_1^2 + d_2^2 = 2(a^2 + b^2)$",
+    "trick": "SSC me $d_1^2 + d_2^2 = 2(a^2 + b^2)$ par direct question bahut aata hai."
   },
   {
     "id": "m2d-10",
     "topic": "Mensuration 2D",
-    "title": "Parallelogram (समांतर चतुर्भुज)",
-    "front": "Parallelogram (Sides $a, b$, Diagonals $d_1, d_2$): Area & Diagonal Relation?",
-    "back": "• Area $= \\text{Base} \\times \\text{Height} = ab\\sin\\theta$<br>• Perimeter $= 2(a + b)$<br>• Diagonal Relation: $d_1^2 + d_2^2 = 2(a^2 + b^2)$",
-    "trick": "SSC me $d_1^2 + d_2^2 = 2(a^2 + b^2)$ par direct question bahut aata hai."
+    "title": "Rhombus (समचतुर्भुज)",
+    "front": "Rhombus (Side = $a$, Diagonals $d_1, d_2$): Perimeter, Area & Side–Diagonal Relation?",
+    "back": "• Perimeter $= 4a$<br>• Area $= \\frac{1}{2} \\times d_1 \\times d_2 = a \\times h = a^2\\sin\\theta$<br>• Side–Diagonal Relation: $4a^2 = d_1^2 + d_2^2$",
+    "trick": "Diagonals 90° par bisect karte hain, isliye $\\frac{d_1}{2}, \\frac{d_2}{2}, a$ hamesha triplet banate hain."
   },
   {
     "id": "m2d-11",
-    "topic": "Mensuration 2D",
-    "title": "Rhombus (समचतुर्भुज)",
-    "front": "Rhombus (Side $a$, Diagonals $d_1, d_2$): Area, Perimeter & Side Relation?",
-    "back": "• Area $= \\frac{1}{2} \\times d_1 \\times d_2 = a \\times h$<br>• Perimeter $= 4a$<br>• Side Relation: $4a^2 = d_1^2 + d_2^2$",
-    "trick": "Diagonals 90° par bisect karte hain, isliye $\\frac{d_1}{2}, \\frac{d_2}{2}, a$ hamesha Right-Angle Triplet banate hain."
-  },
-  {
-    "id": "m2d-12",
     "topic": "Mensuration 2D",
     "title": "Trapezium (समलंब चतुर्भुज)",
     "front": "Trapezium (Parallel sides $a, b$, Height $h$): Area?",
@@ -96,27 +88,107 @@
     "trick": "Parallel sides ka average $\\times$ unke beech ki perpendicular distance ($h$)."
   },
   {
+    "id": "m2d-12",
+    "topic": "Mensuration 2D",
+    "title": "General & Cyclic Quadrilateral",
+    "front": "General Quadrilateral (Diagonal $d$, Heights $h_1, h_2$) & Cyclic Quadrilateral (Sides $a, b, c, d$): Area?",
+    "back": "• General Quad Area $= \\frac{1}{2} \\times d \\times (h_1 + h_2)$<br>• Cyclic Quad ($s = \\frac{a+b+c+d}{2}$):<br>Area $= \\sqrt{(s-a)(s-b)(s-c)(s-d)}$",
+    "trick": "Cyclic Quad ka formula bilkul Heron's formula jaisa hai, bas shuru ka '$s$' nahi hota."
+  },
+  {
     "id": "m2d-13",
     "topic": "Mensuration 2D",
-    "title": "Regular Hexagon (समषट्भुज)",
-    "front": "Regular Hexagon (Side = $a$): Area, Perimeter & Inradius?",
-    "back": "• Area $= 6 \\times \\frac{\\sqrt{3}}{4}a^2 = \\frac{3\\sqrt{3}}{2}a^2$<br>• Perimeter $= 6a$<br>• Inradius $(r) = \\frac{\\sqrt{3}}{2}a$, &nbsp; Circumradius $(R) = a$",
-    "trick": "Regular Hexagon 6 identical Equilateral Triangles se milkar banta hai."
+    "title": "Circle (वृत्त)",
+    "front": "Circle (Radius = $r$, Diameter = $d$): Circumference & Area?",
+    "back": "• Diameter $(d) = 2r$<br>• Circumference $(C) = 2\\pi r = \\pi d$<br>• Area $= \\pi r^2 = \\frac{\\pi d^2}{4}$",
+    "trick": "Standard Table: $r = 7 \\Rightarrow C = 44,\\ A = 154$. Radius $k$ guna hone par $C$ $k$ guna aur Area $k^2$ guna hota hai."
   },
   {
     "id": "m2d-14",
     "topic": "Mensuration 2D",
-    "title": "Circular Ring / Path (वृत्ताकार वलय)",
-    "front": "Concentric Circles (Outer Radius $R$, Inner Radius $r$): Area of Ring?",
-    "back": "• Area of Ring $= \\pi(R^2 - r^2) = \\pi(R + r)(R - r)$",
-    "trick": "Hamesha $(R+r)(R-r)$ use karein — calculation seconds me ho jayegi."
+    "title": "Semi-Circle (अर्धवृत्त)",
+    "front": "Semi-Circle (Radius = $r$): Area & Perimeter?",
+    "back": "• Area $= \\frac{1}{2}\\pi r^2$<br>• Perimeter $= \\pi r + 2r = \\frac{36}{7}r$",
+    "trick": "Perimeter me $+2r$ jodna mat bhoolna! Direct: $r = 7 \\Rightarrow \\text{Perimeter} = 36$."
   },
   {
     "id": "m2d-15",
     "topic": "Mensuration 2D",
-    "title": "Path Around Rectangle (आयत के चारों ओर रास्ता)",
-    "front": "Path of width $w$ around a Rectangle ($l \\times b$): Area of Path (Outside, Inside & Crossroads)?",
-    "back": "• Outside Path Area $= 2w(l + b + 2w)$<br>• Inside Path Area $= 2w(l + b - 2w)$<br>• Crossroads (Mid-path) Area $= w(l + b - w)$",
+    "title": "Quadrant of Circle (चतुर्थांश)",
+    "front": "Quadrant ($\\theta = 90^\\circ$, Radius = $r$): Area & Perimeter?",
+    "back": "• Area $= \\frac{1}{4}\\pi r^2$<br>• Perimeter $= \\frac{\\pi r}{2} + 2r = \\frac{25}{7}r$",
+    "trick": "Direct ratio: $r = 7 \\Rightarrow \\text{Perimeter} = 25$."
+  },
+  {
+    "id": "m2d-16",
+    "topic": "Mensuration 2D",
+    "title": "Sector & Arc (त्रिज्यखंड और चाप)",
+    "front": "Sector (Radius = $r$, Angle = $\\theta$): Arc Length ($l$), Area & Perimeter?",
+    "back": "• Arc Length $(l) = \\frac{\\theta}{360^\\circ} \\times 2\\pi r$<br>• Area $= \\frac{\\theta}{360^\\circ} \\times \\pi r^2 = \\frac{1}{2} \\times l \\times r$<br>• Perimeter $= l + 2r$",
+    "trick": "Arc length $l$ aur radius $r$ diya ho to seedha Area $= \\frac{1}{2}lr$ lagayein."
+  },
+  {
+    "id": "m2d-17",
+    "topic": "Mensuration 2D",
+    "title": "Segment of a Circle (वृत्तखंड)",
+    "front": "Minor Segment (Radius = $r$, Angle = $\\theta$): Area?",
+    "back": "• Area of Minor Segment $= \\text{Area of Sector} - \\text{Area of Triangle}$<br>$= \\frac{\\theta}{360^\\circ}\\pi r^2 - \\frac{1}{2}r^2\\sin\\theta$",
+    "trick": "Sector ke area me se triangle ka area ($\\frac{1}{2}r^2\\sin\\theta$) minus kar dein."
+  },
+  {
+    "id": "m2d-18",
+    "topic": "Mensuration 2D",
+    "title": "Concentric Circles / Ring (वृत्ताकार वलय)",
+    "front": "Circular Ring (Outer Radius = $R$, Inner Radius = $r$): Area & Width?",
+    "back": "• Area of Ring $= \\pi(R^2 - r^2) = \\pi(R + r)(R - r)$<br>• Width of Ring $= R - r$",
+    "trick": "Hamesha $(R+r)(R-r)$ use karein — calculation seconds me ho jayegi."
+  },
+  {
+    "id": "m2d-19",
+    "topic": "Mensuration 2D",
+    "title": "Wheel Revolution (पहिए के चक्कर)",
+    "front": "Wheel of Radius $r$: Distance in 1 Revolution & Total Number of Revolutions?",
+    "back": "• Distance in 1 Revolution $= 2\\pi r$<br>• Number of Revolutions $= \\frac{\\text{Total Distance}}{2\\pi r}$",
+    "trick": "Units (cm, m, km) ko pehle same unit me convert zaroor kar lein."
+  },
+  {
+    "id": "m2d-20",
+    "topic": "Mensuration 2D",
+    "title": "Regular Polygon (समबहुभुज — $n$ sides)",
+    "front": "Regular Polygon ($n$ sides, side = $a$): Interior Angle, Exterior Angle, Diagonals & Area?",
+    "back": "• Sum of Interior Angles $= (n - 2) \\times 180^\\circ$<br>• Each Interior Angle $= \\frac{(n - 2) \\times 180^\\circ}{n}$<br>• Each Exterior Angle $= \\frac{360^\\circ}{n}$ (Sum $= 360^\\circ$)<br>• Diagonals $= \\frac{n(n - 3)}{2}$ &nbsp;|&nbsp; Area $= \\frac{na^2}{4}\\cot\\left(\\frac{180^\\circ}{n}\\right)$",
+    "trick": "Interior + Exterior Angle $= 180^\\circ$ hota hai — isse sides ($n$) turant nikal aati hain."
+  },
+  {
+    "id": "m2d-21",
+    "topic": "Mensuration 2D",
+    "title": "Regular Hexagon (समषट्भुज)",
+    "front": "Regular Hexagon (Side = $a$): Perimeter, Area, Inradius ($r$) & Circumradius ($R$)?",
+    "back": "• Perimeter $= 6a$<br>• Area $= 6 \\times \\frac{\\sqrt{3}}{4}a^2 = \\frac{3\\sqrt{3}}{2}a^2$<br>• Inradius $(r) = \\frac{\\sqrt{3}}{2}a$, &nbsp; Circumradius $(R) = a$",
+    "trick": "Regular Hexagon 6 identical Equilateral Triangles se milkar banta hai."
+  },
+  {
+    "id": "m2d-22",
+    "topic": "Mensuration 2D",
+    "title": "Regular Octagon (समअष्टभुज)",
+    "front": "Regular Octagon (Side = $a$): Area?",
+    "back": "• Area $= 2a^2(\\sqrt{2} + 1)$",
+    "trick": "Direct formula yaad rakhein: $2a^2(\\sqrt{2} + 1)$."
+  },
+  {
+    "id": "m2d-23",
+    "topic": "Mensuration 2D",
+    "title": "Path Around Rectangle (रास्ते का क्षेत्रफल)",
+    "front": "Path of width $w$ around Rectangle ($l \\times b$): Outside, Inside & Crossroads Area?",
+    "back": "• Outside Path Area $= 2w(l + b + 2w)$<br>• Inside Path Area $= 2w(l + b - 2w)$<br>• Crossroads (Middle Path) Area $= w(l + b - w)$",
     "trick": "Outside me $+2w$, Inside me $-2w$, aur Crossroads me sirf $w(l + b - w)$."
+  },
+  {
+    "id": "m2d-24",
+    "topic": "Mensuration 2D",
+    "title": "Special Shaded Areas (SSC Favorites)",
+    "front": "Shaded Area: 3 Touching Circles, 4 Touching Circles, Leaf inside Square ($a$) & Square-Circle Ratio?",
+    "back": "• 3 Equal Circles ($r$): $r^2\\left(\\sqrt{3} - \\frac{\\pi}{2}\\right) \\approx 0.161r^2$<br>• 4 Equal Circles ($r$): $r^2(4 - \\pi) = \\frac{6}{7}r^2$<br>• Leaf inside Square ($a$): $a^2\\left(\\frac{\\pi}{2} - 1\\right) = \\frac{4}{7}a^2$<br>• Square : Inscribed Circle $= 4 : \\pi = 14 : 11$",
+    "trick": "Direct fractions yaad rakhein: 4 circles $= \\frac{6}{7}r^2$, Leaf $= \\frac{4}{7}a^2$, Square : Circle $= 14 : 11$."
   }
 ]
