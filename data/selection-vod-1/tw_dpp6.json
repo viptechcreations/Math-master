@@ -1,0 +1,80 @@
+[
+  {
+    "id": "tw-dpp6-q1",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 6",
+    "exam": "Classroom Sheet 06",
+    "q_en": "When A and B work alone, B needs 25% more time to finish a job than A does. A works alone till half the job is done, then A and B work together for 4 days and finally B works alone to complete the remaining 5% of the job. In how many days can they finish the entire job?",
+    "q_hi": "जब A और B अकेले काम करते हैं, तो B को किसी काम को पूरा करने में A से 25% अधिक समय लगता है। A अकेले आधा काम करता है, फिर A और B चार दिनों तक साथ काम करते हैं और अंत में B अकेले बचा हुआ 5% काम पूरा करता है। पूरा काम कितने दिनों में पूरा हुआ?",
+    "options": ["20", "22", "16", "13"],
+    "answer": 3,
+    "solution": "Time ratio $A:B = 4:5 \\Rightarrow$ Eff ratio $A:B = 5:4$.<br>A+B do $100\\% - 50\\% - 5\\% = 45\\%$ in 4 days ($36$ units) $\\Rightarrow$ Total Work $= 80$ units.<br>A does $40$ units in $8$d, B does $4$ units in $1$d. Total $= 8 + 4 + 1 = 13\\text{ days}$.",
+    "trick": "Total work $80$: A(8d) + Both(4d) + B(1d) $= 13$ days."
+  },
+  {
+    "id": "tw-dpp6-q2",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 6",
+    "exam": "SSC CGL (23/08/2021 S2)",
+    "q_en": "To do a certain work, efficiencies of A and B are in the ratio $7:5$. Working together, they can complete the work in 17.5 days. In how many days will B alone complete 50% of the same work?",
+    "q_hi": "एक निश्चित कार्य को पूरा करने के लिए, A और B की कुशलताओं का अनुपात $7:5$ है। वे एक साथ कार्य को 17.5 दिन में पूरा कर सकते हैं। अकेले B, उसी कार्य के 50% भाग को कितने दिन में पूरा करेगा?",
+    "options": ["50", "42", "30", "21"],
+    "answer": 3,
+    "solution": "Total Work $= (7 + 5) \\times 17.5 = 210$.<br>$50\\%$ work $= 105$ units. B takes $\\frac{105}{5} = 21\\text{ days}$.",
+    "trick": "$\\frac{12 \\times 17.5}{2 \\times 5} = 21$ days."
+  },
+  {
+    "id": "tw-dpp6-q3",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 6",
+    "exam": "SSC CGL Tier-1 2023",
+    "q_en": "A works 5.4 times faster than B and when each works alone, A takes 22 days less than B to complete the work. If A and B work together, find the number of days taken to complete the same work.",
+    "q_hi": "A, B से 5.4 गुना तेजी से कार्य करता है और जब प्रत्येक अकेले कार्य करता है, तो कार्य पूरा करने में A को B की तुलना में 22 दिन कम लगते हैं। यदि A और B एक साथ मिलकर कार्य करें, तो उसी कार्य को पूरा करने में लगने वाले दिनों की संख्या ज्ञात कीजिए।",
+    "options": ["$4\\frac{1}{4}$", "$4\\frac{3}{16}$", "$4\\frac{5}{32}$", "$4\\frac{7}{32}$"],
+    "answer": 3,
+    "solution": "Eff ratio $A:B = 27:5 \\Rightarrow$ Time ratio $= 5:27$.<br>Diff $= 22$ units $= 22$ days $\\Rightarrow A = 5, B = 27$.<br>Together $= \\frac{5 \\times 27}{32} = \\frac{135}{32} = 4\\frac{7}{32}\\text{ days}$.",
+    "trick": "Direct: $\\frac{5 \\times 27}{32} = 4\\frac{7}{32}$."
+  },
+  {
+    "id": "tw-dpp6-q4",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 6",
+    "exam": "SSC MTS (18/10/2021)",
+    "q_en": "Jack takes thrice as much time as Peter and twice as much as Justin to finish a work; working together they can finish the work in 15 days. The time (in days) Justin will take to finish the work alone is:",
+    "q_hi": "किसी कार्य को पूरा करने में, जैक को पीटर की तुलना में तीन गुना और जस्टिन की तुलना में दोगुना समय लगता है। एक साथ कार्य करते हुए वे कार्य को 15 दिन में पूरा कर सकते हैं। अकेले जस्टिन को कार्य पूरा करने में कितना समय (दिन में) लगेगा?",
+    "options": ["75", "90", "60", "45"],
+    "answer": 3,
+    "solution": "Time ratio $\\text{Jack}:\\text{Peter}:\\text{Justin} = 6:2:3 \\Rightarrow$ Eff ratio $= 1:3:2$.<br>Total Work $= (1+3+2) \\times 15 = 90$.<br>Justin takes $\\frac{90}{2} = 45\\text{ days}$.",
+    "trick": "Total eff 6, Justin 2 $\\Rightarrow 15 \\times \\frac{6}{2} = 45$ days."
+  },
+  {
+    "id": "tw-dpp6-q5",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 6",
+    "exam": "DSSSB Head Clerk 2022",
+    "q_en": "Kratika and Lucky can complete a work in 15 days and 45 days respectively. They completed 60% of the work with 25% less efficiency and the rest with their actual efficiencies. Find the total time taken.",
+    "q_hi": "कृतिका और लकी एक काम को क्रमशः 15 दिन और 45 दिन में पूरा कर सकते हैं। उन्होंने 60% कार्य 25% कम दक्षता के साथ पूरा किया और शेष कार्य अपनी वास्तविक दक्षता के साथ पूरा किया। पूरे कार्य को पूरा करने में दोनों द्वारा लिया गया कुल समय ज्ञात कीजिए।",
+    "options": ["14.5 days", "13.5 days", "15.5 days", "16.5 days"],
+    "answer": 1,
+    "solution": "Total Work $= 45$. Actual Eff $= 3 + 1 = 4$; Reduced Eff ($75\\%$) $= 3$.<br>$60\\%$ work ($27$ units) at eff $3 = 9$ days.<br>$40\\%$ work ($18$ units) at eff $4 = 4.5$ days. Total $= 13.5\\text{ days}$.",
+    "trick": "$27/3 + 18/4 = 9 + 4.5 = 13.5$ days."
+  },
+  {
+    "id": "tw-dpp6-q6",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 6",
+    "exam": "SSC CGL Pre 2023",
+    "q_en": "A can do a certain piece of work in 1.5 times the number of days in which B and C together can do it. If A and B together can do it in 30 days and C alone in 120 days, how many days will B take alone?",
+    "q_hi": "A एक निश्चित कार्य को B और C द्वारा मिलकर पूरा किए जाने में लगे दिनों की संख्या से 1.5 गुने दिनों में कर सकता है। यदि A और B मिलकर उक्त कार्य को 30 दिन में कर सकते हैं और C अकेले इसे 120 दिन में कर सकता है, तो B इस कार्य को अकेले कितने दिनों में करेगा?",
+    "options": ["75", "45", "60", "50"],
+    "answer": 2,
+    "solution": "Time $A:(B+C) = 3:2 \\Rightarrow$ Eff $A:(B+C) = 2:3$ (Total $= 5$).<br>Total Work $= \\text{LCM}(30, 120) = 120$. Eff: $A+B=4, C=1 \\Rightarrow A+B+C=5$.<br>So $A=2, B=4-2=2$. Time for B $= \\frac{120}{2} = 60\\text{ days}$.",
+    "trick": "Total eff 5 me $A=2, C=1$ to $B=2 \\Rightarrow 120/2 = 60$ days."
+  }
+]
