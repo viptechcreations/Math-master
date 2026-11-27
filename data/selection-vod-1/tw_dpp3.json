@@ -1,0 +1,67 @@
+[
+  {
+    "id": "tw-dpp3-q1",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 3",
+    "exam": "SSC CHSL 2024",
+    "q_en": "A can complete a piece of work in 20 days and B can complete it in 10 days. With C's help, they finish it in 5 days. How many days would C take to finish it alone?",
+    "q_hi": "A एक काम 20 दिन में और B वही काम 10 दिन में पूरा कर सकता है। C की मदद से तीनों ने काम 5 दिन में पूरा कर लिया। C अकेले यह काम कितने दिन में पूरा करेगा?",
+    "options": ["25 days", "10 days", "20 days", "15 days"],
+    "answer": 2,
+    "solution": "Total Work $= 20$. Eff: $A=1$, $B=2$, $A+B+C=4 \\Rightarrow C=1$.<br>Time for C $= \\frac{20}{1} = 20\\text{ days}$.",
+    "trick": "$C = 4 - 3 = 1 \\Rightarrow 20$ days."
+  },
+  {
+    "id": "tw-dpp3-q2",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 3",
+    "exam": "Classroom Sheet 03",
+    "q_en": "A, B and C completed a job in 18 days. C worked only during the first five days, in which 35% of the job was completed. How many days would C take to complete the job alone?",
+    "q_hi": "A, B और C ने मिलकर एक काम 18 दिन में पूरा किया। C ने केवल पहले पाँच दिन काम किया, जिनमें 35% काम पूरा हुआ। C अकेले पूरा काम कितने दिन में करेगा?",
+    "options": ["30 days", "25 days", "36 days", "50 days"],
+    "answer": 3,
+    "solution": "Remaining $65\\%$ work is done by $(A+B)$ in $18 - 5 = 13$ days $\\Rightarrow (A+B) = 5\\%/\\text{day}$.<br>In first 5 days, $(A+B)$ did $25\\%$, so C did $35\\% - 25\\% = 10\\%$ in 5 days ($2\\%/\\text{day}$).<br>C alone takes $\\frac{100}{2} = 50\\text{ days}$.",
+    "trick": "13 din me 65% matlab $(A+B)=5\\%/\\text{day}$; C ne 5 din me 10% kiya $\\Rightarrow 100\\%$ in 50 days."
+  },
+  {
+    "id": "tw-dpp3-q3",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 3",
+    "exam": "Classroom Sheet 03",
+    "q_en": "A and B can complete a task in 20 and 40 days, respectively. They worked together for 8 days, and C completed the remaining work in 10 days. In how many days can A and C together complete 72% of the same task?",
+    "q_hi": "A और B एक काम क्रमशः 20 और 40 दिन में पूरा कर सकते हैं। दोनों ने 8 दिन साथ काम किया और C ने बचा हुआ काम 10 दिन में पूरा किया। A और C मिलकर उसी काम का 72% कितने दिन में पूरा करेंगे?",
+    "options": ["15 days", "10 days", "9 days", "8 days"],
+    "answer": 3,
+    "solution": "Total Work $= 40$. Eff: $A=2$, $B=1$.<br>In 8 days $(A+B)$ do $24$ units. Remaining $16$ units done by C in 10 days $\\Rightarrow \\text{Eff}(C) = 1.6$.<br>$72\\%$ of $40 = 28.8$ units. Time for $(A+C) = \\frac{28.8}{2 + 1.6} = 8\\text{ days}$.",
+    "trick": "$A+C = 3.6$, aur $72\\%$ of $40 = 28.8 \\Rightarrow 28.8 / 3.6 = 8$ days."
+  },
+  {
+    "id": "tw-dpp3-q4",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 3",
+    "exam": "SSC CGL Pre 2021",
+    "q_en": "A can complete 25% of a job in 15 days. A works for 15 days, and then B alone finishes the remaining work in 30 days. In how many days can A and B together finish 50% of the job?",
+    "q_hi": "A किसी काम का 25% भाग 15 दिन में पूरा कर सकता है। A ने 15 दिन काम किया और फिर B ने शेष काम अकेले 30 दिन में पूरा किया। A और B साथ मिलकर काम का 50% कितने दिन में पूरा करेंगे?",
+    "options": ["25 days", "24 days", "20 days", "12 days"],
+    "answer": 3,
+    "solution": "A does $100\\%$ in $60$ days. B does $75\\%$ in $30$ days $\\Rightarrow 100\\%$ in $40$ days.<br>Total Work $= 120$. Eff: $A=2$, $B=3$.<br>$50\\%$ work $= 60$ units $\\Rightarrow$ Time $= \\frac{60}{5} = 12\\text{ days}$.",
+    "trick": "60 aur 40 ka combined time 24 din, to 50% kaam aadhe time ($12$ din) me."
+  },
+  {
+    "id": "tw-dpp3-q5",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 3",
+    "exam": "Classroom Sheet 03",
+    "q_en": "Amirdha can complete 75% of a job alone in 15 days. Macklin is 20% more efficient than Amirdha. If Amirdha, Macklin and Selvi together can complete 75% of the job in 6 days, how many days would Selvi take to complete 33% of it alone?",
+    "q_hi": "अमिर्धा अकेले किसी काम का 75% भाग 15 दिन में पूरा करती है। मैकलिन की कार्यक्षमता अमिर्धा से 20% अधिक है। यदि अमिर्धा, मैकलिन और सेल्वी साथ मिलकर काम का 75% भाग 6 दिन में पूरा कर सकती हैं, तो सेल्वी अकेले काम का 33% भाग कितने दिन में पूरा करेगी?",
+    "options": ["20 days", "30 days", "24 days", "22 days"],
+    "answer": 3,
+    "solution": "Amirdha $= 5\\%/\\text{day}$, Macklin $= 6\\%/\\text{day}$.<br>All three $= \\frac{75\\%}{6} = 12.5\\%/\\text{day} \\Rightarrow \\text{Selvi} = 12.5 - 11 = 1.5\\%/\\text{day}$.<br>For $33\\%$, Selvi takes $\\frac{33}{1.5} = 22\\text{ days}$.",
+    "trick": "Selvi $= 1.5\\%/\\text{day} \\Rightarrow 33 / 1.5 = 22$ days."
+  }
+]
