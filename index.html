@@ -1418,12 +1418,31 @@
       return null;
     }
 
+    function resolveBatchFileUrl(folder, fileName) {
+      const f = String(fileName || '').trim();
+      if (!f) return '';
+      if (/^(https?:\/\/|\.?\/)/i.test(f)) return f;
+      return `${folder}/${f.replace(/^\/+/, '')}`;
+    }
+
+    function dedupeQuestionsById(items) {
+      const seen = new Set();
+      const out = [];
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (!item || seen.has(item.id)) continue;
+        seen.add(item.id);
+        out.push(item);
+      }
+      return out;
+    }
+
     async function fetchAllRemoteData(isManual) {
       const icon = document.getElementById('refreshIcon');
       if (icon && isManual) icon.classList.add('spin-icon');
 
       try {
-        // 1. Primary Mode: Batch-wise folders via ./data/batches.json
+        // 1. Primary Mode: Batch-wise folders via ./data/batches.json (with multi-file support)
         const [batchesRaw, formulasRaw] = await Promise.all([
           fetchArraySilent(BATCHES_INDEX_URL),
           fetchFirstAvailable(FORMULAS_URLS)
@@ -1437,37 +1456,74 @@
         }
 
         if (batchesRaw) {
-          const cleanBatches = batchesRaw.map((b, i) => ({
-            id: String(b.id || `batch-${i + 1}`),
-            name: String(b.name || `Batch ${i + 1}`).trim(),
-            thumb: b.thumb ? String(b.thumb).trim() : '',
-            folder: String(b.folder || `./data/${b.id || `batch-${i + 1}`}`).replace(/\/+$/, '')
-          }));
+          const cleanBatches = batchesRaw.map((b, i) => {
+            const notesFiles = Array.isArray(b.notes_files) && b.notes_files.length > 0
+              ? b.notes_files.map(f => String(f || '').trim()).filter(Boolean)
+              : ['class_notes.json'];
+            const dppFiles = Array.isArray(b.dpp_files) && b.dpp_files.length > 0
+              ? b.dpp_files.map(f => String(f || '').trim()).filter(Boolean)
+              : ['dpp.json'];
 
-          const batchFetches = cleanBatches.map(async (b) => {
-            const [bNotes, bDpp] = await Promise.all([
-              fetchArraySilent(`${b.folder}/class_notes.json`),
-              fetchArraySilent(`${b.folder}/dpp.json`)
-            ]);
             return {
-              batch: b,
-              notes: bNotes ? bNotes.map((item, idx) => normalizeQuestion(item, idx, 'class_notes', b)) : [],
-              dpp: bDpp ? bDpp.map((item, idx) => normalizeQuestion(item, idx, 'dpp', b)) : []
+              id: String(b.id || `batch-${i + 1}`),
+              name: String(b.name || `Batch ${i + 1}`).trim(),
+              thumb: b.thumb ? String(b.thumb).trim() : '',
+              folder: String(b.folder || `./data/${b.id || `batch-${i + 1}`}`).replace(/\/+$/, ''),
+              notesFiles: notesFiles.length ? notesFiles : ['class_notes.json'],
+              dppFiles: dppFiles.length ? dppFiles : ['dpp.json']
             };
           });
 
-          const settled = await Promise.all(batchFetches);
+          const batchFetches = cleanBatches.map(async (b) => {
+            const [notesResults, dppResults] = await Promise.all([
+              Promise.allSettled(
+                b.notesFiles.map(file => fetchArraySilent(resolveBatchFileUrl(b.folder, file)))
+              ),
+              Promise.allSettled(
+                b.dppFiles.map(file => fetchArraySilent(resolveBatchFileUrl(b.folder, file)))
+              )
+            ]);
+
+            const bNotes = [];
+            let noteIdx = 0;
+            notesResults.forEach(res => {
+              if (res.status === 'fulfilled' && Array.isArray(res.value)) {
+                res.value.forEach(item => {
+                  bNotes.push(normalizeQuestion(item, noteIdx++, 'class_notes', b));
+                });
+              }
+            });
+
+            const bDpp = [];
+            let dppIdx = 0;
+            dppResults.forEach(res => {
+              if (res.status === 'fulfilled' && Array.isArray(res.value)) {
+                res.value.forEach(item => {
+                  bDpp.push(normalizeQuestion(item, dppIdx++, 'dpp', b));
+                });
+              }
+            });
+
+            return { batch: b, notes: bNotes, dpp: bDpp };
+          });
+
+          const settled = await Promise.allSettled(batchFetches);
           const mergedNotes = [];
           const mergedDpp = [];
-          settled.forEach(entry => {
-            mergedNotes.push(...entry.notes);
-            mergedDpp.push(...entry.dpp);
+          settled.forEach(res => {
+            if (res.status === 'fulfilled' && res.value) {
+              mergedNotes.push(...res.value.notes);
+              mergedDpp.push(...res.value.dpp);
+            }
           });
 
           batchesMeta = cleanBatches;
-          if (mergedNotes.length > 0 || mergedDpp.length > 0) {
-            notesData = mergedNotes;
-            dppData = mergedDpp;
+          const uniqueNotes = dedupeQuestionsById(mergedNotes);
+          const uniqueDpp = dedupeQuestionsById(mergedDpp);
+
+          if (uniqueNotes.length > 0 || uniqueDpp.length > 0) {
+            notesData = uniqueNotes;
+            dppData = uniqueDpp;
             loadedSomething = true;
           }
         } else {
@@ -3100,3 +3156,4 @@
   </script>
 </body>
 </html>
+              
