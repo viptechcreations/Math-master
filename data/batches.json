@@ -3,12 +3,25 @@
     "id": "selection-vod-1",
     "name": "Selection VOD 1.0",
     "thumb": "./images/selection-vod-1.jpg",
-    "folder": "./data/selection-vod-1"
+    "folder": "./data/selection-vod-1",
+    "notes_files": [
+      "class_notes.json"
+    ],
+    "dpp_files": [
+      "dpp.json",
+      "time_and_work_dpp.json"
+    ]
   },
   {
     "id": "ultra-calci-1",
     "name": "Calculation King — Ultra Calci Batch 1.1",
     "thumb": "./images/ultra-calci-1.jpg",
-    "folder": "./data/ultra-calci-1"
+    "folder": "./data/ultra-calci-1",
+    "notes_files": [
+      "class_notes.json"
+    ],
+    "dpp_files": [
+      "dpp.json"
+    ]
   }
 ]
