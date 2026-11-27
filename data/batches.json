@@ -9,7 +9,11 @@
     ],
     "dpp_files": [
       "dpp.json",
-      "time_and_work_dpp.json"
+      "tw_dpp1.json",
+      "tw_dpp2.json",
+      "tw_dpp3.json",
+      "tw_dpp4.json",
+      "tw_dpp6.json"
     ]
   },
   {
