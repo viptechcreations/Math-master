@@ -1,0 +1,67 @@
+[
+  {
+    "id": "tw-dpp5-q1",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 5",
+    "exam": "SSC CHSL (07/06/2022 S2)",
+    "q_en": "Tim is thrice as good a workman as Joya and together they finish a piece of work in 75 days. In how many days will Tim alone finish the work?",
+    "q_hi": "टिम, जोया की तुलना में तीन गुना कुशल कारीगर है और दोनों मिलकर एक काम को 75 दिनों में पूरा करते हैं। टिम अकेला उस काम को कितने दिनों में पूरा करेगा?",
+    "options": ["25 days", "100 days", "50 days", "1/100 days"],
+    "answer": 1,
+    "solution": "Eff ratio $\\text{Tim}:\\text{Joya} = 3:1$. Total Work $= (3+1)\\times 75 = 300$.<br>Tim alone $= \\frac{300}{3} = 100\\text{ days}$.",
+    "trick": "$\\frac{4 \\times 75}{3} = 100$ days."
+  },
+  {
+    "id": "tw-dpp5-q2",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 5",
+    "exam": "SSC CGL (13/04/2022 S3)",
+    "q_en": "Person A can do one-fifth of the work in 3 days, while B's efficiency is half of that of A. In how many days can A and B working together do half of the work?",
+    "q_hi": "व्यक्ति A काम का 1/5 भाग 3 दिनों में पूरा कर सकता है, जबकि B की दक्षता A की आधी है। A और B एक साथ मिलकर काम करते हुए उस काम का आधा भाग कितने दिनों में कर सकते हैं?",
+    "options": ["5", "7", "4", "6"],
+    "answer": 0,
+    "solution": "A full work $= 15$ days. Eff $A=2, B=1 \\Rightarrow$ Total Work $= 30$.<br>Half work $= 15$ units $\\Rightarrow$ Time $= \\frac{15}{2+1} = 5\\text{ days}$.",
+    "trick": "Half work $= 15$, total eff $= 3 \\Rightarrow 15/3 = 5$ days."
+  },
+  {
+    "id": "tw-dpp5-q3",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 5",
+    "exam": "RRB NTPC CBT-1 (10/06/2025 S1)",
+    "q_en": "A can do a certain work in the same time in which B and C together can do that work. If A and B together can do this work in 7 days and C alone in 9 days, then B alone can do this work in how many days?",
+    "q_hi": "A एक निश्चित कार्य को उतने ही समय में कर सकता है, जितने समय में B और C मिलकर वह कार्य कर सकते हैं। यदि A और B मिलकर इस कार्य को 7 दिनों में कर सकते हैं तथा C अकेले इस कार्य को 9 दिनों में कर सकता है, तो B अकेले इस कार्य को कितने दिनों में कर सकता है?",
+    "options": ["63", "189", "126", "252"],
+    "answer": 0,
+    "solution": "Total Work $= \\text{LCM}(7, 9) = 63$. Eff: $A+B = 9$, $C = 7 \\Rightarrow A+B+C = 16$.<br>Since $A = B+C$, $A = 8$ and $B+C = 8 \\Rightarrow B = 8 - 7 = 1$.<br>B alone $= \\frac{63}{1} = 63\\text{ days}$.",
+    "trick": "Total eff 16 ka half 8 ($B+C=8$), $C=7 \\Rightarrow B=1 \\Rightarrow 63$ days."
+  },
+  {
+    "id": "tw-dpp5-q4",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 5",
+    "exam": "SSC CHSL 2019",
+    "q_en": "A can finish a piece of work in a certain number of days. B takes 45% more days to finish the same work independently. They worked together for 58 days and then the remaining work was done by B alone in 29 days. In how many days could A have completed the work alone?",
+    "q_hi": "A निश्चित दिनों में एक काम खत्म कर सकता है। B समान कार्य को स्वतंत्र रूप से पूरा करने के लिए 45% अधिक दिन लेता है। उन्होंने 58 दिनों तक एक साथ काम किया और शेष कार्य 29 दिनों में अकेले B द्वारा किया गया। A अकेले कितने दिनों में काम पूरा कर सकता था?",
+    "options": ["110 days", "118 days", "98 days", "120 days"],
+    "answer": 1,
+    "solution": "Time $A:B = 20:29 \\Rightarrow$ Eff $A:B = 29:20$.<br>Total Work $= 58(29+20) + 29(20) = 58(49) + 29(20) = 29(98 + 20) = 29 \\times 118$.<br>A alone $= \\frac{29 \\times 118}{29} = 118\\text{ days}$.",
+    "trick": "29 common lo: $2(49) + 20 = 118$ days."
+  },
+  {
+    "id": "tw-dpp5-q5",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 5",
+    "exam": "SSC CGL (18/08/2021 S2)",
+    "q_en": "A and B together can complete a certain work in 20 days whereas B and C together can complete it in 24 days. If A is twice as good a workman as C, then in what time will B alone do 40% of the same work?",
+    "q_hi": "A और B मिलकर एक निश्चित कार्य को 20 दिन में पूरा कर सकते हैं जबकि B और C मिलकर उसी कार्य को 24 दिन में पूरा कर सकते हैं। यदि A, C से दोगुना कुशल श्रमिक है, तो B अकेले उस कार्य के 40% भाग को कितने समय में करेगा?",
+    "options": ["10 days", "12 days", "18 days", "15 days"],
+    "answer": 1,
+    "solution": "Total Work $= 120$. Eff: $A+B = 6$, $B+C = 5 \\Rightarrow A - C = 1$.<br>Given $A = 2C \\Rightarrow C = 1, A = 2 \\Rightarrow B = 4$.<br>$40\\%$ work $= 48$ units $\\Rightarrow$ B takes $\\frac{48}{4} = 12\\text{ days}$.",
+    "trick": "$B = 4$ aaya, aur $40\\%$ of $120 = 48 \\Rightarrow 48/4 = 12$ days."
+  }
+]
