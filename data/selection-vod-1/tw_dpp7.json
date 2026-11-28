@@ -1,0 +1,93 @@
+[
+  {
+    "id": "tw-dpp7-q1",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "SSC MTS 2021",
+    "q_en": "The ratio of efficiencies of A and B is $5:11$. Working together, they can do the same work in $27\\frac{1}{2}$ days. A and B work together for 20 days. C alone completes the remaining work in 18 days. C alone can do 75% of the original work in:",
+    "q_hi": "एक निश्चित कार्य को करने के लिए A और B की क्षमता का अनुपात $5:11$ है। एक साथ कार्य करते हुए, वे उसी कार्य को $27\\frac{1}{2}$ दिनों में कर सकते हैं। A और B एक साथ 20 दिनों तक कार्य करते हैं। C अकेला शेष कार्य को 18 दिनों में पूरा करता है। C अकेले मूल कार्य का 75% कितने दिनों में कर सकता है?",
+    "options": ["$56\\frac{1}{2}$ days", "$49\\frac{1}{2}$ days", "35 days", "33 days"],
+    "answer": 1,
+    "solution": "Remaining work of $(A+B)$ for $7.5$ days is done by C in $18$ days.<br>Full work ($27.5$d of A+B) by C $= \\frac{18}{7.5} \\times 27.5 = 66$ days.<br>$75\\%$ work $= \\frac{3}{4} \\times 66 = 49\\frac{1}{2}\\text{ days}$.",
+    "trick": "$7.5$ din ka kaam C 18 din me karta hai $\\Rightarrow \\frac{18}{7.5} \\times 27.5 \\times \\frac{3}{4} = 49.5$ days."
+  },
+  {
+    "id": "tw-dpp7-q2",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "Classroom Sheet 07",
+    "q_en": "The ratio of efficiencies of A, B and C is $7:5:6$. Working together, they can complete the same work in 35 days. B and C work together for 21 days. The remaining work will be completed by A alone in:",
+    "q_hi": "A, B और C की क्षमता का अनुपात $7:5:6$ है। एक साथ काम करते हुए, वे उस काम को 35 दिनों में पूरा कर सकते हैं। B और C ने मिलकर 21 दिन काम किया। शेष काम A द्वारा अकेले पूरा करने में कितने दिन लगेंगे?",
+    "options": ["60 days", "57 days", "54 days", "50 days"],
+    "answer": 1,
+    "solution": "Total Work $= (7+5+6)\\times 35 = 18 \\times 35 = 630$.<br>B+C in 21d $= 11 \\times 21 = 231$. Remaining $= 630 - 231 = 399$.<br>A alone $= \\frac{399}{7} = 57\\text{ days}$.",
+    "trick": "$\\frac{18\\times 35 - 11\\times 21}{7} = 90 - 33 = 57$ days."
+  },
+  {
+    "id": "tw-dpp7-q3",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "Delhi Police 2021",
+    "q_en": "A takes twice as long to finish a piece of work as B and C together take and B takes twice as long as A and C together take. If A, B and C together finish the job in 30 days, how much time will C alone take?",
+    "q_hi": "A एक कार्य को समाप्त करने में B और C द्वारा मिलकर इसे समाप्त करने में लगने वाले समय से दोगुना समय लेता है तथा B कार्य को समाप्त करने में A और C द्वारा मिलकर इसे समाप्त करने में लगने वाले समय से दोगुना समय लेता है। यदि A, B और C मिलकर उस कार्य को 30 दिनों में पूरा कर सकते हैं, तो C अकेले उस कार्य को पूरा करने में कितना समय लेगा?",
+    "options": ["90 दिन", "50 दिन", "63 दिन", "72 दिन"],
+    "answer": 0,
+    "solution": "Eff $A:(B+C) = 1:2$ and $B:(A+C) = 1:2$.<br>So $A=1, B=1, C=1$ (Total $= 3$).<br>Total Work $= 3 \\times 30 = 90 \\Rightarrow$ C alone $= 90\\text{ days}$.",
+    "trick": "Teeno ki efficiency equal ($1:1:1$) hai $\\Rightarrow 30 \\times 3 = 90$ days."
+  },
+  {
+    "id": "tw-dpp7-q4",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "UPSC CDS 2023",
+    "q_en": "Three persons A, B and C together can do a piece of work in 36 days. A and B together can do five times as much work as C alone; B and C together can do as much work as A alone. If A and C together can do $n$ times as much work as B alone, what is the value of $n$?",
+    "q_hi": "तीन व्यक्ति A, B और C एक साथ मिलकर एक काम को 36 दिन में कर सकते हैं। A और B एक साथ अकेले C की तुलना में पाँच गुना काम कर सकते हैं; B और C एक साथ अकेले A जितना काम कर सकते हैं। यदि A और C एक साथ अकेले B की तुलना में $n$ गुना काम कर सकते हैं, तो $n$ का मान क्या है?",
+    "options": ["1.5", "2", "2.5", "3"],
+    "answer": 1,
+    "solution": "$(A+B):C = 5:1$ (Sum $= 6$); $A:(B+C) = 1:1 = 3:3$ (Sum $= 6$).<br>So $C=1, A=3 \\Rightarrow B = 6 - 4 = 2$.<br>$n = \\frac{A+C}{B} = \\frac{3+1}{2} = 2$.",
+    "trick": "Sum 6 equalize karo: $A=3, B=2, C=1 \\Rightarrow (3+1)/2 = 2$."
+  },
+  {
+    "id": "tw-dpp7-q5",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "SSC CPO 2022",
+    "q_en": "X takes 3 times as much time as Y and Z together take; and Z takes 4 times as much time as Y and X together take. All three together can finish the job in 10 days. How much time will X and Z together take?",
+    "q_hi": "X को, उसी काम को Y और Z को एक साथ मिलकर करने में लगे समय से 3 गुना समय लगता है; और Z को, Y और X को एक साथ मिलकर करने में लगे समय से 4 गुना समय लगता है। तीनों मिलकर काम को 10 दिनों में पूरा कर सकते हैं। X और Z को एक साथ मिलकर काम पूरा करने में कितना समय लगेगा?",
+    "options": ["$20\\frac{1}{9}$ दिन", "21 दिन", "18 दिन", "$22\\frac{2}{9}$ दिन"],
+    "answer": 3,
+    "solution": "Eff $X:(Y+Z) = 1:3$ (Sum $= 4$); $Z:(X+Y) = 1:4$ (Sum $= 5$).<br>Equalize sum to $20$: $X = 5, Z = 4, Y = 11$.<br>Total Work $= 20 \\times 10 = 200$. Time for $(X+Z) = \\frac{200}{9} = 22\\frac{2}{9}\\text{ days}$.",
+    "trick": "$X=5, Z=4 \\Rightarrow \\frac{200}{9} = 22\\frac{2}{9}$ days."
+  },
+  {
+    "id": "tw-dpp7-q6",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "Classroom Sheet 07",
+    "q_en": "A and B can do a piece of work. If A started 10 days later and B started 3 days later than scheduled, the work got delayed by 5 days. What is the time taken by B alone if A can do the work in 20 days?",
+    "q_hi": "A और B मिलकर एक काम करते हैं। यदि A ने निर्धारित समय से 10 दिन बाद काम शुरू किया और B ने निर्धारित समय से 3 दिन बाद काम शुरू किया तो काम निर्धारित समय से 5 दिन देरी से पूरा हुआ। यदि A काम को 20 दिन में पूरा कर सकता है, तो B को अकेले काम पूरा करने में कितना समय लगेगा?",
+    "options": ["30 days", "8 days", "50 days", "40 days"],
+    "answer": 1,
+    "solution": "Net change: A worked $10 - 5 = 5$ days less; B worked $5 - 3 = 2$ days more.<br>So $5A = 2B \\Rightarrow A:B = 2:5$.<br>Time for B $= 20 \\times \\frac{2}{5} = 8\\text{ days}$.",
+    "trick": "$5A = 2B \\Rightarrow$ B takes $\\frac{2}{5} \\times 20 = 8$ days."
+  },
+  {
+    "id": "tw-dpp7-q7",
+    "category": "dpp",
+    "chapter": "Time and Work",
+    "set": "DPP 7",
+    "exam": "Classroom Sheet 07",
+    "q_en": "A, B and C can do a certain work in $x$, $x+25$ and 45 days. A, B and C together can do it in 18 days. If A and B left 5 days before completion, in how many days did the work get finished?",
+    "q_hi": "A, B और C एक निश्चित कार्य को $x$, $x+25$ और 45 दिनों में पूरा कर सकते हैं। A, B और C मिलकर एक कार्य को 18 दिनों में पूरा कर सकते हैं। यदि A और B ने कार्य पूरा होने से 5 दिन पहले कार्य छोड़ दिया तो कार्य कितने दिनों में पूरा हो जाएगा?",
+    "options": ["20 days", "21 days", "25 days", "24 days"],
+    "answer": 1,
+    "solution": "Total Work $= \\text{LCM}(45, 18) = 90$. Eff: $C = 2$, $A+B+C = 5 \\Rightarrow A+B = 3$.<br>Add A+B's 5 days work: $90 + 5(3) = 105$.<br>Total days $= \\frac{105}{5} = 21\\text{ days}$.",
+    "trick": "$x$ ki zaroorat hi nahi! $A+B = 3$, to $\\frac{90 + 15}{5} = 21$ days."
+  }
+]
