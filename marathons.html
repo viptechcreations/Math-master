@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marathon Mocks — YouTube Math Marathons | Math Master</title>
+
+  <!-- PWA Meta Tags & App Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Math Master" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans Devanagari"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- KaTeX CSS & JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f0f5ff;
+      --surface: #ffffff;
+      --surface-2: #eff6ff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbeafe;
+      --border-strong: #bfdbfe;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.06) 0px, transparent 50%);
+      color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+
+    .surface-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px -6px rgba(37, 99, 235, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+    }
+
+    .duo-btn {
+      border-bottom-width: 4px;
+      transition: transform 0.08s ease, border-bottom-width 0.08s ease, filter 0.15s ease;
+    }
+    .duo-btn:hover:not(:disabled) { filter: brightness(1.03); }
+    .duo-btn:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 2px; }
+
+    .opt-btn { transition: all 0.15s ease; }
+    .opt-btn:hover:not(:disabled) { border-color: #2563eb; background: #eff6ff; }
+
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; }
+    .katex { font-size: 1.05em; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(6px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-pop { animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <!-- STICKY HEADER -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-blue-100 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <a href="index.html" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-blue-100 bg-blue-50/70 text-xs font-extrabold text-blue-700 hover:bg-blue-100/80 transition">
+          <span>←</span>
+          <span>Math Master</span>
+        </a>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-sm sm:text-lg leading-tight tracking-tight text-slate-900 truncate">
+            🔥 Marathon Mocks
+          </h1>
+          <p class="text-[11px] font-semibold text-blue-600 truncate">
+            YouTube Math Marathons • SSC &amp; CDS
+          </p>
+        </div>
+      </div>
+
+      <div class="shrink-0">
+        <span id="totalMarathonsBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-extrabold">
+          <span>📚</span>
+          <span>0 Marathons</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl w-full mx-auto px-4 py-5 flex-1">
+
+    <!-- VIEW 1: MARATHONS GALLERY -->
+    <section id="galleryView" class="space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div id="subjectPills" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
+
+        <div class="relative md:w-80 shrink-0">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            oninput="renderGallery()"
+            placeholder="Search Arithmetic, Algebra, Teacher, Topic..."
+            class="w-full pl-9 pr-9 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold bg-white border border-blue-100 text-slate-900 placeholder-slate-400 shadow-sm outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 transition"
+          />
+          <button
+            id="clearSearchBtn"
+            onclick="clearSearch()"
+            class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:text-rose-600 text-xs font-bold flex items-center justify-center"
+            title="Clear search"
+          >✕</button>
+        </div>
+      </div>
+
+      <div id="marathonGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- VIEW 2: ACTIVE MOCK ENGINE + PER-QUESTION TIMER -->
+    <section id="mockView" class="hidden max-w-3xl mx-auto animate-pop">
+      <div class="surface-card rounded-3xl p-5 sm:p-7">
+        <!-- Top Quiz Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <span id="mockQBadge" class="font-mono text-xs font-extrabold px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700">
+              Q 1 / 20
+            </span>
+            <span id="mockModeBadge" class="text-[11px] font-extrabold px-2.5 py-1.5 rounded-xl bg-slate-100 text-slate-700">
+              🎯 Practice
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- NEW: Live Per-Question Timer -->
+            <span id="mockQTimer" class="font-mono text-xs font-extrabold px-2.5 py-1.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-700" title="Is question par laga time">
+              ⏳ Q: 00:00
+            </span>
+            <!-- Overall Mock Timer -->
+            <span id="mockTimer" class="font-mono text-xs font-extrabold px-2.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800" title="Total Mock Time">
+              ⏱ 00:00
+            </span>
+            <button onclick="togglePalette()" class="text-xs font-extrabold px-3 py-1.5 rounded-xl border border-blue-200 bg-blue-50/70 text-blue-700 hover:bg-blue-100 transition">
+              ☰ Palette
+            </button>
+            <button onclick="openExitModal()" class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 font-extrabold text-xs flex items-center justify-center transition" title="Exit Mock">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <div id="mockTitleLine" class="text-xs font-bold text-slate-500 mb-2 truncate"></div>
+        <div class="w-full h-2.5 rounded-full overflow-hidden bg-blue-100 mb-5">
+          <div id="mockProgress" class="h-full bg-blue-600 transition-all duration-300 rounded-full" style="width: 0%"></div>
+        </div>
+
+        <!-- Expandable Question Palette Drawer -->
+        <div id="paletteDrawer" class="hidden mb-5 p-4 rounded-2xl border border-blue-100 bg-blue-50/50 animate-pop">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <span class="text-xs font-extrabold text-slate-900">Question Palette</span>
+            <span class="text-[11px] font-bold text-slate-500">🟢 Answered • 🟣 Review • ⚪ Unseen</span>
+          </div>
+          <div id="paletteGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-2"></div>
+        </div>
+
+        <!-- Question Text -->
+        <div id="mockQuestionArea" class="mb-5">
+          <h2 id="mockQuestion" class="font-bold text-base sm:text-lg leading-relaxed text-slate-900 whitespace-pre-line"></h2>
+          <div id="mockDiagramWrap" class="hidden mt-4 p-3 rounded-2xl bg-slate-50 border border-blue-100 flex justify-center">
+            <img id="mockDiagramImg" src="" alt="Question Diagram" class="max-h-60 w-auto rounded-xl object-contain" onerror="document.getElementById('mockDiagramWrap').classList.add('hidden')" />
+          </div>
+        </div>
+
+        <!-- 4 Options -->
+        <div id="mockOptions" class="space-y-2.5 mb-5"></div>
+
+        <!-- Instant Feedback Box -->
+        <div id="mockFeedback" class="hidden rounded-2xl p-4 sm:p-5 mb-5 border text-xs sm:text-sm leading-relaxed space-y-2.5 animate-pop">
+          <div id="mockFbStatus" class="font-extrabold text-sm"></div>
+          <div id="mockFbExp" class="font-medium text-slate-800 leading-relaxed whitespace-pre-line"></div>
+          <div id="mockFbNote" class="hidden text-xs font-extrabold px-3.5 py-2.5 rounded-xl bg-amber-50 border-l-4 border-amber-500 text-amber-950"></div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="flex flex-wrap items-center justify-between gap-2.5 pt-4 border-t border-blue-100">
+          <div class="flex items-center gap-2">
+            <button onclick="prevMockQ()" id="btnPrev" class="px-4 py-2.5 rounded-xl border border-blue-200 bg-blue-50/60 text-slate-800 text-xs font-extrabold hover:bg-blue-100/70 transition disabled:opacity-45">
+              ← पिछला
+            </button>
+            <button onclick="toggleMarkReview()" id="btnReview" class="px-3.5 py-2.5 rounded-xl border border-blue-200 bg-white text-slate-700 text-xs font-extrabold hover:border-violet-400 transition">
+              🚩 Review
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="nextMockQ()" id="btnNext" class="duo-btn px-5 py-2.5 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+              अगला →
+            </button>
+            <button onclick="submitMock()" id="btnSubmit" class="duo-btn px-5 py-2.5 rounded-xl bg-emerald-600 border-emerald-800 text-white text-xs font-extrabold">
+              ✓ Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: RESULT SCORECARD & SMART REVIEW -->
+    <section id="resultView" class="hidden max-w-3xl mx-auto space-y-5 animate-pop">
+      <div class="surface-card rounded-3xl p-6 sm:p-8 text-center">
+        <div id="resEmoji" class="text-5xl mb-2">🏆</div>
+        <h2 id="resHeading" class="font-extrabold text-xl sm:text-2xl text-slate-900 mb-1">Mock पूरा हुआ!</h2>
+        <p id="resSub" class="font-mono text-xs sm:text-sm font-semibold text-slate-500 mb-6"></p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          <div class="rounded-2xl p-3.5 bg-blue-50 border border-blue-200">
+            <div class="text-[11px] font-bold text-blue-700">Score</div>
+            <div id="resScore" class="font-mono font-extrabold text-xl sm:text-2xl text-blue-700 mt-0.5">0</div>
+          </div>
+          <div class="rounded-2xl p-3.5 bg-emerald-50 border border-emerald-200">
+            <div class="text-[11px] font-bold text-emerald-700">Correct (सही)</div>
+            <div id="resCorrect" class="font-mono font-extrabold text-xl sm:text-2xl text-emerald-600 mt-0.5">0</div>
+          </div>
+          <div class="rounded-2xl p-3.5 bg-rose-50 border border-rose-200">
+            <div class="text-[11px] font-bold text-rose-700">Wrong (गलत)</div>
+            <div id="resWrong" class="font-mono font-extrabold text-xl sm:text-2xl text-rose-600 mt-0.5">0</div>
+          </div>
+          <div class="rounded-2xl p-3.5 bg-amber-50 border border-amber-200">
+            <div class="text-[11px] font-bold text-amber-800">Accuracy</div>
+            <div id="resAcc" class="font-mono font-extrabold text-xl sm:text-2xl text-amber-700 mt-0.5">0%</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2.5">
+          <button id="btnWrongOnly" onclick="retryWrongOnly()" class="hidden duo-btn px-5 py-2.5 rounded-2xl bg-rose-600 border-rose-800 text-white text-xs sm:text-sm font-extrabold">
+            🛡️ Practice Wrong/Skip (0)
+          </button>
+          <button onclick="openModeModal(activeMarathon.id)" class="duo-btn px-5 py-2.5 rounded-2xl bg-blue-600 border-blue-800 text-white text-xs sm:text-sm font-extrabold">
+            🔄 Re-Attempt
+          </button>
+          <button onclick="backToGallery()" class="px-5 py-2.5 rounded-2xl border border-blue-200 bg-blue-50/70 text-slate-800 hover:bg-blue-100 text-xs sm:text-sm font-extrabold transition">
+            ← सभी Marathons
+          </button>
+        </div>
+      </div>
+
+      <div class="surface-card rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2.5 mb-4">
+          <h3 class="font-extrabold text-sm sm:text-base text-slate-900">📋 Detailed Answer Review</h3>
+          <div class="flex gap-1.5" id="reviewFilters">
+            <button onclick="setReviewFilter('all')" data-rf="all" class="rf-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-blue-600 text-white">All</button>
+            <button onclick="setReviewFilter('wrong')" data-rf="wrong" class="rf-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-white border border-blue-100 text-slate-700">Wrong/Skip</button>
+            <button onclick="setReviewFilter('correct')" data-rf="correct" class="rf-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-white border border-blue-100 text-slate-700">Correct</button>
+          </div>
+        </div>
+        <div id="reviewList" class="space-y-3.5"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="max-w-6xl w-full mx-auto px-4 py-4 text-center text-[11px] font-semibold text-slate-500">
+    Math Master • YouTube Marathon Mocks — SSC &amp; CDS Practice Engine
+  </footer>
+
+  <!-- MODAL 1: 3-MODE SELECTION MODAL -->
+  <div id="modeModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border-2 border-blue-200 animate-pop">
+      <div class="flex items-start justify-between gap-3 mb-2">
+        <div>
+          <span id="modalSubjectBadge" class="inline-block text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-blue-700"></span>
+          <h2 id="modalTitle" class="font-extrabold text-base sm:text-lg leading-snug text-slate-900 mt-2"></h2>
+        </div>
+        <button onclick="closeModeModal()" class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 font-extrabold text-sm flex items-center justify-center shrink-0 transition">✕</button>
+      </div>
+
+      <p id="modalMeta" class="text-xs font-semibold text-slate-500 mb-4"></p>
+
+      <div class="space-y-2.5 mb-5">
+        <button onclick="launchMock('practice')" class="w-full text-left p-3.5 rounded-2xl border-2 border-blue-100 bg-blue-50/40 hover:border-blue-500 hover:bg-blue-50 transition flex items-center gap-3">
+          <span class="text-2xl shrink-0">🎯</span>
+          <div>
+            <div class="font-extrabold text-sm text-slate-900">Practice Mode (Instant Answer)</div>
+            <div class="text-[11px] font-semibold text-slate-500">Per-Question टाइमर • तुरंत सही उत्तर, हल और 📌 Trick</div>
+          </div>
+        </button>
+
+        <button onclick="launchMock('ssc')" class="w-full text-left p-3.5 rounded-2xl border-2 border-blue-100 bg-blue-50/40 hover:border-blue-500 hover:bg-blue-50 transition flex items-center gap-3">
+          <span class="text-2xl shrink-0">⏱️</span>
+          <div>
+            <div class="font-extrabold text-sm text-slate-900">SSC Exam Mode (+2 / -0.5)</div>
+            <div class="text-[11px] font-semibold text-slate-500">75 sec/प्रश्न टाइमर • Per-Question Time व SSC मार्किंग</div>
+          </div>
+        </button>
+
+        <button onclick="launchMock('cds')" class="w-full text-left p-3.5 rounded-2xl border-2 border-blue-100 bg-blue-50/40 hover:border-blue-500 hover:bg-blue-50 transition flex items-center gap-3">
+          <span class="text-2xl shrink-0">🎖️</span>
+          <div>
+            <div class="font-extrabold text-sm text-slate-900">CDS Math Mode (+1 / -0.33)</div>
+            <div class="text-[11px] font-semibold text-slate-500">75 sec/प्रश्न टाइमर • UPSC CDS Elementary Math पैटर्न</div>
+          </div>
+        </button>
+      </div>
+
+      <label class="flex items-center gap-2.5 text-xs font-bold text-slate-600 cursor-pointer select-none p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+        <input type="checkbox" id="shuffleToggle" class="w-4 h-4 accent-blue-600 rounded cursor-pointer" />
+        <span>प्रश्नों का क्रम Shuffle करें</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- MODAL 2: CUSTOM EXIT MODAL -->
+  <div id="exitModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border-2 border-blue-200 space-y-4 animate-pop">
+      <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center text-2xl mx-auto">⚠️</div>
+      <div>
+        <h3 class="font-extrabold text-base text-slate-900 mb-1">Mock से बाहर निकलें?</h3>
+        <p class="text-xs font-medium text-slate-500 leading-relaxed">
+          अभी का चल रहा टेस्ट सबमिट नहीं होगा। क्या आप वापस सभी Marathons पर जाना चाहते हैं?
+        </p>
+      </div>
+      <div class="flex gap-2.5 pt-1">
+        <button onclick="closeExitModal()" class="flex-1 py-2.5 rounded-xl border border-blue-200 bg-blue-50/70 text-slate-800 text-xs font-extrabold hover:bg-blue-100 transition">
+          नहीं, जारी रखें
+        </button>
+        <button onclick="confirmExitMock()" class="duo-btn flex-1 py-2.5 rounded-xl bg-rose-600 border-rose-800 text-white text-xs font-extrabold">
+          हाँ, बाहर निकलें
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_SCORES = "math_master_marathon_scores_v1";
+
+    const SUBJECT_STYLES = {
+      Arithmetic:      { grad: "from-blue-600 via-indigo-600 to-blue-700",     icon: "🧮" },
+      Advance:         { grad: "from-violet-600 via-purple-600 to-indigo-700", icon: "📐" },
+      Algebra:         { grad: "from-sky-500 via-blue-600 to-indigo-700",      icon: "✖️" },
+      Geometry:        { grad: "from-emerald-500 via-teal-600 to-cyan-700",    icon: "📏" },
+      Trigonometry:    { grad: "from-rose-500 via-pink-600 to-orange-500",     icon: "📊" },
+      Mensuration:     { grad: "from-amber-500 via-orange-600 to-red-500",     icon: "🧊" },
+      "Number System": { grad: "from-cyan-500 via-sky-600 to-blue-700",        icon: "🔢" },
+      DI:              { grad: "from-teal-500 via-emerald-600 to-green-700",   icon: "📈" },
+      "Full Mix":      { grad: "from-blue-600 via-indigo-600 to-rose-500",     icon: "🔥" }
+    };
+
+    const FALLBACK_DATA = { title: "Math Master — YouTube Marathon Mocks", marathons: [] };
+
+    let marathonsList = [];
+    let activeSubject = "All";
+    let savedScores = {};
+
+    let selectedMarathonId = null;
+    let activeMarathon = null;
+    let activeMode = "practice";
+    let activeQuestions = [];
+    let userAnswers = [];
+    let markedReview = [];
+    let questionTimes = []; // Per-question seconds spent
+    let curIdx = 0;
+    let timerSec = 0;
+    let timerInterval = null;
+    let reviewFilter = "all";
+
+    function renderMath(container) {
+      if (!container || typeof renderMathInElement !== "function") return;
+      try {
+        renderMathInElement(container, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      } catch {}
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeAttr(str) {
+      return String(str || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    }
+
+    function formatMMSS(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, "0");
+      const s = String(sec % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function formatTimeSpent(sec) {
+      const s = Math.max(0, Math.round(sec || 0));
+      if (s < 60) return `${s}s`;
+      const m = Math.floor(s / 60);
+      const rem = s % 60;
+      return rem > 0 ? `${m}m ${rem}s` : `${m}m`;
+    }
+
+    async function init() {
+      try {
+        savedScores = JSON.parse(localStorage.getItem(STORAGE_SCORES) || "{}");
+      } catch {
+        savedScores = {};
+      }
+
+      try {
+        const res = await fetch("data/marathons.json", { cache: "no-store" });
+        if (res.ok) {
+          const parsed = await res.json();
+          if (parsed && Array.isArray(parsed.marathons)) {
+            marathonsList = parsed.marathons;
+          }
+        }
+      } catch {
+        marathonsList = FALLBACK_DATA.marathons;
+      }
+
+      updateHeaderCount();
+      renderSubjectPills();
+      renderGallery();
+    }
+
+    function updateHeaderCount() {
+      const count = marathonsList.length;
+      const label = count === 1 ? "1 Marathon" : `${count} Marathons`;
+      document.getElementById("totalMarathonsBadge").innerHTML = `<span>📚</span><span>${label}</span>`;
+    }
+
+    function renderSubjectPills() {
+      const subs = ["All"];
+      marathonsList.forEach(m => {
+        if (m.subject && !subs.includes(m.subject)) subs.push(m.subject);
+      });
+
+      document.getElementById("subjectPills").innerHTML = subs.map(s => {
+        const active = s === activeSubject;
+        const style = SUBJECT_STYLES[s];
+        const cls = active
+          ? "bg-blue-600 text-white border-blue-700 shadow-sm"
+          : "bg-white text-slate-700 border-blue-100 hover:border-blue-400 hover:bg-blue-50/50";
+        return `
+          <button onclick="selectSubject('${escapeAttr(s)}')" class="shrink-0 px-4 py-2 rounded-xl text-xs font-extrabold border transition flex items-center gap-1.5 ${cls}">
+            ${style ? `<span>${style.icon}</span>` : ""}
+            <span>${escapeHtml(s)}</span>
+          </button>`;
+      }).join("");
+    }
+
+    function selectSubject(sub) {
+      activeSubject = sub;
+      renderSubjectPills();
+      renderGallery();
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("clearSearchBtn").classList.add("hidden");
+      renderGallery();
+    }
+
+    function getThumbUrl(m) {
+      if (m.thumbnail && m.thumbnail.trim()) return m.thumbnail.trim();
+      if (m.videoId && m.videoId.trim()) return `https://i.ytimg.com/vi/${m.videoId.trim()}/maxresdefault.jpg`;
+      return "";
+    }
+
+    function getWatchUrl(m) {
+      if (m.youtubeUrl && m.youtubeUrl.trim()) return m.youtubeUrl.trim();
+      if (m.videoId && m.videoId.trim()) return `https://www.youtube.com/watch?v=${m.videoId.trim()}`;
+      return "";
+    }
+
+    function fallbackThumb(img, vid) {
+      const step = Number(img.dataset.step || 0);
+      if (!vid) { img.style.display = "none"; return; }
+      if (step === 0) {
+        img.dataset.step = "1";
+        img.src = `https://i.ytimg.com/vi/${vid}/sddefault.jpg`;
+      } else if (step === 1) {
+        img.dataset.step = "2";
+        img.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+      } else {
+        img.style.display = "none";
+      }
+    }
+
+    function verifyHdThumb(img, vid) {
+      if (img.naturalWidth && img.naturalWidth <= 120) fallbackThumb(img, vid);
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById("marathonGrid");
+      const rawQuery = document.getElementById("searchInput").value;
+      const q = rawQuery.trim().toLowerCase();
+      document.getElementById("clearSearchBtn").classList.toggle("hidden", !q);
+
+      const filtered = marathonsList.filter(m => {
+        if (activeSubject !== "All" && m.subject !== activeSubject) return false;
+        if (!q) return true;
+        return `${m.title} ${m.subject} ${m.teacher || ""} ${m.topics || ""} ${m.tag || ""}`.toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="col-span-full surface-card rounded-3xl p-10 text-center max-w-md mx-auto animate-pop">
+            <div class="text-4xl mb-2">🔎</div>
+            <h3 class="font-extrabold text-base text-slate-900 mb-1">कोई Marathon Mock नहीं मिला</h3>
+            <p class="text-xs font-medium text-slate-500 mb-4">दूसरा विषय या कीवर्ड खोजें।</p>
+            <button onclick="clearSearch(); selectSubject('All');" class="duo-btn px-4 py-2 rounded-xl bg-blue-600 border-blue-800 text-white text-xs font-extrabold">
+              Reset Filter
+            </button>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(m => {
+        const st = SUBJECT_STYLES[m.subject] || { grad: "from-blue-600 via-indigo-600 to-blue-700", icon: "📐" };
+        const thumbUrl = getThumbUrl(m);
+        const watchUrl = getWatchUrl(m);
+        const qCount = (m.questions || []).length;
+        const best = savedScores[m.id];
+
+        return `
+          <article class="surface-card rounded-3xl overflow-hidden flex flex-col justify-between hover:border-blue-300 hover:shadow-lg transition group animate-pop">
+            <div>
+              <div class="relative aspect-video w-full overflow-hidden bg-gradient-to-br ${st.grad}">
+                <div class="absolute inset-0 p-4 flex flex-col justify-center items-center text-center text-white select-none">
+                  <div class="text-4xl mb-1.5 drop-shadow">${st.icon}</div>
+                  <div class="text-[11px] font-extrabold uppercase tracking-widest opacity-90">${escapeHtml(m.teacher || "Math Master")} • MARATHON</div>
+                  <div class="font-extrabold text-sm sm:text-base leading-snug mt-1 line-clamp-2 drop-shadow px-2">${escapeHtml(m.title)}</div>
+                </div>
+
+                ${thumbUrl ? `
+                  <img
+                    src="${escapeHtml(thumbUrl)}"
+                    alt="${escapeHtml(m.title)}"
+                    loading="lazy"
+                    onload="verifyHdThumb(this, '${escapeAttr(m.videoId || "")}')"
+                    onerror="fallbackThumb(this, '${escapeAttr(m.videoId || "")}')"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-transparent to-slate-900/30"></div>
+                ` : ""}
+
+                <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-slate-900/75 text-white backdrop-blur-sm">
+                    ${st.icon} ${escapeHtml(m.subject)}
+                  </span>
+                  ${best ? `
+                    <span class="font-mono text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-emerald-500 text-white shadow">
+                      🏆 Best ${best.acc}%
+                    </span>` : (m.tag ? `
+                    <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-lg bg-blue-600/95 text-white shadow-sm">
+                      ${escapeHtml(m.tag)}
+                    </span>` : "")}
+                </div>
+
+                <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+                  ${m.duration ? `
+                    <span class="font-mono text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-slate-900/80 text-white">
+                      ⏱ ${escapeHtml(m.duration)}
+                    </span>` : "<span></span>"}
+                  <span class="font-mono text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-white/95 text-blue-700 shadow-sm">
+                    📝 ${qCount} Qs
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-4 pb-3">
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="text-[11px] font-extrabold text-blue-600">🎓 ${escapeHtml(m.teacher || "Math Master")}</span>
+                </div>
+                <h3 class="font-extrabold text-sm sm:text-base leading-snug text-slate-900 mb-1.5">${escapeHtml(m.title)}</h3>
+                ${m.topics ? `<p class="text-xs font-medium leading-relaxed text-slate-500 line-clamp-2">${escapeHtml(m.topics)}</p>` : ""}
+              </div>
+            </div>
+
+            <div class="px-4 pb-4 pt-2 flex gap-2">
+              ${watchUrl ? `
+                <a href="${escapeHtml(watchUrl)}" target="_blank" rel="noopener" class="px-3.5 py-2.5 rounded-xl border border-blue-200 bg-blue-50/70 text-slate-800 text-xs font-extrabold hover:border-rose-400 hover:text-rose-600 hover:bg-rose-50/60 transition flex items-center justify-center gap-1.5">
+                  <span class="text-rose-600">▶</span><span>Video</span>
+                </a>` : ""}
+              <button onclick="openModeModal('${escapeAttr(m.id)}')" class="duo-btn flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 border-blue-800 text-white text-xs font-extrabold flex items-center justify-center gap-1.5">
+                <span>📝</span><span>Start Mock</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openModeModal(id) {
+      const m = marathonsList.find(x => x.id === id);
+      if (!m || !(m.questions || []).length) return;
+
+      selectedMarathonId = id;
+      document.getElementById("modalSubjectBadge").textContent = `${m.subject} • ${(m.questions || []).length} Questions`;
+      document.getElementById("modalTitle").textContent = m.title;
+      document.getElementById("modalMeta").textContent = `🎓 ${m.teacher || "Math Master"}${m.duration ? " • ⏱ " + m.duration : ""}`;
+      document.getElementById("modeModal").classList.remove("hidden");
+    }
+
+    function closeModeModal() {
+      document.getElementById("modeModal").classList.add("hidden");
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function launchMock(mode, customQuestions = null) {
+      closeModeModal();
+      const m = marathonsList.find(x => x.id === selectedMarathonId) || activeMarathon;
+      if (!m) return;
+
+      activeMarathon = m;
+      activeMode = mode;
+
+      const doShuffle = document.getElementById("shuffleToggle").checked;
+      const baseQuestions = customQuestions || m.questions;
+      activeQuestions = doShuffle ? shuffleArray(baseQuestions) : [...baseQuestions];
+
+      userAnswers = new Array(activeQuestions.length).fill(null);
+      markedReview = new Array(activeQuestions.length).fill(false);
+      questionTimes = new Array(activeQuestions.length).fill(0); // Reset per-question timer
+      curIdx = 0;
+
+      timerSec = mode === "practice" ? 0 : Math.max(75, activeQuestions.length * 75);
+
+      document.getElementById("galleryView").classList.add("hidden");
+      document.getElementById("resultView").classList.add("hidden");
+      document.getElementById("mockView").classList.remove("hidden");
+      document.getElementById("paletteDrawer").classList.add("hidden");
+
+      const modeLabels = {
+        practice: "🎯 Practice",
+        ssc: "⏱️ SSC (+2 / -0.5)",
+        cds: "🎖️ CDS Math (+1 / -0.33)"
+      };
+      document.getElementById("mockModeBadge").textContent = modeLabels[mode];
+      document.getElementById("mockTitleLine").textContent = m.title;
+
+      startTimer();
+      renderMockQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function startTimer() {
+      stopTimer();
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        // Track per-question time (pause in Practice mode once answered)
+        const isLockedPractice = activeMode === "practice" && userAnswers[curIdx] !== null;
+        if (!isLockedPractice) {
+          questionTimes[curIdx] = (questionTimes[curIdx] || 0) + 1;
+        }
+
+        if (activeMode === "practice") {
+          timerSec++;
+        } else {
+          timerSec--;
+          if (timerSec <= 0) {
+            timerSec = 0;
+            updateTimerDisplay();
+            submitMock();
+            return;
+          }
+        }
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function updateTimerDisplay() {
+      const el = document.getElementById("mockTimer");
+      el.textContent = `⏱ ${formatMMSS(timerSec)}`;
+
+      if (activeMode !== "practice" && timerSec <= 60) {
+        el.className = "font-mono text-xs font-extrabold px-2.5 py-1.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-700";
+      } else {
+        el.className = "font-mono text-xs font-extrabold px-2.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800";
+      }
+
+      // Update live per-question timer pill
+      const qSec = questionTimes[curIdx] || 0;
+      const qEl = document.getElementById("mockQTimer");
+      qEl.textContent = `⏳ Q: ${formatMMSS(qSec)}`;
+      if (qSec >= 90) {
+        qEl.className = "font-mono text-xs font-extrabold px-2.5 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700";
+      } else {
+        qEl.className = "font-mono text-xs font-extrabold px-2.5 py-1.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-700";
+      }
+    }
+
+    function togglePalette() {
+      const drawer = document.getElementById("paletteDrawer");
+      drawer.classList.toggle("hidden");
+      if (!drawer.classList.contains("hidden")) renderPalette();
+    }
+
+    function renderPalette() {
+      document.getElementById("paletteGrid").innerHTML = activeQuestions.map((_, i) => {
+        let cls = "bg-white text-slate-700 border-blue-200 hover:border-blue-400";
+        if (markedReview[i]) cls = "bg-violet-600 text-white border-violet-700";
+        else if (userAnswers[i] !== null) cls = "bg-emerald-600 text-white border-emerald-700";
+        const ring = i === curIdx ? "ring-2 ring-blue-600 ring-offset-2" : "";
+        return `<button onclick="jumpToQuestion(${i})" class="font-mono h-9 rounded-xl text-xs font-extrabold border transition ${cls} ${ring}">${i + 1}</button>`;
+      }).join("");
+    }
+
+    function jumpToQuestion(idx) {
+      curIdx = idx;
+      renderMockQuestion();
+      updateTimerDisplay();
+    }
+
+    function renderMockQuestion() {
+      const q = activeQuestions[curIdx];
+      const chosen = userAnswers[curIdx];
+      const total = activeQuestions.length;
+
+      document.getElementById("mockQBadge").textContent = `Q ${curIdx + 1} / ${total}`;
+      document.getElementById("mockProgress").style.width = `${Math.round(((curIdx + 1) / total) * 100)}%`;
+
+      document.getElementById("mockQuestion").textContent = `${curIdx + 1}. ${q.q}`;
+
+      const diagWrap = document.getElementById("mockDiagramWrap");
+      const diagImg = document.getElementById("mockDiagramImg");
+      if (q.img && q.img.trim()) {
+        diagImg.src = q.img.trim();
+        diagWrap.classList.remove("hidden");
+      } else {
+        diagImg.src = "";
+        diagWrap.classList.add("hidden");
+      }
+
+      const revBtn = document.getElementById("btnReview");
+      revBtn.className = markedReview[curIdx]
+        ? "px-3.5 py-2.5 rounded-xl border-2 border-violet-500 bg-violet-50 text-violet-700 text-xs font-extrabold transition"
+        : "px-3.5 py-2.5 rounded-xl border border-blue-200 bg-white text-slate-700 text-xs font-extrabold hover:border-violet-400 transition";
+
+      document.getElementById("btnPrev").disabled = curIdx === 0;
+      document.getElementById("btnNext").classList.toggle("hidden", curIdx === total - 1);
+
+      const letters = ["A", "B", "C", "D"];
+      const locked = activeMode === "practice" && chosen !== null;
+      const optBox = document.getElementById("mockOptions");
+
+      optBox.innerHTML = q.options.map((opt, idx) => {
+        let btnCls = "border-blue-100 bg-white text-slate-900";
+        let badgeCls = "bg-blue-50 text-blue-700 border-blue-200";
+
+        if (locked) {
+          if (idx === q.ans) {
+            btnCls = "border-emerald-500 bg-emerald-50 text-emerald-950";
+            badgeCls = "bg-emerald-600 text-white border-emerald-600";
+          } else if (idx === chosen) {
+            btnCls = "border-rose-500 bg-rose-50 text-rose-950";
+            badgeCls = "bg-rose-600 text-white border-rose-600";
+          } else {
+            btnCls = "border-slate-200 bg-slate-50/70 text-slate-400 opacity-70";
+            badgeCls = "bg-slate-100 text-slate-400 border-slate-200";
+          }
+        } else if (chosen === idx) {
+          btnCls = "border-blue-600 bg-blue-50 text-blue-950";
+          badgeCls = "bg-blue-600 text-white border-blue-600";
+        }
+
+        return `
+          <button onclick="selectOption(${idx})" ${locked ? "disabled" : ""} class="opt-btn w-full text-left p-3.5 sm:p-4 rounded-2xl border-2 font-bold text-xs sm:text-sm flex items-start gap-3 ${btnCls}">
+            <span class="font-mono w-6 h-6 rounded-lg border shrink-0 flex items-center justify-center text-xs font-extrabold ${badgeCls}">${letters[idx]}</span>
+            <span class="leading-snug">${escapeHtml(opt)}</span>
+          </button>`;
+      }).join("");
+
+      const fb = document.getElementById("mockFeedback");
+      if (locked) {
+        const isRight = chosen === q.ans;
+        fb.className = isRight
+          ? "rounded-2xl p-4 sm:p-5 mb-5 border text-xs sm:text-sm leading-relaxed space-y-2.5 animate-pop bg-emerald-50/80 border-emerald-200"
+          : "rounded-2xl p-4 sm:p-5 mb-5 border text-xs sm:text-sm leading-relaxed space-y-2.5 animate-pop bg-rose-50/80 border-rose-200";
+
+        const fbStatus = document.getElementById("mockFbStatus");
+        fbStatus.className = isRight
+          ? "font-extrabold text-sm text-emerald-700"
+          : "font-extrabold text-sm text-rose-700";
+        fbStatus.innerHTML = isRight
+          ? `✅ बिल्कुल सही उत्तर! <span class="font-mono text-xs opacity-80">(⏳ ${formatTimeSpent(questionTimes[curIdx])})</span>`
+          : `❌ गलत उत्तर — सही उत्तर: ${escapeHtml(q.options[q.ans])} <span class="font-mono text-xs opacity-80">(⏳ ${formatTimeSpent(questionTimes[curIdx])})</span>`;
+
+        document.getElementById("mockFbExp").textContent = q.exp || "";
+
+        const noteEl = document.getElementById("mockFbNote");
+        if (q.note) {
+          noteEl.textContent = `📌 Formula / Trick: ${q.note}`;
+          noteEl.classList.remove("hidden");
+        } else {
+          noteEl.classList.add("hidden");
+        }
+      } else {
+        fb.classList.add("hidden");
+      }
+
+      renderMath(document.getElementById("mockQuestionArea"));
+      renderMath(optBox);
+      if (locked) renderMath(fb);
+      updateTimerDisplay();
+
+      if (!document.getElementById("paletteDrawer").classList.contains("hidden")) {
+        renderPalette();
+      }
+    }
+
+    function selectOption(idx) {
+      if (activeMode === "practice" && userAnswers[curIdx] !== null) return;
+      userAnswers[curIdx] = idx;
+      renderMockQuestion();
+    }
+
+    function toggleMarkReview() {
+      markedReview[curIdx] = !markedReview[curIdx];
+      renderMockQuestion();
+    }
+
+    function prevMockQ() {
+      if (curIdx > 0) { curIdx--; renderMockQuestion(); }
+    }
+
+    function nextMockQ() {
+      if (curIdx < activeQuestions.length - 1) { curIdx++; renderMockQuestion(); }
+    }
+
+    function openExitModal() { document.getElementById("exitModal").classList.remove("hidden"); }
+    function closeExitModal() { document.getElementById("exitModal").classList.add("hidden"); }
+    function confirmExitMock() { closeExitModal(); stopTimer(); backToGallery(); }
+
+    function submitMock() {
+      stopTimer();
+
+      let correct = 0, wrong = 0, skipped = 0;
+      activeQuestions.forEach((q, i) => {
+        if (userAnswers[i] === null) skipped++;
+        else if (userAnswers[i] === q.ans) correct++;
+        else wrong++;
+      });
+
+      const total = activeQuestions.length;
+      const attempted = correct + wrong;
+      const acc = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+      const totalSpent = questionTimes.reduce((a, b) => a + (b || 0), 0);
+      const avgTime = total > 0 ? Math.round(totalSpent / total) : 0;
+
+      let scoreStr = `${correct} / ${total}`;
+      if (activeMode === "ssc") {
+        scoreStr = `${(correct * 2 - wrong * 0.5).toFixed(2)} / ${total * 2}`;
+      } else if (activeMode === "cds") {
+        scoreStr = `${(correct * 1 - wrong * 0.33).toFixed(2)} / ${total}`;
+      }
+
+      if (activeMarathon && total === (activeMarathon.questions || []).length) {
+        const prevBest = savedScores[activeMarathon.id]?.acc || 0;
+        const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+        if (pct >= prevBest) {
+          savedScores[activeMarathon.id] = { acc: pct, correct, total };
+          try { localStorage.setItem(STORAGE_SCORES, JSON.stringify(savedScores)); } catch {}
+        }
+      }
+
+      document.getElementById("mockView").classList.add("hidden");
+      document.getElementById("resultView").classList.remove("hidden");
+
+      document.getElementById("resEmoji").textContent = acc >= 80 ? "🏆" : acc >= 50 ? "💪" : "📚";
+      document.getElementById("resHeading").textContent = activeMarathon.title;
+      document.getElementById("resSub").textContent = `Total: ${total} Qs • Attempted: ${attempted} • Skipped: ${skipped} • ⏳ Avg: ${formatTimeSpent(avgTime)}/Q`;
+      document.getElementById("resScore").textContent = scoreStr;
+      document.getElementById("resCorrect").textContent = correct;
+      document.getElementById("resWrong").textContent = wrong;
+      document.getElementById("resAcc").textContent = `${acc}%`;
+
+      const wrongSkipCount = wrong + skipped;
+      const wrongBtn = document.getElementById("btnWrongOnly");
+      if (wrongSkipCount > 0) {
+        wrongBtn.classList.remove("hidden");
+        wrongBtn.textContent = `🛡️ Practice Wrong/Skip (${wrongSkipCount})`;
+      } else {
+        wrongBtn.classList.add("hidden");
+      }
+
+      setReviewFilter("all");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setReviewFilter(filterKey) {
+      reviewFilter = filterKey;
+      document.querySelectorAll(".rf-btn").forEach(btn => {
+        const isActive = btn.dataset.rf === filterKey;
+        btn.className = isActive
+          ? "rf-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-sm"
+          : "rf-btn px-3 py-1.5 rounded-xl text-xs font-extrabold bg-white border border-blue-100 text-slate-700 hover:bg-blue-50";
+      });
+      renderReviewList();
+    }
+
+    function renderReviewList() {
+      const container = document.getElementById("reviewList");
+      const items = activeQuestions
+        .map((q, i) => ({ q, i, ans: userAnswers[i], sec: questionTimes[i] || 0 }))
+        .filter(x => {
+          if (reviewFilter === "correct") return x.ans === x.q.ans;
+          if (reviewFilter === "wrong") return x.ans !== x.q.ans;
+          return true;
+        });
+
+      if (!items.length) {
+        container.innerHTML = `<p class="text-xs font-bold text-center text-slate-500 py-5">इस फ़िल्टर में कोई प्रश्न नहीं है।</p>`;
+        return;
+      }
+
+      container.innerHTML = items.map(({ q, i, ans, sec }) => {
+        const isRight = ans === q.ans;
+        const isSkip = ans === null;
+        const cardStyle = isRight
+          ? "border-emerald-200 bg-emerald-50/50"
+          : isSkip
+          ? "border-amber-200 bg-amber-50/50"
+          : "border-rose-200 bg-rose-50/50";
+        const statusColor = isRight ? "text-emerald-700" : isSkip ? "text-amber-700" : "text-rose-700";
+
+        return `
+          <div class="p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm space-y-2 ${cardStyle}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="font-bold text-slate-900 leading-relaxed whitespace-pre-line">
+                <span class="font-mono text-blue-700 font-extrabold mr-1">Q${i + 1}.</span>${escapeHtml(q.q)}
+              </div>
+              <span class="shrink-0 font-mono text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-white border border-blue-200 text-blue-700">
+                ⏳ ${formatTimeSpent(sec)}
+              </span>
+            </div>
+
+            ${q.img && q.img.trim() ? `
+              <div class="p-2.5 rounded-xl bg-white border border-blue-100 flex justify-center">
+                <img src="${escapeHtml(q.img.trim())}" alt="Question Diagram" class="max-h-48 w-auto rounded-lg object-contain" onerror="this.parentElement.style.display='none'" />
+              </div>` : ""}
+
+            <div class="font-extrabold ${statusColor}">
+              ${isRight ? "✅ आपका उत्तर सही:" : isSkip ? "⏭️ Skipped (छोड़ा गया)" : "❌ आपका उत्तर:"} ${isSkip ? "" : escapeHtml(q.options[ans])}
+            </div>
+
+            ${!isRight ? `<div class="font-extrabold text-emerald-700">✓ सही उत्तर: ${escapeHtml(q.options[q.ans])}</div>` : ""}
+
+            ${q.exp ? `<div class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line pt-1">${escapeHtml(q.exp)}</div>` : ""}
+
+            ${q.note ? `
+              <div class="mt-2 text-xs font-extrabold px-3 py-2 rounded-xl bg-amber-50 border-l-4 border-amber-500 text-amber-950">
+                📌 Formula / Trick: ${escapeHtml(q.note)}
+              </div>` : ""}
+          </div>`;
+      }).join("");
+
+      renderMath(container);
+    }
+
+    function retryWrongOnly() {
+      const wrongQs = activeQuestions.filter((q, i) => userAnswers[i] !== q.ans);
+      if (!wrongQs.length) return;
+      launchMock("practice", wrongQs);
+    }
+
+    function backToGallery() {
+      stopTimer();
+      document.getElementById("mockView").classList.add("hidden");
+      document.getElementById("resultView").classList.add("hidden");
+      document.getElementById("galleryView").classList.remove("hidden");
+      renderGallery();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
